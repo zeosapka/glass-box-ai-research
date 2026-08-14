@@ -56,7 +56,7 @@ Bu repository, ilk hafta araştırma ödevindeki kontrollü MNIST MLP deneylerin
 | Literature matrix | DONE | 8 kaynak + experiment mapping |
 | Advanced concepts | DONE | `notes/advanced_concepts.md` |
 | Mechanism provenance proposal | DONE | `notes/mechanism_provenance.md` |
-| Figure index + GitHub SVGs | DONE | Verified result figures added |
+| Figure index + GitHub SVGs | DONE | 11 verified/readable result figures |
 | Glass Box map | DONE | Computational map tamamlandı |
 
 ## Candidate Circuit
@@ -98,39 +98,50 @@ Bu sonuçlar candidate circuit'un Class 0 output behavior'a güçlü ve kontroll
 glass-box-ai-research/
 ├── README.md
 ├── requirements.txt
-├── notebooks/
-│   ├── 01_baseline_model.ipynb
-│   ├── 02_activation_analysis.ipynb
-│   ├── 03_ablation_experiment.ipynb
-│   └── 04_intervention_experiment.ipynb
-├── src/
-├── experiments/
-├── results/
-│   └── results_summary.md
-├── figures/
-│   ├── figure_index.md
-│   ├── ablation_accuracy.svg
-│   ├── progressive_circuit_ablation.svg
-│   ├── circuit_intervention_probability.svg
-│   ├── neuron_intervention_n47.svg
-│   └── activation_correlation.svg
-├── data/
-├── papers/
-├── notes/
-│   ├── experiment_log.md
-│   ├── experiment_index.md
-│   ├── literature_table.md
-│   ├── advanced_concepts.md
-│   ├── mechanism_provenance.md
-│   ├── ten_day_plan.md
-│   └── ai_tool_verification.md
-└── report/
-    └── glass_box_map.md
+├── notebooks/          # Deneylerin çalıştırıldığı Colab/Jupyter notebookları
+├── src/                # Tekrar kullanılabilir Python model ve yardımcı fonksiyonları
+├── experiments/        # Deneylere ait ek/gelecek deney dosyaları
+├── results/            # Deney sonuçlarının özet kayıtları
+├── figures/            # Deneylerden üretilen doğrulanabilir grafikler (11 SVG)
+├── data/               # Veri seti ve veri kullanım açıklamaları
+├── papers/             # Araştırmada kullanılacak/ kullanılan makale kaynakları
+├── notes/              # Deney günlüğü, literatür, kavramlar ve araştırma notları
+└── report/             # Glass Box computational map ve rapor/sunum materyalleri
 ```
+
+### Klasörlerin rolü
+
+- **`notebooks/`** — Baseline, activation analysis, ablation ve intervention deneylerinin Colab/Jupyter kayıtları.
+- **`src/`** — Model, hook, evaluation ve intervention gibi tekrar kullanılabilir kodlar.
+- **`figures/`** — Deney günlüğünde sayısal olarak doğrulanabilen 11 SVG grafik ve `figure_index.md`.
+- **`notes/`** — Deney logu, literatür matrisi, advanced concepts, mechanism provenance ve deney planı.
+- **`results/`** — Sonuçların kısa/özet kayıtları.
+- **`report/`** — Glass Box computational map ve raporlama materyalleri.
+- **`data/`** — MNIST gibi veri setlerinin repo içinde tutulmayan kullanım/açıklama bilgileri.
+- **`papers/`** — Literatür dosyaları için ayrılmış alan.
+- **`experiments/`** — Ayrı deney dosyaları için ayrılmış alan; mevcut deney sonuçları esas olarak `notebooks/`, `notes/` ve `figures/` içinde tutulmaktadır.
+
+## Figure Set
+
+`figures/` klasöründe 11 okunabilir SVG bulunmaktadır:
+
+1. Ablation accuracy — tüm candidate neuronlar + candidate circuit
+2. Progressive circuit ablation
+3. Candidate circuit activation intervention
+4. N47 activation intervention
+5. N17–N47 correlation summary
+6. Baseline training loss
+7. Candidate circuit activation across Classes 0–2
+8. Class-wise correct predictions (confusion-matrix diagonal)
+9. Top-10 selectivity
+10. Leave-One-Out
+11. Candidate neuron contribution to Class 0 logit
+
+Eksik ham veri noktaları uydurulmamıştır. Bu nedenle bazı grafikler orijinal Colab grafiklerinin doğrulanabilir, daha dar kapsamlı GitHub sürümleridir. Ayrıntılı kapsam `figures/figure_index.md` içinde belirtilmiştir.
 
 ## Baseline Learning Curves
 
-`notebooks/01_baseline_model.ipynb` epoch bazında training/test loss ve accuracy kaydı ile iki learning-curve grafiği üretmektedir. Bu notebook güncellenmiştir; yeni curve değerleri notebook yeniden çalıştırılmadan sonuç olarak kabul edilmez.
+`notebooks/01_baseline_model.ipynb` epoch bazında baseline eğitim sonuçlarını kaydetmektedir. GitHub'daki `baseline_training_loss.svg` yalnızca deney günlüğünde doğrulanmış training-loss serisini gösterir; doğrulanmamış validation/test noktaları grafiğe eklenmemiştir.
 
 ## Next Experiments
 
@@ -145,4 +156,4 @@ glass-box-ai-research/
 
 **Experimental phase: COMPLETED.**
 
-Mevcut deney sonuçları, experiment log, literature mapping, advanced concept coverage, mechanism provenance proposal ve GitHub figure/result kayıtları tamamlanmıştır. Baseline learning-curve grafiklerinin gerçek yeni değerleri için yalnızca güncellenmiş notebook'un Colab'da yeniden çalıştırılması gerekmektedir. Gelecek deneyler sonuç gibi sunulmamaktadır.
+Mevcut deney sonuçları, experiment log, literature mapping, advanced concept coverage, mechanism provenance proposal ve GitHub figure/result kayıtları tamamlanmıştır. Gelecek deneyler sonuç gibi sunulmamaktadır.
