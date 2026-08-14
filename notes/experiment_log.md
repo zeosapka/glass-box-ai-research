@@ -1,130 +1,75 @@
 # 1. Hafta Deney Günlüğü
 
-Bu dosya, Colab üzerinde gerçekten çalıştırılmış deneylerin sonuçlarını kaydetmek için kullanılmaktadır. Sonuçlar deneyler tamamlandıktan sonra eklenmiştir.
+Bu dosya, Colab üzerinde gerçekten çalıştırılmış Glass Box AI deneylerinin sonuçlarını kaydetmektedir. Deneyler küçük ve kontrollü bir MNIST MLP üzerinde yürütülmüştür.
 
 ## 1. Baseline Model
 
-**Amaç:** MNIST üzerinde küçük ve kontrollü bir MLP baseline model oluşturmak ve sonraki Glass Box deneyleri için referans performansı belirlemek.
-
-- Dataset: MNIST
-- Train/Test: 60000 / 10000
-- Input: 784
+- Dataset: MNIST (60000 train / 10000 test)
 - Architecture: `784 → 128 → 64 → 10`
-- Aktivasyon: ReLU
+- Activation: ReLU
 - Optimizer: Adam
 - Learning rate: `0.001`
 - Batch size: `64`
 - Epoch: `5`
 - Seed: `42`
 - Device: CPU
-- Eğitim süresi: `57.96 s`
+- Training time: `57.96 s`
 - Test accuracy: **97.56%**
 
-Epoch loss değerleri:
+Epoch loss: `0.3328, 0.1354, 0.0945, 0.0717, 0.0558`.
 
-| Epoch | Loss |
-|---:|---:|
-| 1 | 0.3328 |
-| 2 | 0.1354 |
-| 3 | 0.0945 |
-| 4 | 0.0717 |
-| 5 | 0.0558 |
-
-Confusion matrix incelendiğinde diagonal üzerinde yüksek doğru sınıflandırma görülmüştür. Sınıf bazında doğru tahmin sayıları: 0=967, 1=1128, 2=1003, 3=978, 4=970, 5=866, 6=927, 7=1010, 8=946, 9=961.
+Confusion matrix diagonal was strong. Correct predictions by class: `0=967, 1=1128, 2=1003, 3=978, 4=970, 5=866, 6=927, 7=1010, 8=946, 9=961`.
 
 **Yorum:** Baseline model sonraki internal representation ve intervention deneyleri için yeterli performansı sağlamıştır.
 
----
-
 ## 2. Activation Analysis
 
-**Amaç:** Modelin internal representation yapısını gözlemlemek ve ReLU2 katmanındaki 64 nöronun aktivasyonlarını incelemek.
+ReLU2 activation output shape: `[64, 64]`; complete test activation matrix: `[10000, 64]`.
 
-- `fc2` çıktısı: `[64, 64]`
-- `relu2` çıktısı: `[64, 64]`
-- Tüm test seti activation matrix: `[10000, 64]`
+Öne çıkan ortalama aktivasyonlar: N62 `4.661`, N61 `2.601`, N54 `2.559`, N47 `2.540`. N4, N19, N35 ve N58 çok düşük/dead activation göstermiştir.
 
-Bazı nöronların ortalama aktivasyonu yüksek, bazı nöronların ise çok düşük veya sıfıra yakın olduğu gözlenmiştir.
+**Yorum:** Yüksek mean activation tek başına causal importance göstermez.
 
-Öne çıkan ortalama aktivasyonlar:
+## 3. Class Activation ve Selectivity
 
-| Nöron | Ortalama aktivasyon |
-|---:|---:|
-| N62 | 4.661 |
-| N61 | 2.601 |
-| N54 | 2.559 |
-| N47 | 2.540 |
+Selectivity = en yüksek class mean activation − ikinci en yüksek class mean activation.
 
-Dead veya düşük aktivasyon gösteren nöronlar arasında N4, N19, N35 ve N58 bulunmaktadır.
-
-**Yorum:** Yüksek ortalama activation tek başına bir nöronun causal importance taşıdığını göstermez.
-
----
-
-## 3. Class Activation ve Selectivity Analysis
-
-**Amaç:** Hangi nöronların belirli sınıflarda daha seçici aktivasyon gösterdiğini belirlemek.
-
-Selectivity, bir nöronun en yüksek class mean activation değeri ile ikinci en yüksek class mean activation değeri arasındaki fark olarak hesaplanmıştır.
-
-En yüksek selectivity gösteren adaylar:
-
-| Nöron | En yüksek class | Selectivity |
+| Neuron | Top class | Selectivity |
 |---:|---:|---:|
-| N54 | Class 2 | 3.561 |
-| N47 | Class 0 | 3.163 |
-| N22 | Class 1 | 2.881 |
-| N2 | Class 4 | 2.429 |
-| N51 | Class 4 | 2.392 |
-| N32 | Class 2 | 2.327 |
-| N23 | Class 7 | 2.316 |
-| N48 | Class 6 | 2.231 |
-| N12 | Class 3 | 2.204 |
-| N17 | Class 0 | 2.193 |
+| N54 | 2 | 3.561 |
+| N47 | 0 | 3.163 |
+| N22 | 1 | 2.881 |
+| N2 | 4 | 2.429 |
+| N51 | 4 | 2.392 |
+| N32 | 2 | 2.327 |
+| N23 | 7 | 2.316 |
+| N48 | 6 | 2.231 |
+| N12 | 3 | 2.204 |
+| N17 | 0 | 2.193 |
 
-**Yorum:** Selectivity candidate feature/neuron seçimi için gözlemsel bir ölçüttür. Selectivity yüksek olması causal importance anlamına gelmez.
-
----
+**Yorum:** Selectivity candidate neuron/feature seçimi için observational bir ölçüttür; causal importance değildir.
 
 ## 4. Single-Neuron Ablation
 
-**Amaç:** Selectivity sonucu öne çıkan nöronların model davranışına etkisini intervention ile test etmek.
-
 ### N54
-- Overall baseline: 97.5600%
-- Ablated: 97.5300%
-- Değişim: **-0.0300 yüzde puanı**
-- Class 2 baseline: 97.1899%
-- Class 2 ablated: 96.8023%
-- Class 2 değişim: **-0.3876 yüzde puanı**
+- Overall: `97.5600% → 97.5300%` (`-0.0300 pp`)
+- Class 2: `97.1899% → 96.8023%` (`-0.3876 pp`)
 
 ### N47
-- Overall baseline: 97.5600%
-- Ablated: 97.4600%
-- Değişim: **-0.1000 yüzde puanı**
-- Class 0 baseline: 98.6735%
-- Class 0 ablated: 97.7551%
-- Class 0 değişim: **-0.9184 yüzde puanı**
+- Overall: `97.5600% → 97.4600%` (`-0.1000 pp`)
+- Class 0: `98.6735% → 97.7551%` (`-0.9184 pp`)
 
 ### N62
-- Overall baseline: 97.5600%
-- Ablated: 97.6400%
-- Değişim: **+0.0800 yüzde puanı**
-- Class 3 baseline: 96.8317%
-- Class 3 ablated: 96.3366%
-- Class 3 değişim: **-0.4950 yüzde puanı**
+- Overall: `97.5600% → 97.6400%` (`+0.0800 pp`)
+- Class 3: `96.8317% → 96.3366%` (`-0.4950 pp`)
 
-**Yorum:** Ablation sonuçları, seçilen nöronların class-specific model behavior'a katkı sağlayabildiğine dair nedensel kanıt sunmaktadır. Farklı etkiler, activation selectivity'nin tek başına causal importance belirlemek için yeterli olmadığını göstermektedir. N62 kesin bir negative control olarak değerlendirilmemiştir.
-
----
+**Yorum:** Ablation results provide causal evidence/support that selected neurons contribute to class-specific model behavior. N62 kesin bir negative control olarak değerlendirilmemiştir.
 
 ## 5. Activation Intervention
 
-**Amaç:** Nöron activation değerini kontrollü biçimde azaltıp artırarak output üzerindeki değişimi incelemek.
-
 ### N47 → Class 0
 
-| Scale | Overall accuracy | Mean Class 0 probability | True Class 0 probability |
+| Scale | Accuracy | Mean C0 probability | True C0 probability |
 |---:|---:|---:|---:|
 | 0.0 | 97.46% | 0.0956 | 0.9640 |
 | 0.5 | 97.54% | 0.0968 | 0.9735 |
@@ -132,11 +77,9 @@ En yüksek selectivity gösteren adaylar:
 | 1.5 | 97.56% | 0.0984 | 0.9829 |
 | 2.0 | 97.54% | 0.0990 | 0.9853 |
 
-Activation arttıkça Class 0 probability sistematik olarak artmıştır. Overall accuracy büyük ölçüde sabit kalmıştır.
-
 ### N54 → Class 2
 
-| Scale | Overall accuracy | Mean Class 2 probability | True Class 2 probability |
+| Scale | Accuracy | Mean C2 probability | True C2 probability |
 |---:|---:|---:|---:|
 | 0.0 | 97.53% | 0.1026 | 0.9583 |
 | 0.5 | 97.55% | 0.1034 | 0.9619 |
@@ -144,54 +87,30 @@ Activation arttıkça Class 0 probability sistematik olarak artmıştır. Overal
 | 1.5 | 97.44% | 0.1048 | 0.9662 |
 | 2.0 | 97.42% | 0.1056 | 0.9676 |
 
-**Yorum:** Kontrollü activation intervention, ilgili nöronların hedef class output'una katkı sağladığına yönelik daha güçlü causal evidence oluşturmuştur. Bu sonuçlar doğrudan "causality proved" şeklinde yorumlanmamıştır.
-
----
+**Yorum:** Controlled activation intervention, ilgili neuron → output pathway için daha güçlü causal evidence sağlamıştır; sonuçlar causality proved şeklinde ifade edilmemiştir.
 
 ## 6. Correlation vs Causality
 
-N17 ve N47 activation değerleri arasındaki Pearson correlation:
+N17–N47 Pearson correlation:
+- All test samples: **0.4485**
+- Class 0 only: **0.7846**
 
-- Tüm test seti: **0.4485**
-- Sadece Class 0: **0.7846**
-
-Class 0 örneklerinde N17 ve N47 activation değerleri arasında belirgin pozitif ilişki gözlenmiştir.
-
-**Yorum:** Bu sonuç observational evidence sağlar. Correlation tek başına causality göstermez; intervention deneyleri bu nedenle ayrıca gerçekleştirilmiştir.
-
----
+**Yorum:** Correlation observational evidence sağlar. Causal claim için intervention ve ablation gereklidir.
 
 ## 7. Candidate Circuit Discovery
 
-**Amaç:** Class 0 davranışına birlikte katkı sağlayabilecek distributed feature/circuit adayını belirlemek.
-
-Class 0 için öne çıkan candidate neurons:
+Class 0 için candidate group:
 
 `[47, 17, 57, 53, 28]`
 
-Bu nöronlar selectivity, activation intervention ve output weight analizleri kullanılarak aday grup olarak belirlenmiştir.
+N47 → Class 0 output weight: `+0.231610`.
+Diğer candidate Class 0 weights: N17 `+0.237246`, N28 `+0.233466`, N53 `+0.225550`, N57 `+0.186438`.
 
-N47'nin FC3 üzerindeki Class 0 output weight değeri:
+**Yorum:** Output weights candidate pathway belirlemede kullanılmıştır; weight magnitude tek başına causal evidence değildir.
 
-- N47 → Class 0: **+0.231610**
+## 8. N17 Activation Intervention
 
-Class 0 için en yüksek pozitif output weight değerlerinden bazıları:
-
-- N17: +0.237246
-- N28: +0.233466
-- N47: +0.231610
-- N53: +0.225550
-- N57: +0.186438
-
-**Yorum:** Weight değerleri candidate pathway belirlemek için kullanılmıştır; weight magnitude tek başına causal evidence değildir.
-
----
-
-## 8. Activation Intervention: N17
-
-N17 activation intervention sonuçları:
-
-| Scale | Accuracy | Mean Class 0 probability | True Class 0 probability |
+| Scale | Accuracy | Mean C0 probability | True C0 probability |
 |---:|---:|---:|---:|
 | 0.0 | 97.50% | 0.0954 | 0.9619 |
 | 0.5 | 97.53% | 0.0967 | 0.9726 |
@@ -199,350 +118,266 @@ N17 activation intervention sonuçları:
 | 1.5 | 97.55% | 0.0984 | 0.9835 |
 | 2.0 | 97.53% | 0.0991 | 0.9863 |
 
-Scale 0→2 arasında true Class 0 probability **+0.0244** artmıştır.
+Scale `0→2` arasında true Class 0 probability `+0.0244` artmıştır.
 
-**Yorum:** N17 activation'ının artırılması Class 0 probability'sini sistematik olarak artırmıştır. Bu, N17 → Class 0 output pathway için causal evidence'i desteklemektedir.
-
----
+**Yorum:** N17 activation artışı Class 0 probability'sini sistematik olarak artırmıştır; N17 → Class 0 pathway için causal evidence'i destekler.
 
 ## 9. N17 + N47 Combined Ablation
 
-- Baseline overall accuracy: **97.5600%**
-- N17 + N47 ablation: **97.1900%**
-- Değişim: **-0.3700 yüzde puanı**
+Overall accuracy: `97.5600% → 97.1900%`, değişim `-0.3700 pp`.
 
-Tekli ablation değişimleri:
+Single effects: N17 `-0.0600 pp`, N47 `-0.1000 pp`; basit toplam `-0.1600 pp`.
 
-- N17: -0.0600 pp
-- N47: -0.1000 pp
-- Basit toplam: -0.1600 pp
-- Combined: -0.3700 pp
+Class 0: N17 `-0.8163 pp`, N47 `-0.9184 pp`, combined `-2.7551 pp`; expected additive `-1.7347 pp`; non-additive fark `-1.0204 pp`.
 
-**Yorum:** Combined ablation etkisinin tekli etkilerin basit toplamından daha büyük olması non-additive behavior olabileceğini düşündürmektedir. Bu sonuç doğrudan interaction'ın kanıtlandığı şeklinde yorumlanmamıştır.
-
-Class 0 özelinde:
-
-- N17 ablation: -0.8163 pp
-- N47 ablation: -0.9184 pp
-- N17 + N47: -2.7551 pp
-- Beklenen basit toplam: -1.7347 pp
-- Non-additive fark: **-1.0204 pp**
-
-**Yorum:** Sonuçlar N17 ve N47'nin Class 0 behavior içerisinde functional interaction veya shared representation gösterebileceğini desteklemektedir.
-
----
+**Yorum:** Non-additivity possible functional interaction veya shared representation düşündürmektedir; doğrudan interaction kanıtlanmış değildir.
 
 ## 10. Activation Patching
 
-### Tek örnek
+Class 0 source → Class 1 target tek örnek testinde N17, N47 ve N17+N47 patch'leri Class 0 probability'sini küçük miktarlarda artırmış, fakat prediction Class 1 olarak kalmıştır.
 
-Class 0 source → Class 1 target:
-
-- Normal Class 0 probability: 0.000002
-- N17 patch: 0.000010, değişim +0.000008
-- N47 patch: 0.000003, değişim +0.000001
-- N17 + N47 patch: 0.000018, değişim +0.000016
-
-Prediction Class 1 olarak kalmıştır.
-
-### Multi-sample
-
-50 Class 0 source / 50 Class 1 target pair:
+50 source/target pair testinde:
 
 | Patch | Mean probability change | Std |
 |---|---:|---:|
 | N17 | +0.00000119 | 0.00000396 |
 | N47 | +0.00000024 | 0.00000072 |
-| N17 + N47 | +0.00000247 | 0.00000731 |
+| N17+N47 | +0.00000247 | 0.00000731 |
 
-**Yorum:** Tek nöronların Class 0 behavior'ını tek başına transfer etmek için yeterli olmadığı görülmüştür. Bu sonuç distributed representation hipotezini destekleyen gözlemlerden biridir.
-
----
+**Yorum:** Tek nöronlar Class 0 behavior transferi için yeterli değildir; distributed representation hipotezini destekleyen bir gözlemdir.
 
 ## 11. Distributed Feature Patching
 
-Class 0 selectivity temelinde seçilen Top-5 grup:
+Top-5 candidate: `[47,17,57,53,28]`.
 
-`[47, 17, 57, 53, 28]`
+50 Class 0 source → 50 Class 1 target:
 
-50 Class 0 source → 50 Class 1 target pair:
-
-| Grup | Mean Class 0 probability change | Std |
+| Group | Mean C0 probability change | Std |
 |---|---:|---:|
-| Top-1 (N47) | +0.00000024 | 0.00000072 |
-| Top-3 (N47,N17,N57) | +0.00001863 | 0.00006229 |
+| Top-1 | +0.00000024 | 0.00000072 |
+| Top-3 | +0.00001863 | 0.00006229 |
 | Top-5 | +0.00546138 | 0.02484783 |
 
-**Yorum:** Top-5 grubunda patch etkisinin belirgin biçimde artması, Class 0 signal'ının distributed bir representation üzerinden taşınabileceğini düşündürmektedir. Yüksek standart sapma nedeniyle sonuç tek başına kesin bir circuit tanımlamamaktadır.
-
----
+**Yorum:** Top-5 etkisinin artması distributed representation adayı oluşturur; yüksek std nedeniyle tek başına definitive circuit değildir.
 
 ## 12. Class-Specific Patching Control
 
-Top-5 candidate group:
+Top-5 candidate group için:
+- Class 1 target → Class 0 probability: `+0.00887395 ± 0.03161188`
+- Class 2 target → Class 0 probability: `+0.00536434 ± 0.02391533`
 
-`[47,17,57,53,28]`
-
-30 Class 0 source ile 30 Class 1 ve 30 Class 2 target üzerinde test edilmiştir.
-
-- Class 1 target → Class 0 probability değişimi: **+0.00887395 ± 0.03161188**
-- Class 2 target → Class 0 probability değişimi: **+0.00536434 ± 0.02391533**
-
-**Yorum:** Candidate group yalnızca Class 0 örneklerinde etkili değildir. Class 1 ve Class 2 target'larda da Class 0 probability artışı oluşturmuştur. Bu nedenle grup Class 0-exclusive circuit olarak tanımlanmamıştır; daha doğru yorum, Class 0 logit'ine güçlü fakat context-dependent katkı sağlayan distributed candidate representation olduğudur.
-
----
+**Yorum:** Candidate group Class 0-exclusive değildir. Class 0 logit'ine güçlü fakat context-dependent katkı sağlayan distributed candidate representation olarak değerlendirilmiştir.
 
 ## 13. Logit-Level Patching
 
-Top-5 candidate group ile Class 0 logit değişimi:
-
+Top-5 group ile Class 0 logit değişimi:
 - Class 1 target: **+6.024506 ± 1.621096**
 - Class 2 target: **+4.306821 ± 1.859204**
 
-**Yorum:** Probability değerlerindeki küçük değişimler softmax saturation nedeniyle mekanizmanın gerçek etkisini olduğundan küçük gösterebilir. Logit seviyesinde candidate group'un Class 0 output'una güçlü bir etkisi gözlenmiştir. Ancak etki Class 0-exclusive değildir.
+**Yorum:** Softmax saturation probability etkisini küçük gösterebilir. Logit seviyesinde candidate group'un Class 0 output'una güçlü etkisi görülmüştür; etki context-dependent'dır.
 
----
+## 14. Candidate Group Weight / Contribution Analysis
 
-## 14. Candidate Group Output Contribution
+Candidate group'un Class 0 output weights toplamı: **+1.114311**.
 
-Candidate neurons:
+100 Class 0 örneğinde mean activation × Class 0 weight katkıları:
 
-`[47,17,57,53,28]`
-
-Class 0 logit için activation × output weight katkıları, 100 Class 0 örneği üzerinde:
-
-| Nöron | Ortalama activation | Class 0 weight | Ortalama katkı |
+| Neuron | Mean activation | Weight | Mean contribution |
 |---:|---:|---:|---:|
 | N47 | 7.1442 | +0.231610 | +1.654675 |
 | N17 | 5.1893 | +0.237246 | +1.231128 |
 | N57 | 4.3655 | +0.186438 | +0.813899 |
 | N53 | 5.7294 | +0.225550 | +1.292274 |
 | N28 | 5.1635 | +0.233466 | +1.205509 |
-| **Toplam** | | | **+6.197485** |
+| **Total** | | | **+6.197485** |
 
-**Yorum:** Candidate group Class 0 logit'ine önemli miktarda pozitif computational contribution sağlamaktadır. Bu değer model kararının yüzdesi olarak yorumlanmamıştır; diğer 59 nöron ve bias da output logit'ine katkıda bulunmaktadır.
+Bu değer decision'ın yüzdesi olarak yorumlanmamıştır; diğer 59 neuron ve bias da katkı vermektedir.
 
----
+Candidate group Class 0 logit contribution:
+- True Class 0: `+6.197485`
+- True Class 1: `+0.736779`
+- True Class 2: `+2.432718`
 
-## 15. Candidate Group Class Comparison
+**Yorum:** Group Class 0-biased fakat Class 0-exclusive değildir.
 
-Candidate group'un Class 0 logit contribution toplamı:
+## 15. Candidate Group Contribution to All Logits
 
-| Gerçek sınıf | Candidate group → Class 0 logit katkısı |
-|---|---:|
-| Class 0 | **+6.197485** |
-| Class 1 | +0.736779 |
-| Class 2 | +2.432718 |
+True Class 0 örneklerinde candidate group katkıları:
+`C0 +6.197485, C1 -2.253895, C2 +0.218861, C3 -3.120183, C4 -3.548902, C5 -1.585979, C6 +0.040571, C7 +0.004093, C8 -0.406147, C9 -0.499234`.
 
-Class 0 / Class 1 katkı oranı yaklaşık **8.4×** olmuştur.
+True Class 1 örneklerinde C0 katkısı `+0.736779`; True Class 2 örneklerinde `+2.432718`.
 
-**Yorum:** Candidate group Class 0'a güçlü biçimde biased bir contribution göstermektedir; ancak Class 0-exclusive değildir. Class 2'de de belirgin katkı görülmüştür.
+**Yorum:** Group Class 0'u güçlü biçimde desteklerken bazı competitor logits'i de bastırmaktadır; mekanizma tek output node ile sınırlı değildir.
 
----
+## 16. Candidate Circuit Ablation
 
-## 16. Candidate Group Contribution to All Output Logits
+Candidate `[47,17,57,53,28]` birlikte ablate edildiğinde:
 
-100 örnek üzerinden candidate group'un activation × weight contribution toplamları:
+- Class 0 baseline: `98.6735%`
+- Ablated: `86.6327%`
+- Change: **-12.0408 pp**
 
-### True Class 0
+**Yorum:** Candidate group'un Class 0 behavior'a güçlü distributed circuit-level katkısı vardır. Bu grup definitive complete circuit olarak ilan edilmemiştir.
 
-| Output class | Katkı |
-|---:|---:|
-| 0 | +6.197485 |
-| 1 | -2.253895 |
-| 2 | +0.218861 |
-| 3 | -3.120183 |
-| 4 | -3.548902 |
-| 5 | -1.585979 |
-| 6 | +0.040571 |
-| 7 | +0.004093 |
-| 8 | -0.406147 |
-| 9 | -0.499234 |
+## 17. Class-Specific Circuit Control
 
-True Class 0 örneklerinde candidate group en güçlü pozitif katkıyı Class 0 logit'ine sağlamış ve bazı rakip class logit'lerini negatif yönde etkilemiştir.
+Candidate circuit ablation:
+- Class 1: `99.3833% → 99.4714%`, `+0.0881 pp`
+- Class 2: `97.1899% → 97.1899%`, `0.0000 pp`
 
-### True Class 1
+**Yorum:** Class 0 etkisi diğer iki kontrol sınıfına göre belirgin biçimde daha büyüktür.
 
-| Output class | Katkı |
-|---:|---:|
-| 0 | +0.736779 |
-| 1 | +0.047394 |
-| 2 | +0.186111 |
-| 3 | -0.569736 |
-| 4 | -0.423243 |
-| 5 | -0.438194 |
-| 6 | +0.187347 |
-| 7 | -0.031152 |
-| 8 | -0.157257 |
-| 9 | -0.241223 |
+## 18. Leave-One-Out Analysis
 
-### True Class 2
+Class 0 baseline: `98.6735%`.
 
-| Output class | Katkı |
-|---:|---:|
-| 0 | +2.432718 |
-| 1 | -0.592691 |
-| 2 | +1.046666 |
-| 3 | -1.604063 |
-| 4 | -1.731053 |
-| 5 | -0.610796 |
-| 6 | +0.175417 |
-| 7 | +0.284477 |
-| 8 | -0.078404 |
-| 9 | -0.979717 |
-
-**Yorum:** Candidate group'un davranışı class ve context'e bağlıdır. True Class 0 örneklerinde Class 0 logit'ine güçlü pozitif katkı verirken bazı rakip logits üzerinde negatif katkı göstermektedir.
-
----
-
-## 17. Candidate Circuit Ablation
-
-Candidate circuit:
-
-`[47,17,57,53,28]`
-
-Class 0 üzerinde beş nöronun birlikte ablation edilmesi:
-
-- Baseline Class 0 accuracy: **98.6735%**
-- Ablated Class 0 accuracy: **86.6327%**
-- Değişim: **-12.0408 yüzde puanı**
-
-### Class-specific control
-
-| Sınıf | Baseline | Ablated | Değişim |
-|---:|---:|---:|---:|
-| Class 0 | 98.6735% | 86.6327% | **-12.0408 pp** |
-| Class 1 | 99.3833% | 99.4714% | **+0.0881 pp** |
-| Class 2 | 97.1899% | 97.1899% | **0.0000 pp** |
-
-**Yorum:** Candidate circuit ablation Class 0 davranışında güçlü bir düşüş oluştururken Class 1 ve Class 2 üzerindeki etkiler minimal kalmıştır. Bu sonuç candidate circuit'in Class 0 behavior'a güçlü katkı sağladığına yönelik nedensel kanıtı desteklemektedir.
-
----
-
-## 18. Leave-One-Out Ablation
-
-Baseline Class 0 accuracy: **98.6735%**
-
-Candidate circuit'ten tek bir nöron çıkarılarak kalan dört nöronun birlikte ablation edildiği test:
-
-| Çıkarılan nöron | Kalan grup ile Class 0 accuracy | Değişim |
+| Removed neuron | Remaining group accuracy | Change |
 |---:|---:|---:|
 | N47 | 92.7551% | -5.9184 pp |
 | N17 | 92.7551% | -5.9184 pp |
-| N57 | 89.5918% | **-9.0816 pp** |
+| N57 | 89.5918% | -9.0816 pp |
 | N53 | 92.1429% | -6.5306 pp |
 | N28 | 92.0408% | -6.6327 pp |
 
-**Yorum:** N57, diğer dört nöron zaten ablation edilmişken en büyük ek etkiyi göstermiştir. Bu sonuç N57'nin tek başına en önemli nöron olduğu anlamına gelmez; contribution'ın circuit context'ine bağlı olduğunu göstermektedir.
+**Yorum:** N57 leave-one-out context'inde en güçlü etkiyi göstermiştir. Bu, single-neuron importance ile group-context importance'ın aynı sıralamayı vermediğini gösterir.
 
----
+## 19. Single-Neuron Candidate Comparison
 
-## 19. Single-Neuron Ablation: Candidate Circuit Comparison
+Class 0 baseline `98.6735%`:
 
-Class 0 baseline: **98.6735%**
+| Neuron | Ablated accuracy | Change |
+|---:|---:|---:|
+| N47 | 97.7551% | -0.9184 pp |
+| N17 | 97.8571% | -0.8164 pp |
+| N57 | 98.4694% | -0.2041 pp |
+| N53 | 98.1633% | -0.5102 pp |
+| N28 | 98.0612% | -0.6123 pp |
 
-| Nöron | Single-neuron ablation değişimi |
-|---:|---:|
-| N47 | -0.9184 pp |
-| N17 | -0.8164 pp |
-| N57 | -0.2041 pp |
-| N53 | -0.5102 pp |
-| N28 | -0.6123 pp |
-
-Leave-One-Out ile Single-Neuron Ablation arasındaki fark:
-
-| Nöron | Single | Leave-One-Out | Context difference |
-|---:|---:|---:|---:|
-| N47 | -0.9184 | -5.9184 | -5.0000 pp |
-| N17 | -0.8164 | -5.9184 | -5.1020 pp |
-| N57 | -0.2041 | -9.0816 | -8.8775 pp |
-| N53 | -0.5102 | -6.5306 | -6.0204 pp |
-| N28 | -0.6123 | -6.6327 | -6.0204 pp |
-
-**Yorum:** Single-neuron ve Leave-One-Out sonuçları arasındaki büyük farklar, candidate circuit içerisindeki contribution'ın context-dependent ve non-additive olduğunu desteklemektedir.
-
----
+**Yorum:** Single-neuron rank N47 > N17 > N28 > N53 > N57 iken leave-one-out rank farklıdır. Bu context-dependent/non-additive contribution ile uyumludur.
 
 ## 20. Progressive Circuit Ablation
 
-Candidate order:
-
-`[47,17,57,53,28]`
-
-| Ablation edilen nöron sayısı | Grup | Class 0 accuracy | Değişim |
+| Group size | Group | Class 0 accuracy | Change |
 |---:|---|---:|---:|
 | 1 | [47] | 97.7551% | -0.9184 pp |
 | 2 | [47,17] | 95.9184% | -2.7551 pp |
 | 3 | [47,17,57] | 94.7959% | -3.8776 pp |
 | 4 | [47,17,57,53] | 92.0408% | -6.6327 pp |
-| 5 | [47,17,57,53,28] | 86.6327% | **-12.0408 pp** |
+| 5 | [47,17,57,53,28] | 86.6327% | -12.0408 pp |
 
-**Yorum:** Candidate group genişledikçe Class 0 accuracy'deki düşüş artmıştır. Bu sonuç distributed ve non-additive bir circuit davranışı ile uyumludur. Ancak progressive ablation sırası belirli bir order'a bağlı olduğu için artışlar doğrudan intrinsic neuron importance olarak yorumlanmamıştır.
-
----
+**Yorum:** Group büyüdükçe etki belirginleşmiştir. Sonuç distributed/non-additive behavior ile uyumludur; sıra-dependent olduğu için ara artışlar intrinsic neuron importance olarak yorumlanmamıştır.
 
 ## 21. Circuit Discovery Summary
 
-| Deney | Hedef | Sonuç | Yorum |
-|---|---|---|---|
-| Selectivity | Class 0 | N47,N17,N57,N53,N28 seçildi | Candidate feature group |
-| Single-Neuron Ablation | Class 0 | N47: -0.9184 pp | Individual contribution |
-| Circuit Ablation | Class 0 | -12.0408 pp | Strong distributed circuit effect |
-| Class-Specific Control | Class 1 | +0.0881 pp | Minimal effect |
-| Class-Specific Control | Class 2 | 0.0000 pp | No measurable effect |
-| Leave-One-Out | Class 0 | N57: -9.0816 pp | Context-dependent contribution |
-| Progressive Ablation | Class 0 | -0.9184 → -12.0408 pp | Distributed/non-additive effect |
-| Activation Patching | Class 0 logit | Class 1 target: +6.0245 | Candidate group increases Class 0 logit |
-| Activation Patching | Class 0 logit | Class 2 target: +4.3068 | Context-dependent effect |
-| Random Control | Class 0 | Control: 0.0000 pp | Candidate effect is not reproduced by random group |
+Candidate circuit: `[47,17,57,53,28]`.
 
----
+- Selectivity: Class 0-biased candidate identification
+- Single ablation: N47 `-0.9184 pp`
+- Circuit ablation: `-12.0408 pp`
+- Class 1 control: `+0.0881 pp`
+- Class 2 control: `0.0000 pp`
+- Leave-One-Out: N57 `-9.0816 pp`
+- Progressive ablation: `-0.9184 → -12.0408 pp`
+- Activation patching: Class 0 logit `+6.0245` on Class 1 targets, `+4.3068` on Class 2 targets
 
-## 22. Mechanistic Validation: Random Control
+**Yorum:** Bulgular, Class 0 behavior ile ilişkili distributed candidate circuit için güçlü mekanistik kanıt sağlamaktadır; complete circuit olduğu henüz kanıtlanmamıştır.
 
-**Amaç:** Candidate circuit etkisinin rastgele seçilmiş nöronlardan kaynaklanmadığını kontrol etmek.
+## 22. Mechanistic Validation — Random Control
 
-Candidate circuit:
+Candidate group `[47,17,57,53,28]` ile 10 random control groups karşılaştırılmıştır.
 
-`[47,17,57,53,28]`
+- Candidate Class 0 change: **-12.0408 pp**
+- Random groups mean change: **-0.1122 pp**
+- Random minimum: `-0.9184 pp`
+- Random maximum: `+0.2041 pp`
+- Candidate − random mean: **-11.9286 pp**
 
-Random control group:
+**Yorum:** Candidate circuit etkisinin rastgele neuron seçiminin doğal varyasyonundan kaynaklanma ihtimalini azaltan güçlü control evidence elde edilmiştir.
 
-`[42,7,1,50,18]`
+## 23. Class-Wise Mechanistic Validation
 
-Sonuçlar:
+Candidate circuit `[47,17,57,53,28]` ablation sonuçları:
 
-| Grup | Class 0 accuracy | Değişim |
-|---|---:|---:|
-| Baseline | 98.6735% | — |
-| Candidate circuit ablation | 86.6327% | **-12.0408 pp** |
-| Random control ablation | 98.6735% | **0.0000 pp** |
+| Class | Baseline | Ablated | Change |
+|---:|---:|---:|---:|
+| 0 | 98.6735% | 86.6327% | **-12.0408 pp** |
+| 1 | 99.3833% | 99.4714% | +0.0881 pp |
+| 2 | 97.1899% | 97.1899% | 0.0000 pp |
+| 3 | 96.8317% | 97.8218% | +0.9901 pp |
+| 4 | 98.7780% | 99.1853% | +0.4073 pp |
+| 5 | 97.0852% | 96.6368% | -0.4484 pp |
+| 6 | 96.7641% | 96.5553% | -0.2088 pp |
+| 7 | 98.2490% | 98.0545% | -0.1946 pp |
+| 8 | 97.1253% | 96.8172% | -0.3080 pp |
+| 9 | 95.2428% | 93.7562% | -1.4866 pp |
 
-Candidate circuit ile random control arasındaki fark:
+**Yorum:** En büyük negatif etki Class 0'da görülmüştür. Group Class 0-biased'dır fakat Class 0-exclusive değildir.
 
-**-12.0408 yüzde puanı**
+## 24. Circuit-Level Activation Intervention
 
-**Yorum:** Random control grubunda Class 0 accuracy değişmezken candidate circuit ablation güçlü bir düşüş oluşturmuştur. Bu sonuç, candidate circuit'in Class 0 behavior'a katkısının rastgele nöron seçimine bağlı olmadığını ve belirlenen grubun ilgili mekanizmaya katkı sağladığını destekleyen güçlü nedensel kanıt sunmaktadır.
+Candidate circuit `[47,17,57,53,28]` activation scale edilmiştir.
 
-Bu sonuç, candidate circuit'in modeldeki tek veya tamamlanmış Class 0 mechanism olduğunu kanıtlamaz.
+| Scale | Accuracy | Mean C0 probability | True C0 probability |
+|---:|---:|---:|---:|
+| 0.0 | 96.2700% | 0.075105 | 0.764420 |
+| 0.5 | 97.3300% | 0.092623 | 0.938316 |
+| 1.0 | 97.5600% | 0.097675 | 0.979257 |
+| 1.5 | 97.5400% | 0.100468 | 0.990193 |
+| 2.0 | 97.3300% | 0.103643 | 0.993814 |
 
----
+**Yorum:** Circuit activation arttıkça true Class 0 probability sistematik biçimde yükselmiştir. Scale 0'da circuit baskılandığında probability `0.7644` seviyesine düşmüş, scale 2'de `0.9938` seviyesine çıkmıştır. Bu, circuit-level causal evidence'i güçlendirmektedir; causality proved denmemiştir.
+
+## 25. Graphs / Figures
+
+Toplam **11 anlamlı figure** oluşturulmuştur:
+
+1. MNIST sample visualization
+2. Confusion matrix
+3. Class mean activation heatmap
+4. N47 intervention vs Class 0 probability
+5. N17/N47 activation correlation scatter
+6. Candidate circuit intervention vs Class 0 probability
+7. Training loss
+8. Neuron/circuit ablation accuracy
+9. Candidate neuron activation distribution
+10. Candidate circuit activation across classes
+11. Progressive circuit ablation
+
+## 26. Literature Review
+
+Sekiz kaynak incelenmiş ve deneylerle ilişkilendirilmiştir:
+
+1. *Interpretability in the Wild: a Circuit for IOI in GPT-2 Small*
+2. *Towards Automated Circuit Discovery for Mechanistic Interpretability*
+3. *Locating and Editing Factual Associations in GPT*
+4. *Toy Models of Superposition*
+5. *Sparse Autoencoders Find Highly Interpretable Features in Language Models*
+6. *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability*
+7. *Tracr: Compiled Transformers as a Laboratory for Interpretability*
+8. *Gemma Scope*
+
+Deney ↔ literatür mapping: Activation Analysis, Neuron Ablation, Activation Intervention, Correlation vs Causality, Activation Patching, Circuit Discovery, Distributed Representation, Mechanistic Validation, Feature-Level Analysis ve Circuit-Level Intervention.
+
+## 27. Limitations
+
+1. Tek küçük MNIST MLP ve tek training seed kullanıldı.
+2. Candidate selection activation/selectivity ve weight analizlerine bağlıdır.
+3. Progressive ablation sırası order-dependent'dır.
+4. `[47,17,57,53,28]` complete circuit olarak kanıtlanmamıştır.
+5. Run-to-run statistical uncertainty sınırlı ölçülmüştür.
+6. Candidate group Class 0-biased fakat exclusive değildir.
+7. Activation patching kapsamı sınırlı source-target örnekleriyle yürütülmüştür.
+
+## 28. Next Experiments
+
+1. Multi-seed replication
+2. Synthetic true-vs-spurious dataset
+3. Distributed feature analysis
+4. Expanded activation patching
+5. Fashion-MNIST üzerinde ikinci dataset validation
 
 ## Genel Bilimsel Değerlendirme
 
-Bu deney serisinde temel metodolojik zincir şu şekilde ilerlemiştir:
+Bu haftanın deneyleri modelin yalnızca doğru çıktı üretip üretmediğini değil, çıktının internal representation üzerinden hangi candidate feature ve circuit mekanizmalarıyla ilişkili olduğunu incelemiştir. Observation → hypothesis → intervention → output change → control → mechanistic validation zinciri kurulmuştur.
 
-**Internal Representation → Observation → Feature/Selectivity Analysis → Candidate Neurons → Intervention → Ablation/Patching → Output Change → Repeated Tests → Causal Evidence → Candidate Circuit → Mechanistic Validation**
-
-Ana bulgu, Class 0 davranışına katkı sağlayan `[47,17,57,53,28]` nöron grubunun farklı intervention yöntemlerinde tutarlı biçimde etkili olduğunun gözlenmesidir. Özellikle candidate circuit ablation sonucundaki **-12.0408 yüzde puanlık** Class 0 accuracy düşüşü ve random control grubunda **0.0000 yüzde puanlık** değişim, candidate mechanism için güçlü destek sağlamaktadır.
-
-Bununla birlikte sonuçlar, modeldeki tüm Class 0 computation'ının yalnızca bu beş nörondan oluştuğunu göstermemektedir. Bulgular **candidate circuit / candidate mechanism** olarak raporlanmalıdır.
-
-## Bilimsel Terminoloji Notu
-
-- Correlation ≠ causality.
-- Ablation ve intervention sonuçları "causal evidence/support" olarak ifade edilmelidir.
-- Weight magnitude tek başına causal importance değildir.
-- Activation × weight, computational contribution ölçümü olarak değerlendirilmelidir; tek başına causal importance değildir.
-- Candidate circuit, kesin olarak complete circuit olarak adlandırılmamalıdır.
-- Class-specific control ve random control sonuçları mechanistic validation açısından destekleyici kontrollerdir.
+En önemli sonuç, Class 0 behavior ile güçlü biçimde ilişkili candidate group `[47,17,57,53,28]` bulunmasıdır. Circuit ablation `-12.0408 pp`, random control mean `-0.1122 pp` ve circuit activation intervention true Class 0 probability'sinde `0.7644 → 0.9938` değişimi göstermiştir. Bu sonuçlar güçlü causal evidence/support sağlar; ancak complete mechanism veya universal causality iddiası için yeterli değildir.
