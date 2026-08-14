@@ -54,7 +54,9 @@ Bu repository, ilk hafta araştırma ödevindeki kontrollü MNIST MLP deneylerin
 | Class-wise validation | DONE | En büyük etki Class 0'da |
 | Circuit activation intervention | DONE | True C0 probability `0.7644 → 0.9938` |
 | Literature matrix | DONE | 8 kaynak + experiment mapping |
-| Figures | DONE | 11 meaningful figures |
+| Advanced concepts | DONE | `notes/advanced_concepts.md` |
+| Mechanism provenance proposal | DONE | `notes/mechanism_provenance.md` |
+| Figure index + GitHub SVGs | DONE | Verified result figures added |
 | Glass Box map | DONE | Computational map tamamlandı |
 
 ## Candidate Circuit
@@ -90,22 +92,6 @@ Bu sonuçlar candidate circuit'un Class 0 output behavior'a güçlü ve kontroll
 - Candidate selection bias ve sınırlı patching kapsamı vardır.
 - Sonuçlar küçük MNIST MLP üzerinde elde edilmiştir; daha büyük modellere genellenemez.
 
-## Figures
-
-Oluşturulan başlıca figure'lar:
-
-1. MNIST sample visualization
-2. Confusion matrix
-3. Class mean activation heatmap
-4. N47 intervention vs Class 0 probability
-5. N17/N47 activation correlation scatter
-6. Candidate circuit intervention vs Class 0 probability
-7. Training loss
-8. Neuron/circuit ablation accuracy
-9. Candidate neuron activation distribution
-10. Candidate circuit activation across classes
-11. Progressive circuit ablation
-
 ## Repository Structure
 
 ```text
@@ -113,20 +99,38 @@ glass-box-ai-research/
 ├── README.md
 ├── requirements.txt
 ├── notebooks/
+│   ├── 01_baseline_model.ipynb
+│   ├── 02_activation_analysis.ipynb
+│   ├── 03_ablation_experiment.ipynb
+│   └── 04_intervention_experiment.ipynb
 ├── src/
 ├── experiments/
 ├── results/
+│   └── results_summary.md
 ├── figures/
+│   ├── figure_index.md
+│   ├── ablation_accuracy.svg
+│   ├── progressive_circuit_ablation.svg
+│   ├── circuit_intervention_probability.svg
+│   ├── neuron_intervention_n47.svg
+│   └── activation_correlation.svg
 ├── data/
 ├── papers/
 ├── notes/
 │   ├── experiment_log.md
+│   ├── experiment_index.md
 │   ├── literature_table.md
+│   ├── advanced_concepts.md
+│   ├── mechanism_provenance.md
 │   ├── ten_day_plan.md
 │   └── ai_tool_verification.md
 └── report/
     └── glass_box_map.md
 ```
+
+## Baseline Learning Curves
+
+`notebooks/01_baseline_model.ipynb` epoch bazında training/test loss ve accuracy kaydı ile iki learning-curve grafiği üretmektedir. Bu notebook güncellenmiştir; yeni curve değerleri notebook yeniden çalıştırılmadan sonuç olarak kabul edilmez.
 
 ## Next Experiments
 
@@ -135,9 +139,10 @@ glass-box-ai-research/
 3. Distributed feature analysis
 4. Expanded activation patching
 5. Fashion-MNIST validation
+6. AI-to-AI mechanism provenance / lineage
 
 ## Status
 
 **Experimental phase: COMPLETED.**
 
-Repository documentation, experiment log, literature mapping and teacher-facing scientific interpretation are the finalization stage. Future experiments above are not presented as completed results.
+Mevcut deney sonuçları, experiment log, literature mapping, advanced concept coverage, mechanism provenance proposal ve GitHub figure/result kayıtları tamamlanmıştır. Baseline learning-curve grafiklerinin gerçek yeni değerleri için yalnızca güncellenmiş notebook'un Colab'da yeniden çalıştırılması gerekmektedir. Gelecek deneyler sonuç gibi sunulmamaktadır.
