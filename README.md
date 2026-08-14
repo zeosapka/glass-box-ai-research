@@ -22,6 +22,7 @@ glass-box-ai-research/
 ├── README.md
 ├── requirements.txt
 ├── notebooks/
+│   ├── 00_environment_test.ipynb
 │   ├── 01_baseline_model.ipynb
 │   ├── 02_activation_analysis.ipynb
 │   ├── 03_ablation_experiment.ipynb
@@ -55,13 +56,16 @@ glass-box-ai-research/
 - “Causality proved” yerine **causal evidence/support** dili kullanılacaktır.
 - Deneyler çalıştırılmadan sonuç uydurulmayacaktır.
 
+## İleri kavramlar
+XAI, Interpretability, Mechanistic Interpretability, Feature Visualization, Activation Patching, Attribution Patching, Causal Tracing, SAE, Circuit Discovery, Representation Learning, Activation Steering ve Ablation sonraki deneysel/kuramsal genişlemeler için izlenecektir.
+
 ## Durum
 - [x] Repository iskeleti
 - [x] Glass Box computational map
-- [x] Dört deney notebook iskeleti
+- [x] Environment + baseline + activation + ablation + intervention notebookları
 - [x] Deney günlüğü ve literatür tablosu
 - [ ] Baseline gerçek sonuçları
 - [ ] Activation istatistikleri ve sınıf analizi
-- [ ] Ablation sonuçları
+- [ ] Ablation sonuçlarının tekrarlı değerlendirmesi
 - [ ] Controlled intervention sonuçları
 - [ ] Tekrarlı testler ve nihai causal evidence değerlendirmesi
