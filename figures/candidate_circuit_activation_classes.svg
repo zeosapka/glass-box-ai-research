@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="480">
+<rect width="100%" height="100%" fill="white"/>
+<text x="380" y="32" text-anchor="middle" font-size="20">Candidate Circuit Activation Across Classes</text>
+<line x1="80" y1="60" x2="80" y2="410" stroke="black"/><line x1="80" y1="410" x2="720" y2="410" stroke="black"/>
+<text x="187" y="438" text-anchor="middle" font-size="14">Class 0</text><text x="400" y="438" text-anchor="middle" font-size="14">Class 1</text><text x="613" y="438" text-anchor="middle" font-size="14">Class 2</text>
+<rect x="98" y="106" width="28" height="304" fill="none" stroke="black"/><rect x="311" y="312" width="28" height="98" fill="none" stroke="black"/><rect x="524" y="232" width="28" height="178" fill="none" stroke="black"/>
+<rect x="133" y="183" width="28" height="227" fill="none" stroke="black"/><rect x="347" y="388" width="28" height="22" fill="none" stroke="black"/><rect x="560" y="392" width="28" height="18" fill="none" stroke="black"/>
+<rect x="169" y="228" width="28" height="182" fill="none" stroke="black"/><rect x="382" y="405" width="28" height="5" fill="none" stroke="black"/><rect x="596" y="288" width="28" height="122" fill="none" stroke="black"/>
+<rect x="204" y="181" width="28" height="229" fill="none" stroke="black"/><rect x="418" y="389" width="28" height="21" fill="none" stroke="black"/><rect x="631" y="363" width="28" height="47" fill="none" stroke="black"/>
+<rect x="240" y="184" width="28" height="227" fill="none" stroke="black"/><rect x="453" y="404" width="28" height="6" fill="none" stroke="black"/><rect x="667" y="351" width="28" height="59" fill="none" stroke="black"/>
+<text x="600" y="80" font-size="13">N47</text><text x="600" y="102" font-size="13">N17</text><text x="600" y="124" font-size="13">N57</text><text x="600" y="146" font-size="13">N53</text><text x="600" y="168" font-size="13">N28</text>
+<text x="18" y="240" transform="rotate(-90 18 240)" text-anchor="middle" font-size="14">Mean activation</text>
+</svg>
