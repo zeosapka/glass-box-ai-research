@@ -1,122 +1,86 @@
-# Glass Box Computational Map
+# Glass Box Hesaplama Haritası (Computational Map)
 
 Bu harita 1. haftalık araştırma ödevindeki ana metodolojik akışı gösterir. Harita, araştırmanın 5 ana aşamasını ve her aşamadaki temel Glass Box AI kavramlarını birlikte gösterir.
 
 ```mermaid
 flowchart LR
 
-%% =========================================================
-%% GLASS BOX AI — HORIZONTAL A4 POSTER
-%% =========================================================
-
-%% =========================================================
-%% ROW 1 — SYSTEM + OBSERVE
-%% =========================================================
-subgraph ROW1["① MODELİ AÇ — OBSERVE / GÖZLEM"]
+subgraph ROW1["① MODELİ AÇ — GÖZLEM (OBSERVE)"]
 direction LR
-
-INPUT["<b>INPUT</b><br/>Girdi"]
-MODEL["<b>AI MODEL</b><br/>Black Box<br/><br/>❓ İçeride ne oluyor?"]
-OUTPUT["<b>OUTPUT</b><br/>Çıktı"]
-IR["<b>INTERNAL REPRESENTATION</b><br/>İç Temsil<br/><br/>❓ Model bilgiyi içeride nasıl temsil ediyor?"]
-OBS["<b>OBSERVATION</b><br/>Gözlem<br/><br/>❓ Hangi iç bileşen<br/>hangi girdiye tepki veriyor?"]
-
+INPUT["<b>GİRDİ (INPUT)</b><br/>Girdi"]
+MODEL["<b>AI MODELİ</b><br/>Black Box (Kara Kutu)<br/><br/>❓ İçeride ne oluyor?"]
+OUTPUT["<b>ÇIKTI (OUTPUT)</b><br/>Çıktı"]
+IR["<b>İÇ TEMSİL (INTERNAL REPRESENTATION)</b><br/>İç Temsil<br/><br/>❓ Model bilgiyi içeride nasıl temsil ediyor?"]
+OBS["<b>GÖZLEM (OBSERVATION)</b><br/>Gözlem<br/><br/>❓ Hangi iç bileşen<br/>hangi girdiye tepki veriyor?"]
 INPUT --> MODEL --> OUTPUT
 MODEL --> IR --> OBS
 end
 
-%% =========================================================
-%% ROW 2 — INTERNAL STRUCTURE + FEATURES
-%% =========================================================
-subgraph ROW2["② İÇ TEMSİLİ İNCELE — FEATURE ANALYSIS"]
+subgraph ROW2["② İÇ TEMSİLİ İNCELE — ÖZELLİK ANALİZİ (FEATURE ANALYSIS)"]
 direction LR
-
-subgraph IRSTRUCT["INTERNAL REPRESENTATION — YAPI"]
+subgraph IRSTRUCT["İÇ TEMSİL — YAPI (INTERNAL REPRESENTATION)"]
 direction LR
-LAYER["<b>LAYER</b><br/>Katman<br/><br/>❓ Hangi hesaplama<br/>aşamasında?"]
-NEURON["<b>NEURON</b><br/>Nöron<br/><br/>❓ Hangi hesaplama<br/>birimleri çalışıyor?"]
-ACT["<b>ACTIVATION</b><br/>Aktivasyon<br/><br/>❓ Hangi girdide<br/>ne kadar tepki veriyor?"]
-REPR["<b>REPRESENTATION LEARNING</b><br/>Temsil Öğrenme<br/><br/>❓ Model bilgiyi içeride<br/>nasıl temsil ediyor?"]
+LAYER["<b>KATMAN (LAYER)</b><br/>Katman<br/><br/>❓ Hangi hesaplama<br/>aşamasında?"]
+NEURON["<b>NÖRON (NEURON)</b><br/>Nöron<br/><br/>❓ Hangi hesaplama<br/>birimleri çalışıyor?"]
+ACT["<b>AKTİVASYON (ACTIVATION)</b><br/>Aktivasyon<br/><br/>❓ Hangi girdide<br/>ne kadar tepki veriyor?"]
+REPR["<b>TEMSİL ÖĞRENME (REPRESENTATION LEARNING)</b><br/>Temsil Öğrenme<br/><br/>❓ Model bilgiyi içeride<br/>nasıl temsil ediyor?"]
 end
-
-subgraph FEATURES["FEATURE ANALYSIS — ÖZELLİKLERİ BUL"]
+subgraph FEATURES["ÖZELLİK ANALİZİ — ÖZELLİKLERİ BUL (FEATURE ANALYSIS)"]
 direction LR
-FV["<b>FEATURE VISUALIZATION</b><br/>Özellik Görselleştirme<br/><br/>❓ Feature neye<br/>tepki veriyor?"]
-FA["<b>FEATURE ANALYSIS</b><br/>Özellik Analizi<br/><br/>❓ Hangi feature<br/>hangi girdilerde aktif?"]
-SAE["<b>SAE</b><br/>Sparse Autoencoder<br/><br/>❓ Karmaşık iç temsilde<br/>hangi feature'lar ayrıştırılabilir?"]
+FV["<b>ÖZELLİK GÖRSELLEŞTİRME (FEATURE VISUALIZATION)</b><br/>Özellik Görselleştirme<br/><br/>❓ Özellik neye<br/>tepki veriyor?"]
+FA["<b>ÖZELLİK ANALİZİ (FEATURE ANALYSIS)</b><br/>Özellik Analizi<br/><br/>❓ Hangi özellik<br/>hangi girdilerde aktif?"]
+SAE["<b>SAE</b><br/>Sparse Autoencoder (Seyrek Otokodlayıcı)<br/><br/>❓ Karmaşık iç temsilde<br/>hangi özellikler ayrıştırılabilir?"]
 end
-
-CF["<b>CANDIDATE FEATURE</b><br/>Aday Özellik<br/><br/>❓ Model hangi ayırt edici<br/>bilgi / örüntüyü kullanıyor?"]
-
+CF["<b>ADAY ÖZELLİK (CANDIDATE FEATURE)</b><br/>Aday Özellik<br/><br/>❓ Model hangi ayırt edici<br/>bilgi / örüntüyü kullanıyor?"]
 OBS --> IRSTRUCT
 IRSTRUCT --> FEATURES
 FEATURES --> CF
 end
 
-%% =========================================================
-%% ROW 3 — HYPOTHESIS → INTERVENTION
-%% =========================================================
-subgraph ROW3["③ TEST ET — HYPOTHESIS / INTERVENTION"]
+subgraph ROW3["③ TEST ET — HİPOTEZ / MÜDAHALE (HYPOTHESIS / INTERVENTION)"]
 direction LR
-HYP["<b>HYPOTHESIS</b><br/>Hipotez<br/><br/>❓ Gözlemlediğimiz ilişki<br/>davranışı açıklıyor olabilir mi?"]
-INT["<b>INTERVENTION</b><br/>Müdahale<br/><br/>❓ Bunu kontrollü olarak<br/>değiştirebilir miyiz?"]
-
-subgraph METHODS["INTERVENTION METHODS"]
+HYP["<b>HİPOTEZ (HYPOTHESIS)</b><br/>Hipotez<br/><br/>❓ Gözlemlediğimiz ilişki<br/>davranışı açıklıyor olabilir mi?"]
+INT["<b>MÜDAHALE (INTERVENTION)</b><br/>Müdahale<br/><br/>❓ Bunu kontrollü olarak<br/>değiştirebilir miyiz?"]
+subgraph METHODS["MÜDAHALE YÖNTEMLERİ (INTERVENTION METHODS)"]
 direction LR
-ABL["<b>ABLATION</b><br/>Ablasyon<br/><br/>Bileşeni kapatırsam<br/>çıktı ne kadar değişiyor?"]
-PATCH["<b>ACTIVATION PATCHING</b><br/>Aktivasyon Yamala<br/><br/>Başka bir çalıştırmadan<br/>aktivasyon getirirsem sonuç değişiyor mu?"]
-STEER["<b>ACTIVATION STEERING</b><br/>Aktivasyon Yönlendirme<br/><br/>Aktivasyonu kontrollü<br/>değiştirirsem davranış nasıl değişir?"]
-ATTR["<b>ATTRIBUTION PATCHING</b><br/>Katkı Yamala<br/><br/>❓ Hangi iç bileşenin<br/>katkısı daha önemli?"]
+ABL["<b>ABLASYON (ABLATION)</b><br/>Ablasyon<br/><br/>Bileşeni kapatırsam<br/>çıktı ne kadar değişiyor?"]
+PATCH["<b>AKTİVASYON YAMALAMA (ACTIVATION PATCHING)</b><br/>Aktivasyon Yamalama<br/><br/>Başka bir çalıştırmadan<br/>aktivasyon getirirsem sonuç değişiyor mu?"]
+STEER["<b>AKTİVASYON YÖNLENDİRME (ACTIVATION STEERING)</b><br/>Aktivasyon Yönlendirme<br/><br/>Aktivasyonu kontrollü<br/>değiştirirsem davranış nasıl değişir?"]
+ATTR["<b>KATKI YAMALAMA (ATTRIBUTION PATCHING)</b><br/>Katkı Yamalama<br/><br/>❓ Hangi iç bileşenin<br/>katkısı daha önemli?"]
 end
-
 CF --> HYP --> INT --> METHODS
 end
 
-%% =========================================================
-%% ROW 4 — MEASURE → CAUSAL
-%% =========================================================
-subgraph ROW4["④ ETKİYİ ÖLÇ — CAUSAL EVIDENCE"]
+subgraph ROW4["④ ETKİYİ ÖLÇ — NEDENSEL KANIT (CAUSAL EVIDENCE)"]
 direction LR
-CHANGE["<b>OUTPUT CHANGE</b><br/>Çıktı Değişimi<br/><br/>❓ Müdahale sonrası<br/>modelin çıktısı gerçekten değişti mi?"]
-REPEAT["<b>REPEATED TESTS</b><br/>Tekrarlı Testler<br/><br/>❓ Aynı etki farklı örneklerde<br/>tekrar görülüyor mu?"]
-CAUSAL["<b>CAUSAL EVIDENCE</b><br/>Nedensel Kanıt<br/><br/>❓ Gözlenen değişim<br/>müdahaleden kaynaklanıyor mu?"]
+CHANGE["<b>ÇIKTI DEĞİŞİMİ (OUTPUT CHANGE)</b><br/>Çıktı Değişimi<br/><br/>❓ Müdahale sonrası<br/>modelin çıktısı gerçekten değişti mi?"]
+REPEAT["<b>TEKRARLI TESTLER (REPEATED TESTS)</b><br/>Tekrarlı Testler<br/><br/>❓ Aynı etki farklı örneklerde<br/>tekrar görülüyor mu?"]
+CAUSAL["<b>NEDENSEL KANIT (CAUSAL EVIDENCE)</b><br/>Nedensel Kanıt<br/><br/>❓ Gözlenen değişim<br/>müdahaleden kaynaklanıyor mu?"]
 CHANGE --> REPEAT --> CAUSAL
 METHODS --> CHANGE
 end
 
-%% =========================================================
-%% ROW 5 — CIRCUIT → VALIDATION → FINAL
-%% =========================================================
-subgraph ROW5["⑤ MEKANİZMASI ÇIKAR — VALIDATE"]
+subgraph ROW5["⑤ MEKANİZMASI ÇIKAR — DOĞRULA (VALIDATE)"]
 direction LR
-CIRCUIT["<b>CIRCUIT DISCOVERY</b><br/>Devre Keşfi<br/><br/>❓ Etki modelin içinde<br/>hangi hesaplama yolundan geçiyor?"]
-
-subgraph CIRCUITMAP["MECHANISM STRUCTURE"]
+CIRCUIT["<b>DEVRE KEŞFİ (CIRCUIT DISCOVERY)</b><br/>Devre Keşfi<br/><br/>❓ Etki modelin içinde<br/>hangi hesaplama yolundan geçiyor?"]
+subgraph CIRCUITMAP["MEKANİZMA YAPISI (MECHANISM STRUCTURE)"]
 direction LR
-CMAP["<b>CIRCUIT MAP</b><br/>Devre Haritası<br/><br/>Activation<br/>Class Behavior<br/>Intervention Effect<br/>Output Change"]
-MHYP["<b>MECHANISM HYPOTHESIS</b><br/>Mekanizma Hipotezi"]
+CMAP["<b>DEVRE HARİTASI (CIRCUIT MAP)</b><br/>Aktivasyon<br/>Sınıf Davranışı<br/>Müdahale Etkisi<br/>Çıktı Değişimi"]
+MHYP["<b>MEKANİZMA HİPOTEZİ (MECHANISM HYPOTHESIS)</b><br/>Mekanizma Hipotezi"]
 end
-
-VALID["<b>MECHANISTIC VALIDATION</b><br/>Mekanistik Doğrulama<br/><br/>❓ Bulduğumuz mekanizma<br/>davranışı gerçekten açıklıyor mu?"]
-FINAL["<b>MECHANISTIC<br/>INTERPRETABILITY</b><br/>Mekanistik Yorumlanabilirlik<br/><br/>❓ Model davranışı hangi iç<br/>hesaplama mekanizmasıyla üretiyor?"]
-
+VALID["<b>MEKANİSTİK DOĞRULAMA (MECHANISTIC VALIDATION)</b><br/>Mekanistik Doğrulama<br/><br/>❓ Bulduğumuz mekanizma<br/>davranışı gerçekten açıklıyor mu?"]
+FINAL["<b>MEKANİSTİK YORUMLANABİLİRLİK<br/>(MECHANISTIC INTERPRETABILITY)</b><br/>Mekanistik Yorumlanabilirlik<br/><br/>❓ Model davranışı hangi iç<br/>hesaplama mekanizmasıyla üretiyor?"]
 CAUSAL --> CIRCUIT --> CIRCUITMAP --> VALID --> FINAL
 end
 
-%% =========================================================
-%% ADVANCED CONCEPTS — INDEPENDENT
-%% =========================================================
-subgraph ADV["İLERİ KAVRAMLAR — AYNI ARAŞTIRMA HARİTASININ GENİŞLEMELERİ"]
+subgraph ADV["İLERİ KAVRAMLAR — ARAŞTIRMA HARİTASININ GENİŞLEMELERİ"]
 direction LR
 XAI["<b>XAI</b><br/>❓ İnsan tarafından<br/>anlaşılır açıklama nasıl yapılır?"]
-INTERP["<b>INTERPRETABILITY</b><br/>❓ Modelin iç işlemleri<br/>nasıl anlaşılır?"]
-TRACE["<b>CAUSAL TRACING</b><br/>❓ Etki hangi iç yol<br/>üzerinden ilerliyor?"]
+INTERP["<b>YORUMLANABİLİRLİK (INTERPRETABILITY)</b><br/>❓ Modelin iç işlemleri<br/>nasıl anlaşılır?"]
+TRACE["<b>NEDENSEL İZLEME (CAUSAL TRACING)</b><br/>❓ Etki hangi iç yol<br/>üzerinden ilerliyor?"]
 GEMMA["<b>GEMMA / GEMMA SCOPE / TRACR</b><br/>❓ Küçük modeldeki yöntemler<br/>büyük modellere nasıl ölçeklenir?"]
 end
 
-%% =========================================================
-%% COLORS
-%% =========================================================
 classDef system fill:#dbeafe,stroke:#2563eb,stroke-width:3px,color:#111827;
 classDef blackbox fill:#e5e7eb,stroke:#374151,stroke-width:3px,color:#111827;
 classDef observe fill:#cffafe,stroke:#0891b2,stroke-width:3px,color:#111827;
@@ -129,7 +93,6 @@ classDef circuit fill:#e9d5ff,stroke:#9333ea,stroke-width:3px,color:#111827;
 classDef validation fill:#bbf7d0,stroke:#15803d,stroke-width:4px,color:#111827;
 classDef final fill:#ddd6fe,stroke:#7c3aed,stroke-width:4px,color:#111827;
 classDef advanced fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px,color:#111827;
-
 class INPUT,OUTPUT system;
 class MODEL blackbox;
 class IR,OBS observe;
@@ -143,9 +106,6 @@ class VALID validation;
 class FINAL final;
 class XAI,INTERP,TRACE,GEMMA advanced;
 
-%% =========================================================
-%% SUBGRAPH STYLING
-%% =========================================================
 style ROW1 fill:#f8fafc,stroke:#2563eb,stroke-width:3px
 style ROW2 fill:#f8fafc,stroke:#0891b2,stroke-width:3px
 style ROW3 fill:#fffaf5,stroke:#ea580c,stroke-width:3px
@@ -158,8 +118,8 @@ style METHODS fill:#fff8f0,stroke:#f97316,stroke-width:2px
 style CIRCUITMAP fill:#fdfaff,stroke:#a855f7,stroke-width:2px
 ```
 
-## Core chain
+## Ana Zincir
 
-`DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → INTERVENTION → OUTPUT → VALIDATION`
+`VERİ (DATA) → MODEL → İÇ TEMSİL (INTERNAL REPRESENTATION) → ÖZELLİK (FEATURE) → MÜDAHALE (INTERVENTION) → ÇIKTI (OUTPUT) → DOĞRULAMA (VALIDATION)`
 
 Bu diyagram metodoloji haritasıdır; deney sonuçlarının yerine geçmez.
