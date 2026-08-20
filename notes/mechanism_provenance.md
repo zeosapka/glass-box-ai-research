@@ -1,50 +1,50 @@
-# Mechanism Provenance / AI Mechanism Lineage
+# Mekanizma Kökeni / AI Mekanizma Soy Zinciri (Mechanism Provenance / AI Mechanism Lineage)
 
-## Research hypothesis
+## Araştırma Hipotezi
 
-Bir modelin doğru output üretmesi, kullandığı mechanism'in doğru veya güvenilir olduğu anlamına gelmez. Uzun vadeli araştırma hedefi, bir AI modelinin öğrendiği internal feature/circuit bilgisinin başka bir AI modeline aktarılması durumunda **mekanizma kökeninin (mechanism provenance / lineage)** izlenebilmesidir.
+Bir modelin doğru çıktı (output) üretmesi, kullandığı mekanizmanın doğru veya güvenilir olduğu anlamına gelmez. Uzun vadeli araştırma hedefi, bir AI modelinin öğrendiği iç özellik/devre (internal feature/circuit) bilgisinin başka bir AI modeline aktarılması durumunda **mekanizma kökeninin (mechanism provenance / lineage)** izlenebilmesidir.
 
-## Proposed setup
+## Önerilen Yapı
 
 ```text
 AI-1
   ↓
-Learns true relation + possible spurious relation
+Gerçek ilişki + olası sahte ilişkiyi öğrenir
   ↓
-Internal representation / candidate mechanism
+İç temsil / aday mekanizma
   ↓
-Generated outputs or synthetic training data
+Üretilmiş çıktılar veya sentetik eğitim verisi
   ↓
 AI-2
   ↓
-Learns a related behavior
+İlişkili bir davranışı öğrenir
   ↓
-Compare AI-1 mechanism ↔ AI-2 mechanism
+AI-1 mekanizması ↔ AI-2 mekanizması karşılaştırılır
 ```
 
-## Research questions
+## Araştırma Soruları
 
-1. AI-2 aynı output davranışını öğrenirken AI-1 ile aynı internal feature/circuit'i mi kullanıyor?
-2. Davranış transfer edilmiş olsa bile mechanism transfer edilmiş oluyor mu?
-3. AI-2'de görülen feature AI-1'deki feature ile activation/causal intervention açısından eşleşiyor mu?
-4. Spurious correlation AI-1'den AI-2'ye aktarılabilir mi?
-5. Mechanism provenance, yalnız output/accuracy karşılaştırmasından daha güvenilir bir transfer analizi sağlayabilir mi?
+1. AI-2 aynı çıktı davranışını öğrenirken AI-1 ile aynı iç özellik/devreyi mi kullanıyor?
+2. Davranış aktarılmış olsa bile mekanizma da aktarılmış oluyor mu?
+3. AI-2'de görülen özellik, AI-1'deki özellikle aktivasyon/nedensel müdahale açısından eşleşiyor mu?
+4. Sahte korelasyon (spurious correlation) AI-1'den AI-2'ye aktarılabilir mi?
+5. Mekanizma kökeni, yalnızca çıktı/doğruluk karşılaştırmasından daha güvenilir bir aktarım analizi sağlayabilir mi?
 
-## Proposed validation chain
+## Önerilen Doğrulama Zinciri
 
-`BEHAVIOR MATCH → REPRESENTATION MATCH → FEATURE MATCH → INTERVENTION MATCH → CIRCUIT MATCH → MECHANISM PROVENANCE`
+`DAVRANIŞ EŞLEŞMESİ → TEMSİL EŞLEŞMESİ → ÖZELLİK EŞLEŞMESİ → MÜDAHALE EŞLEŞMESİ → DEVRE EŞLEŞMESİ → MEKANİZMA KÖKENİ`
 
-Her aşama bir öncekinin ötesinde daha güçlü bir karşılaştırma sağlar. Output eşleşmesi tek başına mechanism eşleşmesi değildir.
+Her aşama bir öncekinin ötesinde daha güçlü bir karşılaştırma sağlar. Çıktı eşleşmesi tek başına mekanizma eşleşmesi değildir.
 
-## Controlled future experiment
+## Kontrollü Gelecek Deneyi
 
-Synthetic dataset üzerinde iki ilişki oluşturulabilir:
+Sentetik veri seti üzerinde iki ilişki oluşturulabilir:
 
-- **True relation:** hedef davranışı gerçekten açıklayan feature.
-- **Spurious relation:** eğitim dağılımında hedefle korele fakat kontrollü testte geçersiz olan feature.
+- **Gerçek ilişki (true relation):** Hedef davranışı gerçekten açıklayan özellik.
+- **Sahte ilişki (spurious relation):** Eğitim dağılımında hedefle korele fakat kontrollü testte geçersiz olan özellik.
 
-AI-1 eğitildikten sonra AI-2, AI-1 çıktıları veya üretilmiş örnekler üzerinden eğitilir. Daha sonra iki modelde feature/circuit localization, ablation, activation intervention ve patching karşılaştırılır.
+AI-1 eğitildikten sonra AI-2, AI-1 çıktıları veya üretilmiş örnekler üzerinden eğitilir. Daha sonra iki modelde özellik/devre yerelleştirmesi (feature/circuit localization), ablasyon, aktivasyon müdahalesi ve yamalama karşılaştırılır.
 
-## Scientific limit
+## Bilimsel Sınır
 
-Bu dosya bir gelecek araştırma hipotezidir; bu haftada AI-1 → AI-2 mechanism transfer deneyi yapılmamıştır. Sonuç gibi sunulmayacaktır.
+Bu dosya bir gelecek araştırma hipotezidir; bu haftada AI-1 → AI-2 mekanizma aktarım deneyi yapılmamıştır. Sonuç gibi sunulmayacaktır.
