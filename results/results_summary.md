@@ -1,49 +1,49 @@
-# Experimental Results Summary
+# Deneysel Sonuç Özeti
 
-## Baseline
+## Temel Model
 
-- MNIST: 60000 train / 10000 test
-- Architecture: `784 → 128 → ReLU → 64 → ReLU → 10`
+- MNIST: `60000` eğitim / `10000` test
+- Mimari (architecture): `784 → 128 → ReLU → 64 → ReLU → 10`
 - Seed: 42
-- Adam, LR 0.001, batch 64, 5 epochs
-- Test accuracy: **97.56%**
-- Recorded epoch training loss: `0.3328, 0.1354, 0.0945, 0.0717, 0.0558`
+- Adam, öğrenme oranı (LR) 0.001, batch 64, 5 epoch
+- Test doğruluğu (test accuracy): **97.56%**
+- Kaydedilen epoch eğitim kaybı: `0.3328, 0.1354, 0.0945, 0.0717, 0.0558`
 
-## Internal representation
+## İç Temsil
 
-- ReLU2 test activation matrix: `10000 × 64`
-- Candidate Class-0 group: `[47,17,57,53,28]`
-- N47 selectivity: `3.1630`
-- N17 selectivity: `2.1927`
+- ReLU2 test aktivasyon matrisi: `10000 × 64`
+- Aday Sınıf 0 grubu: `[47,17,57,53,28]`
+- N47 seçiciliği: `3.1630`
+- N17 seçiciliği: `2.1927`
 
-## Neuron-level evidence
+## Nöron Düzeyi Kanıt
 
-| Intervention | Result |
+| Müdahale | Sonuç |
 |---|---:|
-| N47 ablation — Class 0 | −0.9184 pp |
-| N17 ablation — Class 0 | −0.8164 pp |
-| N47 activation scale 0→2 — true C0 probability | 0.9640 → 0.9853 |
-| N17 activation scale 0→2 — true C0 probability | 0.9619 → 0.9863 |
+| N47 ablasyonu — Sınıf 0 | −0.9184 pp |
+| N17 ablasyonu — Sınıf 0 | −0.8164 pp |
+| N47 aktivasyon ölçeği 0→2 — gerçek Sınıf 0 olasılığı | 0.9640 → 0.9853 |
+| N17 aktivasyon ölçeği 0→2 — gerçek Sınıf 0 olasılığı | 0.9619 → 0.9863 |
 
-## Circuit-level evidence
+## Devre Düzeyi Kanıt
 
-| Test | Result |
+| Test | Sonuç |
 |---|---:|
-| Candidate circuit ablation — Class 0 | **−12.0408 pp** |
-| Random controls mean | −0.1122 pp |
-| Candidate vs random mean | −11.9286 pp |
-| Class 1 control | +0.0881 pp |
-| Class 2 control | 0.0000 pp |
-| Leave-One-Out strongest context effect | N57, −9.0816 pp |
-| Progressive ablation | −0.9184 → −12.0408 pp |
-| Class 1 target logit patch | +6.0245 C0 logit |
-| Class 2 target logit patch | +4.3068 C0 logit |
-| Circuit intervention scale 0→2 | 0.7644 → 0.9938 true C0 probability |
+| Aday devre ablasyonu — Sınıf 0 | **−12.0408 pp** |
+| Rastgele kontroller ortalaması | −0.1122 pp |
+| Aday ve rastgele ortalama farkı | −11.9286 pp |
+| Sınıf 1 kontrolü | +0.0881 pp |
+| Sınıf 2 kontrolü | 0.0000 pp |
+| Tekli çıkarmada en güçlü bağlamsal etki | N57, −9.0816 pp |
+| Aşamalı ablasyon | −0.9184 → −12.0408 pp |
+| Sınıf 1 hedefi logit yamalama | +6.0245 Sınıf 0 logiti |
+| Sınıf 2 hedefi logit yamalama | +4.3068 Sınıf 0 logiti |
+| Devre müdahalesi ölçeği 0→2 | 0.7644 → 0.9938 gerçek Sınıf 0 olasılığı |
 
-## Interpretation
+## Yorum
 
-The candidate group `[47,17,57,53,28]` provides strong causal evidence/support for a distributed, Class-0-biased internal mechanism. It is not Class-0-exclusive and is not claimed to be the complete or unique circuit. Observation, intervention and control results are kept conceptually separate.
+Aday grup `[47,17,57,53,28]`, dağıtık ve Sınıf 0'a eğilimli bir iç mekanizma için güçlü nedensel kanıtı (causal evidence/support) desteklemektedir. Grup yalnızca Sınıf 0'a özgü değildir ve eksiksiz veya tek devre olduğu iddia edilmemektedir. Gözlem, müdahale ve kontrol sonuçları kavramsal olarak ayrı tutulmuştur.
 
-## Reproducibility note
+## Tekrar Üretilebilirlik Notu
 
-The original numerical results above were recorded from the completed Colab experiments. The updated baseline notebook now also records epoch-level train/test loss and accuracy to generate the missing learning-curve figures. Those new curves must be run in Colab before being treated as experimental results.
+Yukarıdaki özgün sayısal sonuçlar tamamlanmış Colab deneylerinden kaydedilmiştir. Güncellenen temel model notebook'u artık eksik öğrenme eğrisi grafiklerini oluşturmak için epoch düzeyinde eğitim/test kaybı ve doğruluk da kaydetmektedir. Bu yeni eğriler deneysel sonuç kabul edilmeden önce Colab'da çalıştırılmalıdır.
