@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 
 def register_activation_hooks(model, layer_names):
-    """Capture forward activations for named modules."""
+    """Adı verilen modüllerin ileri geçiş aktivasyonlarını (forward activations) kaydeder."""
     activations = OrderedDict()
     handles = []
     modules = dict(model.named_modules())
