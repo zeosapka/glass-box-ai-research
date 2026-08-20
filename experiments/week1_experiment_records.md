@@ -316,7 +316,32 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Grafik:** Aday ve rastgele kontrol.
 - **Yorum:** Aday etki için güçlü karşılaştırmalı nedensel kanıt; yine de tek seed nedeniyle genelleme iddiası yapılmaz.
 - **Beklenmeyen sonuç:** Rastgele kontrol etkisi aday etkisinden yaklaşık iki mertebe küçüktür.
-- **Sonraki deney:** 2. hafta — çoklu seed tekrarı (multi-seed replication, E20).
+- **Sonraki deney:** 2. hafta — çoklu seed tekrarı (multi-seed replication, E06).
+
+---
+
+## Deney 4 Yapısal Düzenleme
+
+Hafta 1 kayıtlarındaki aday devre ablasyonu bölümü, raporlama sırasında aşağıdaki hiyerarşik yapı ile okunacaktır. Mevcut E15–E19 kayıtlarının deneysel içeriği değiştirilmez; yalnızca daha düzenli bir alt-deney yapısına bağlanır.
+
+### 4.1 — Devre Ablasyonu
+**Kaynak kayıt:** E15 — Aday Devre Ablasyonu  
+Aday devrenin `[47,17,57,53,28]` birlikte sıfırlanması ve Class 0 doğruluğundaki değişimin ölçülmesi.
+
+### 4.2 — Random Control
+**Kaynak kayıt:** E19 — Rastgele Kontroller / Mekanistik Doğrulama  
+Aday devre etkisinin rastgele seçilmiş nöron gruplarıyla karşılaştırılması.
+
+### 4.3 — Leave-One-Out
+**Kaynak kayıt:** E17 — Tekli Çıkarma Analizi  
+Aday devre içindeki her nöronun çıkarılmasıyla grup-bağlamındaki katkının incelenmesi.
+
+### 4.4 — Progressive Ablation
+**Kaynak kayıt:** E18 — Aşamalı Devre Ablasyonu  
+Aday grup büyüklüğünün 1'den 5 nörona çıkarılmasıyla toplam etkinin izlenmesi.
+
+### Yapısal Not
+E16'daki **Sınıfa Özgü Devre Kontrolü**, 4.1–4.4 çekirdek ablasyon zincirinin dışında yardımcı bir sınıf kontrolü olarak tutulmuştur. Böylece `4.1 → 4.2 → 4.3 → 4.4` sırası doğrudan devre ablasyonu → random control → leave-one-out → progressive ablation akışını temsil eder.
 
 ## Kaynak ve Tekrar Üretilebilirlik
 - Ayrıntılı ham sayısal kayıt: `notes/experiment_log.md`.
