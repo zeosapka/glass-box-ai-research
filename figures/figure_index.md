@@ -34,6 +34,7 @@ figures/
 | `week2/e06_candidate_vs_random_control.svg` | E06 | Aday devre ile random control etkilerinin seed bazında karşılaştırması |
 | `week2/e06_test_accuracy_by_seed.svg` | E06 | Çoklu seed eğitimlerinde genel model test accuracy stabilitesi |
 | `week2/e07_discovery_holdout_ranking.svg` | E07 | Aday boyutların Discovery ve Holdout L1 sıralamalarının karşılaştırması |
+| `week2/e08_directional_dose_response.svg` | E08 | Aday 496 ve beş kontrol boyutunda yönlü graded intervention ile müdahale seviyesi–L1 çıktı değişimi ilişkisi |
 
 ## Dil Standardı
 
