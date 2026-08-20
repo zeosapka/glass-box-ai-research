@@ -132,3 +132,93 @@ E07 sonuçları, Discovery'de seçilen `[430, 496, 36, 374, 314]` boyutlarının
 `DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → L1 VALIDATION → DISCOVERY/HOLDOUT → VERIFICATION`
 
 40 eşleştirilmiş cümle → Transformer → 768 boyutlu son gizli temsil → Discovery'de separation ile seçilen 5 aday → L1 ölçümü → 20 random control → Discovery ve Holdout doğrulaması → **başarı kriteri karşılandı; causal intervention sonraki deneyde**.
+
+---
+
+## E08 — Kademeli Transformer Müdahalesi (Graded Transformer Intervention)
+
+- **Deney ID:** E08
+- **Tarih:** 21.08.2026
+- **Amaç:** E07'de keşfedilen Transformer iç temsil boyutlarından aday `496` üzerinde kontrollü kademeli müdahaleler uygulayarak müdahale büyüklüğü ile model çıktısındaki değişim (L1) arasında dose-response ilişkisi bulunup bulunmadığını test etmek ve sonucu random control boyutlarıyla karşılaştırmak.
+- **Hipotez:** Müdahale büyüklüğü arttıkça aday boyutun model çıktısındaki L1 değişiminin yaklaşık monoton biçimde artması beklenmektedir. Kontrol boyutlarında daha zayıf veya düzensiz bir ilişki beklenmektedir.
+- **Model:** `distilgpt2` tabanlı causal language model (`AutoModelForCausalLM`), `6` Transformer katmanı, `768` hidden size, hedef müdahale katmanı `layer 5`.
+- **Veri Seti:** E07'deki eşleştirilmiş concept cümleleri kullanıldı. E08 doğrulama akışında tek bir Discovery cümlesi (`discovery_sentences[0]`) üzerinde kontrollü müdahale uygulandı. Bu nedenle sonuç, E08'in mevcut tek-cümlelik doğrulama/pilot uygulamasıdır; geniş cümle örneklemiyle genelleme iddiası yapılmamaktadır.
+- **Aday boyut:** `496`.
+- **Kontrol boyutları:** `[434, 161, 541, 219, 408]`.
+- **Müdahale seviyeleri:** `−0.25σ`, `−0.50σ`, `−1.00σ`, `+0.50σ`, `+1.00σ`.
+- **Çıktı ölçütü:** Son token logits'inden elde edilen olasılık dağılımının baseline'a göre L1 değişimi.
+- **Müdahale yöntemi:** Hedef Transformer katmanının hidden-state çıktısında seçilen boyut kontrollü olarak `intervention_level × σ` kadar değiştirildi; ardından modelin ileri yayılımı (forward pass) ile son token olasılıkları yeniden hesaplandı.
+- **Başarı kriteri:** Aday için `|Spearman ρ| ≥ 0.80`; kontrollerin daha zayıf (`|ρ| < 0.50`) veya düzensiz olması beklenmektedir. Ek karşılaştırma olarak adayın ortalama L1 etkisinin kontrol dağılımından yüksek olması incelenmiştir.
+
+### Aday 496 Sonuçları
+
+| Müdahale | L1 çıktı değişimi |
+|---:|---:|
+| `−0.25σ` | **0.008902** |
+| `−0.50σ` | **0.017499** |
+| `−1.00σ` | **0.033701** |
+| `+0.50σ` | **0.018689** |
+| `+1.00σ` | **0.038482** |
+
+- Aday ortalama L1: **0.023454**
+- Spearman `ρ`: **0.9487**
+- Spearman `p`: **0.013847**
+- Kontrol dağılımındaki percentile: **%100** (`5/5` kontrol boyutundan daha yüksek)
+
+### Kontrol Sonuçları
+
+| Kontrol | Ortalama L1 | Spearman `ρ` | Spearman `p` |
+|---:|---:|---:|---:|
+| `408` | 0.014887 | 0.9487 | 0.013847 |
+| `434` | 0.001757 | 0.9487 | 0.013847 |
+| `541` | 0.001511 | 0.9487 | 0.013847 |
+| `161` | 0.000810 | 0.9487 | 0.013847 |
+| `219` | 0.000652 | 0.9487 | 0.013847 |
+
+- Kontrol ortalama L1: **0.003923**
+- En güçlü kontrol: `408` → **0.014887**
+- Aday / kontrol ortalama L1 oranı: **5.978×**
+- Aday / en güçlü kontrol oranı: yaklaşık **1.58×**
+
+### Verification Result
+
+Aday `496`, beş random control boyutunun tamamından daha yüksek ortalama L1 çıktı değişimi göstermiştir. Adayın ortalama L1 etkisi `0.023454`, kontrol ortalaması `0.003923` ve en güçlü kontrol `0.014887` olarak ölçülmüştür. Adayın kontrol dağılımındaki basit ampirik percentile değeri `%100` olmuştur.
+
+Adayda müdahale büyüklüğü arttıkça L1 değişiminin genel olarak arttığı görülmüştür. Örneğin `−0.25σ → 0.008902`, `−0.50σ → 0.017499`, `−1.00σ → 0.033701` ve `+0.50σ → 0.018689`, `+1.00σ → 0.038482` sonuçları dose-response davranışıyla uyumludur.
+
+### Statistical Significance
+
+E08 sonucu **formal istatistiksel anlamlılık kanıtı olarak değerlendirilmemelidir**. Spearman `ρ = 0.9487` ve `p = 0.013847` adayı destekleyen tek başına özgül bir test değildir; çünkü beş kontrol boyutunun tamamında da aynı `ρ = 0.9487` ve `p = 0.013847` elde edilmiştir. Bu nedenle monoton dose-response davranışı modelin müdahale büyüklüğüne genel duyarlılığını yansıtıyor olabilir.
+
+### Success Criteria Verification
+
+| Kriter | Sonuç | Değerlendirme |
+|---|---:|---|
+| Aday `|Spearman ρ| ≥ 0.80` | `0.9487` | **PASS** |
+| Aday ortalama L1 > tüm kontrol boyutları | `0.023454 > 0.014887` | **PASS** |
+| En az bir kontrol `|ρ| < 0.50` | Yok; tüm kontroller `0.9487` | **FAIL** |
+| Genel E08 değerlendirmesi |  | **PARTIAL / SUPPORT** |
+
+### Unexpected Result
+
+Tüm kontrol boyutlarında Spearman `ρ` değerinin aday ile aynı çıkması (`0.9487`), monotonluk ölçütünün aday boyuta özgü olmadığını gösterdi. Bu nedenle E08'de dose-response varlığı gösterilmiş olsa da dose-response'un tek başına aday mekanizmaya özgü olduğu sonucuna varılmadı. Ayrıca kontrol `408`, `0.014887` ortalama L1 ile diğer kontrollerden belirgin biçimde güçlü çıktı ve adayın etkisinin özgüllüğü konusunda daha geniş kontrol dağılımına ihtiyaç olduğunu gösterdi.
+
+### Methodological Note
+
+E08'in mevcut uygulaması tek bir Discovery cümlesi üzerinde gerçekleştirildiği için sonuçların farklı cümlelere ve Holdout verisine genellenmesi henüz gösterilmemiştir. Ayrıca yalnızca `5` kontrol boyutu kullanılmıştır. Bu nedenle `%100` percentile sonucu yalnızca “5 kontrolün 5'inden daha yüksek” şeklinde yorumlanmalıdır. Daha geniş kontrol dağılımı ve dağılım tabanlı istatistiksel testler sonraki deneyde uygulanacaktır.
+
+### Yorum
+
+E08, seçilen aday boyut `496` üzerinde **müdahale büyüklüğü arttıkça model çıktısındaki L1 değişiminin genel olarak arttığını** göstermiştir. Adayın ortalama etkisi beş kontrolün tamamından daha yüksek olsa da aynı monoton ilişki bütün kontrollerde de gözlendiğinden, Spearman monotonluğu aday özgüllüğü için yeterli değildir. Bu nedenle deney **PARTIAL / SUPPORT** olarak değerlendirilmiştir: adayın güçlü dose-response ve daha büyük etki büyüklüğü gösterdiği desteklenmiş, ancak dose-response davranışının aday boyuta özgü olduğu gösterilememiştir.
+
+Bu sonuç **nedenselliğin kanıtlandığı** anlamına gelmez; kontrollü hidden-state müdahalesi ile çıktı değişimi arasında mekanistik kanıt yönünde bir adım sağlar.
+
+### Sonraki Deney
+
+**E09 — Random Control Distribution / Statistical Test:** Aday `496` etkisinin çok daha geniş bir random-control dağılımındaki konumunu test etmek; `50` random control ile kontrol ortalaması, standart sapma, z-score ve percentile hesaplamak.
+
+### Deney Özeti
+
+`DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → INTERVENTION → OUTPUT → VERIFICATION`
+
+E07 eşleştirilmiş cümleler → `distilgpt2` causal LM → layer 5 hidden state → candidate dimension `496` → `±σ` kademeli müdahale → son token olasılıklarında L1 değişimi → 5 random control → **güçlü dose-response ve daha büyük aday etkisi desteklendi; aday özgüllüğü PARTIAL / SUPPORT**.
