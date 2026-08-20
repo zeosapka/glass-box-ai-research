@@ -3,7 +3,7 @@ from torch import nn
 
 
 class GlassBoxMLP(nn.Module):
-    """Small controllable MLP for the first-week Glass Box experiments."""
+    """İlk hafta Glass Box deneyleri için küçük ve kontrollü MLP."""
 
     def __init__(self):
         super().__init__()
