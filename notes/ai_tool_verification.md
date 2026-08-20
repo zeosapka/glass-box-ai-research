@@ -1,12 +1,12 @@
-# AI Tool Verification Log
+# Yapay Zekâ Aracı Doğrulama Günlüğü (AI Tool Verification Log)
 
-Bu dosya araştırma sırasında AI araçlarından alınan teknik önerilerin doğrulanması için tutulacaktır.
+Bu dosya, araştırma sırasında yapay zekâ araçlarından alınan teknik önerilerin doğrulanması için tutulacaktır.
 
 ## Kural
 
-AI tarafından verilen kod, kavramsal açıklama veya literatür iddiası doğrudan doğru kabul edilmeyecektir.
+Yapay zekâ tarafından verilen kod, kavramsal açıklama veya literatür iddiası doğrudan doğru kabul edilmeyecektir.
 
-## Doğrulama yöntemi
+## Doğrulama Yöntemi
 
 1. Kodun çalıştırılması ve hata kontrolü
 2. PyTorch / torchvision dokümantasyonu ile API kontrolü
@@ -16,6 +16,6 @@ AI tarafından verilen kod, kavramsal açıklama veya literatür iddiası doğru
 
 ## Kayıt
 
-| Tarih | AI çıktısı | Doğrulama | Sonuç |
+| Tarih | Yapay zekâ çıktısı | Doğrulama | Sonuç |
 |---|---|---|---|
 | TBD | TBD | TBD | TBD |
