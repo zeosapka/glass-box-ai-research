@@ -102,3 +102,37 @@ Adayın ortalama L1 etkisinin tüm beş kontrolden yüksek olması aday lehine e
 ### E08 Sonuç Yorumu
 
 E08, **“müdahale büyüklüğü arttıkça çıktı değişimi artıyor”** hipotezini desteklemektedir. Bununla birlikte bu davranış modelin genel müdahale duyarlılığıyla da açıklanabildiğinden, **dose-response tek başına aday özgüllüğü sağlamamaktadır**. Daha geniş random-control dağılımı ve dağılım tabanlı istatistiksel test için sonraki adım **E09**'dur.
+
+## E09 — İstatistiksel Kontrol Testi (Statistical Control Test)
+
+- Aday boyut: `496`.
+- Model: `distilgpt2`, hedef katman: `layer 5`, hidden size: `768`.
+- Random control sayısı: **50**; aday boyut kontrol grubundan çıkarıldı.
+- Müdahale seviyeleri: `−0.25σ`, `−0.50σ`, `−1.00σ`, `+0.50σ`, `+1.00σ`.
+- Her boyut için beş müdahale seviyesinin ortalama L1 çıktı değişimi scalar effect olarak kullanıldı.
+- Aday ortalama L1 etkisi: **0.015057**.
+- Kontrol ortalama L1 etkisi: **0.011293**.
+- Kontrol standart sapması: **0.004407**.
+- Z-score: **0.854322**.
+- Empirical percentile: **84.00%**.
+- Sonuç: **FAIL** — önceden belirlenen `|z| ≥ 2` ve `percentile ≥ 90%` kriterlerinin hiçbiri karşılanmadı.
+
+### E09 Ana Bulgusu
+
+Candidate `496`'nın ortalama L1 müdahale etkisi random control ortalamasından daha yüksektir (`0.015057` vs. `0.011293`). Ancak aday etki kontrol dağılımından yalnızca `0.854` standart sapma uzaktadır ve empirical percentile değeri `%84`'tür. Kontrol boyutları arasında adaydan daha yüksek etkiler de bulunmaktadır. Bu nedenle `496`, E09'un önceden tanımlanan istatistiksel ayrışma kriterlerini karşılamamaktadır.
+
+### E09 Başarı Kriterleri
+
+| Kriter | Sonuç |
+|---|---:|
+| `|z| ≥ 2` | **FAIL** (`0.854322`) |
+| `percentile ≥ 90%` | **FAIL** (`84.00%`) |
+| Genel E09 kriteri | **FAIL** |
+
+### E09 Yorum
+
+E09'un başarısız olması deneyin uygulanamadığı anlamına gelmez; deney başarıyla tamamlanmış ve adayın random-control dağılımındaki konumu ölçülmüştür. Sonuç, `496` boyutunun kontrol ortalamasından daha yüksek bir müdahale etkisine sahip olduğunu, ancak bu etkinin istatistiksel olarak güçlü bir outlier/separation düzeyine ulaşmadığını göstermektedir. Bu nedenle E09, aday `496` için güçlü istatistiksel özgüllük iddiasını **desteklememektedir**.
+
+### E09 Grafik
+
+`figures/week2/e09_statistical_control_distribution.svg` — 50 random control boyutunun mean L1 effect dağılımı; aday `496` ve kontrol ortalaması referans çizgileriyle gösterilmiştir.
