@@ -1,30 +1,30 @@
-# Literature Table — Glass Box / Mechanistic Interpretability
+# Literatür Tablosu — Glass Box / Mekanistik Yorumlanabilirlik
 
-| # | Kaynak | Problem / Konu | Model / Context | Internal Component | Method | Causal Intervention | Glass Box Contribution | Bu araştırmadaki karşılığı | Limitation / Not |
+| # | Kaynak | Problem / Konu | Model / Bağlam | İç Bileşen | Yöntem | Nedensel Müdahale | Glass Box Katkısı | Bu araştırmadaki karşılığı | Sınırlılık / Not |
 |---:|---|---|---|---|---|---|---|---|---|
-| 1 | *Interpretability in the Wild: a Circuit for IOI in GPT-2 Small* | Circuit discovery | GPT-2 Small | Attention / MLP components | Circuit analysis | Component-level interventions | Circuit-level mechanism reconstruction | Candidate circuit discovery + ablation | Büyük language model bağlamı; MNIST MLP'den farklı |
-| 2 | *Towards Automated Circuit Discovery for Mechanistic Interpretability* | Circuit discovery automation | Neural network / transformer setting | Model components | Automated circuit search | Component intervention | Candidate circuit discovery methodology | Progressive ablation + circuit candidate | Otomatik keşif kapsamı bu çalışmada sınırlı |
-| 3 | *Locating and Editing Factual Associations in GPT* | Internal factual representations | GPT | MLP / internal representations | Localization and editing | Activation/representation editing | Internal representation üzerinde kontrollü müdahale | Activation intervention / patching | Language-model specific |
-| 4 | *Toy Models of Superposition* | Features and superposition | Toy neural networks | Distributed features | Representation analysis | Controlled feature manipulation | Featurelerin tek neuron yerine distributed olabileceğini gösteren temel çerçeve | Distributed representation / Top-5 patching | Toy-model sonuçlarının doğrudan MNIST'e genellenmesi sınırlı |
-| 5 | *Sparse Autoencoders Find Highly Interpretable Features in Language Models* | Feature decomposition | Language models | Activation representations | SAE | Feature-level manipulation / analysis | Complex activation space'den daha ayrışabilir feature adayları çıkarma | Feature analysis için ileri yöntem | SAE henüz bu haftanın deneylerine uygulanmadı |
-| 6 | *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability* | Causal validation | Abstract computational models | Mechanistic variables | Causal abstraction | Intervention | Mechanistic explanations için causal framework | Observation vs intervention ve mechanistic validation | Teorik çerçeve; deneysel implementation ayrıca gerekir |
-| 7 | *Tracr: Compiled Transformers as a Laboratory for Interpretability* | Controlled interpretability experiments | Compiled transformers | Known computational components | Program-to-transformer compilation | Controlled interventions | Bilinen computation'ı interpretability laboratuvarı olarak kullanma | Küçük ve kontrollü model kullanma yaklaşımı | Transformer odaklı |
-| 8 | *Gemma Scope* | Large-scale feature analysis | Gemma language models | Activation features | Sparse autoencoders / feature analysis | Feature-level interventions and analysis | Large-scale internal feature inspection | Gelecekte SAE / feature-level expansion | Bu haftanın MNIST modelinden çok daha büyük ölçek |
+| 1 | *Interpretability in the Wild: a Circuit for IOI in GPT-2 Small* | Devre keşfi | GPT-2 Small | Attention / MLP bileşenleri | Devre analizi | Bileşen düzeyi müdahaleler | Devre düzeyinde mekanizma yeniden kurma | Aday devre keşfi + ablasyon | Büyük dil modeli bağlamı; MNIST MLP'den farklı |
+| 2 | *Towards Automated Circuit Discovery for Mechanistic Interpretability* | Devre keşfinin otomasyonu | Sinir ağı / Transformer bağlamı | Model bileşenleri | Otomatik devre araması | Bileşen müdahalesi | Aday devre keşfi metodolojisi | Aşamalı ablasyon + devre adayı | Otomatik keşif kapsamı bu çalışmada sınırlı |
+| 3 | *Locating and Editing Factual Associations in GPT* | İçsel olgusal temsiller | GPT | MLP / iç temsiller | Yerelleştirme ve düzenleme | Aktivasyon/temsil düzenleme | İç temsil üzerinde kontrollü müdahale | Aktivasyon müdahalesi / yamalama | Dil modeli özelinde |
+| 4 | *Toy Models of Superposition* | Özellikler ve süperpozisyon | Oyuncak sinir ağları | Dağıtık özellikler | Temsil analizi | Kontrollü özellik manipülasyonu | Özelliklerin tek nöron yerine dağıtık olabileceğini gösteren temel çerçeve | Dağıtık temsil / Top-5 yamalama | Oyuncak model sonuçlarının doğrudan MNIST'e genellenmesi sınırlı |
+| 5 | *Sparse Autoencoders Find Highly Interpretable Features in Language Models* | Özellik ayrıştırma | Dil modelleri | Aktivasyon temsilleri | SAE | Özellik düzeyi manipülasyon / analiz | Karmaşık aktivasyon uzayından daha ayrışabilir özellik adayları çıkarma | Özellik analizi için ileri yöntem | SAE henüz bu haftanın deneylerine uygulanmadı |
+| 6 | *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability* | Nedensel doğrulama | Soyut hesaplama modelleri | Mekanistik değişkenler | Nedensel soyutlama | Müdahale | Mekanistik açıklamalar için nedensel çerçeve | Gözlem ve müdahale ayrımı + mekanistik doğrulama | Teorik çerçeve; deneysel uygulama ayrıca gerekir |
+| 7 | *Tracr: Compiled Transformers as a Laboratory for Interpretability* | Kontrollü yorumlanabilirlik deneyleri | Derlenmiş Transformerlar | Bilinen hesaplama bileşenleri | Programdan Transformer derleme | Kontrollü müdahaleler | Bilinen hesaplamayı yorumlanabilirlik laboratuvarı olarak kullanma | Küçük ve kontrollü model kullanma yaklaşımı | Transformer odaklı |
+| 8 | *Gemma Scope* | Büyük ölçekli özellik analizi | Gemma dil modelleri | Aktivasyon özellikleri | Seyrek otokodlayıcılar / özellik analizi | Özellik düzeyi müdahaleler ve analiz | Büyük ölçekli iç özellik incelemesi | Gelecekte SAE / özellik düzeyi genişleme | Bu haftanın MNIST modelinden çok daha büyük ölçek |
 
-## Literature ↔ Our Experiments Mapping
+## Literatür ↔ Deney Eşlemesi
 
 | Literatür kavramı | Bizim deney | Sonuç / Kullanım |
 |---|---|---|
-| Activation Analysis | Experiment 2 | `10000 × 64` activation matrix, class means, selectivity |
-| Neuron Ablation | Experiment 3 | N47/N54/N62 class-specific effects |
-| Activation Intervention | Experiment 4 | N47/N54 scaling ve output probability değişimi |
-| Correlation vs Causality | Experiment 5 | N17/N47 correlation `0.4485` overall, `0.7846` Class 0; intervention ile ayrım |
-| Activation Patching | Experiments 10–13 | Candidate information transfer / logit-level effect |
-| Circuit Discovery | Experiments 14–21 | `[47,17,57,53,28]` candidate group |
-| Distributed Representation | Experiments 9, 11, 18, 20 | Group effects, progressive ablation ve Leave-One-Out |
-| Mechanistic Validation | Experiments 22–23 | Random controls + class-wise controls |
-| Feature-Level Analysis | Experiments 2–3, 24 | Class 0-biased candidate feature characterization |
-| Circuit-Level Intervention | Experiment 24 | True Class 0 probability `0.7644 → 0.9938` |
+| Aktivasyon Analizi | Deney 2 | `10000 × 64` aktivasyon matrisi, sınıf ortalamaları, seçicilik |
+| Nöron Ablasyonu | Deney 3 | N47/N54/N62 sınıfa özgü etkiler |
+| Aktivasyon Müdahalesi | Deney 4 | N47/N54 ölçekleme ve çıktı olasılığı değişimi |
+| Korelasyon ve Nedensellik | Deney 5 | N17/N47 korelasyonu `0.4485` genel, `0.7846` Sınıf 0; müdahale ile ayrım |
+| Aktivasyon Yamalama | Deneyler 10–13 | Aday bilgi aktarımı / logit düzeyi etkisi |
+| Devre Keşfi | Deneyler 14–21 | `[47,17,57,53,28]` aday grubu |
+| Dağıtık Temsil | Deneyler 9, 11, 18, 20 | Grup etkileri, aşamalı ablasyon ve tekli çıkarma |
+| Mekanistik Doğrulama | Deneyler 22–23 | Rastgele kontroller + sınıf bazlı kontroller |
+| Özellik Düzeyi Analiz | Deneyler 2–3, 24 | Sınıf 0'a eğilimli aday özellik karakterizasyonu |
+| Devre Düzeyi Müdahale | Deney 24 | Gerçek Sınıf 0 olasılığı `0.7644 → 0.9938` |
 
 ## Kaynak Kullanım İlkesi
 
