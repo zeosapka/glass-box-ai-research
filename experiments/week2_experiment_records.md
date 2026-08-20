@@ -62,3 +62,73 @@ Beş farklı random seed'in tamamında aday devre ablasyonu Class 0 doğruluğun
 `DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → INTERVENTION → OUTPUT → VERIFICATION`
 
 MNIST → MLP → `fc2` aktivasyonları → Class 0 selectivity ile seçilen 5 nöron → ablasyon → Class 0 accuracy → 5 seed'de tekrar → **başarı kriteri karşılandı**.
+
+---
+
+## E07 — Eşleştirilmiş Transformer İç Temsil Testi (Matched Transformer Internal Representation)
+
+- **Deney ID:** E07
+- **Tarih:** 20.08.2026
+- **Amaç:** Eşleştirilmiş cümle grupları ve bağımsız Holdout verisi kullanarak Transformer iç temsilindeki aday boyutların (dimension) random control boyutlarından daha güçlü ve tekrarlanabilir biçimde ayrışıp ayrışmadığını test etmek.
+- **Hipotez:** Discovery verisinde seçilen aday boyutların L1 (mutlak fark) ölçümü Holdout verisinde de random control boyutlarından belirgin biçimde yüksek kalmalıdır.
+- **Model:** DistilGPT-2 tabanlı Transformer; `AutoModel` ile son gizli temsil (last hidden state) çıkarıldı. Cümle temsili, token temsillerinin ortalaması (mean pooling) ile `768` boyutlu vektör olarak oluşturuldu.
+- **Veri Seti:** 4 eşleştirilmiş concept grubu, her grupta 10 cümle; toplam `40` cümle. Discovery `20`, Holdout `20`.
+- **Discovery / Holdout tasarımı:** Her concept grubundan `5` cümle Discovery ve `5` cümle Holdout olarak ayrıldı. Cümle yapıları eşleştirildi.
+- **Aday keşfi:** Discovery grubundaki grup ortalamaları arasındaki dimension separation ölçümüne göre en güçlü 5 boyut seçildi: `[430, 496, 36, 374, 314]`.
+- **Random control:** Aday boyutlarla çakışmayan `20` rastgele boyut seçildi: `[122, 329, 519, 529, 667, 106, 229, 620, 641, 574, 434, 591, 565, 753, 507, 605, 455, 246, 2, 633]`.
+- **Değiştirilen parametre:** Bu deneyde temsil boyutları üzerinde henüz causal intervention uygulanmadı. Değerlendirme ölçütü L1 ayrışmasıdır.
+- **Başarı kriteri:** Aday ortalama L1 değerinden daha yüksek en fazla `5/20` random control bulunması ve sonucun Holdout verisinde de korunması.
+
+### Discovery Sonuçları
+
+| Ölçüm | Değer |
+|---|---:|
+| Aday ortalama L1 | **2.127904** |
+| Random control ortalama L1 | **0.123722** |
+| Random control medyan L1 | **0.113314** |
+| Random control maksimum L1 | **0.260242** |
+| Aday / control ortalama oranı | **17.199049×** |
+| Aday ortalamasını geçen control | **0/20** |
+| Başarı kriteri | **True** |
+
+Aday boyutların Discovery L1 değerleri: `430=2.387002`, `496=2.939227`, `36=1.832290`, `374=1.471794`, `314=2.009206`.
+
+### Holdout Sonuçları
+
+| Ölçüm | Değer |
+|---|---:|
+| Aday ortalama L1 | **1.962849** |
+| Random control ortalama L1 | **0.124925** |
+| Random control medyan L1 | **0.128080** |
+| Random control maksimum L1 | **0.252825** |
+| Aday / control ortalama oranı | **15.712222×** |
+| Aday ortalamasını geçen control | **0/20** |
+| Başarı kriteri | **True** |
+
+Aday boyutların Holdout L1 değerleri: `430=2.453163`, `496=3.000549`, `36=1.849851`, `374=1.108517`, `314=1.402164`.
+
+### Verification Result
+
+Discovery ve Holdout sonuçlarının ikisinde de `20` random control boyutunun hiçbiri adayların ortalama L1 değerini geçmedi. Aday/control ortalama oranı Discovery'de **17.20×**, Holdout'ta **15.71×** olarak ölçüldü. Adayların güçlü L1 ayrışması Holdout verisinde korunmuştur.
+
+### Statistical Significance
+
+**Henüz hesaplanmadı.** E07'deki 20 random control karşılaştırması ve Discovery/Holdout ayrımı, aday özelliğin seçime bağlı tek bir gözlem olmadığını test etmek için kullanılmıştır. Ancak bu sonuç tek başına formal istatistiksel anlamlılık veya nedensellik kanıtı değildir. Daha geniş random-control dağılımı ve z-score/percentile gibi dağılım tabanlı ölçümler sonraki deneylerde uygulanacaktır.
+
+### Methodological Note
+
+Aday boyutlar Discovery verisindeki dimension separation ölçümüne göre seçildiği için Discovery L1 sonucu seçim yanlılığı (selection bias) içerebilir. Bu nedenle Holdout sonucu özellikle önemlidir. Ayrıca mevcut E07 sonucu L1 temsil ayrışmasını göstermektedir; **causal intervention henüz uygulanmamıştır**. Gerçek nedensel test için aday boyutların modelin gerçek iç aktivasyonları üzerinde kontrollü biçimde değiştirilmesi ve model çıktısındaki değişimin ölçülmesi gerekmektedir.
+
+### Yorum
+
+E07 sonuçları, Discovery'de seçilen `[430, 496, 36, 374, 314]` boyutlarının eşleştirilmiş veri üzerinde random control boyutlarından çok daha yüksek L1 ayrışmasına sahip olduğunu ve bu ayrışmanın bağımsız Holdout verisinde de korunduğunu göstermektedir. Bu sonuçlar aday temsil boyutlarının ilgili concept gruplarını ayırt eden güçlü adaylar olduğu hipotezini **desteklemektedir**. Ancak L1 ayrışması korelatif/temsil düzeyinde bir bulgudur; nedensellik iddiası için intervention gereklidir.
+
+### Sonraki Deney
+
+**E08 — Graded Representation Intervention:** Aday boyutlar ve random control boyutları üzerinde `−0.25σ`, `−0.5σ`, `−1σ`, `+0.5σ`, `+1σ` düzeylerinde kontrollü müdahale uygulanarak müdahale büyüklüğü ile çıktı/temsil değişimi arasındaki ilişki test edilecektir.
+
+### Deney Özeti
+
+`DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → L1 VALIDATION → DISCOVERY/HOLDOUT → VERIFICATION`
+
+40 eşleştirilmiş cümle → Transformer → 768 boyutlu son gizli temsil → Discovery'de separation ile seçilen 5 aday → L1 ölçümü → 20 random control → Discovery ve Holdout doğrulaması → **başarı kriteri karşılandı; causal intervention sonraki deneyde**.
