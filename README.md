@@ -1,98 +1,99 @@
-# Glass Box AI Research
+# Glass Box AI Araştırması
 
-**Mechanistic Interpretability and Glass Box AI — 1. Hafta Araştırma Çalışması**
+**Mekanistik Yorumlanabilirlik (Mechanistic Interpretability) ve Glass Box AI — 1. Hafta Araştırma Çalışması**
 
-Bu repository, ilk hafta araştırma ödevindeki kontrollü MNIST MLP deneylerini, internal representation analizlerini, intervention sonuçlarını ve candidate circuit validation çalışmalarını kaydetmektedir.
+Bu repository (araştırma deposu), ilk hafta araştırma ödevindeki kontrollü MNIST MLP deneylerini, iç temsili (internal representation) analizlerini, müdahale (intervention) sonuçlarını ve aday devre (candidate circuit) doğrulama çalışmalarını kaydetmektedir.
 
 ## Araştırma Sorusu
 
-> Model doğru sonucu üretiyor mu? sorusunun ötesinde: **Model bu sonucu hangi internal mechanism (iç mekanizma) üzerinden üretiyor?**
+> Model doğru sonucu üretiyor mu? sorusunun ötesinde: **Model bu sonucu hangi iç mekanizma (internal mechanism) üzerinden üretiyor?**
 
 ## Ana Metodoloji
 
-`DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → INTERVENTION → OUTPUT → VALIDATION`
+`VERİ (DATA) → MODEL → İÇ TEMSİL (INTERNAL REPRESENTATION) → ÖZELLİK (FEATURE) → MÜDAHALE (INTERVENTION) → ÇIKTI (OUTPUT) → DOĞRULAMA (VALIDATION)`
 
-1. **Modeli kur:** kontrollü MNIST MLP baseline.
-2. **Internal representation'ı observe et:** Layer, Neuron, Activation ve Representation Learning yapısını incele.
-3. **Feature adaylarını belirle:** activation statistics, class behavior ve selectivity kullan.
-4. **Hypothesis oluştur:** candidate feature/circuit → expected output effect.
-5. **Intervention yap:** Ablation, Activation Patching ve controlled activation scaling.
-6. **Output change ölç:** probability, logit ve class accuracy değişimlerini karşılaştır.
-7. **Validation yap:** repeated tests, random controls, class-wise controls, Leave-One-Out ve progressive ablation.
-8. **Mechanism çıkar:** candidate circuit ve Glass Box computational map.
+1. **Modeli kur:** Kontrollü MNIST MLP temel modeli (baseline).
+2. **İç temsili gözlemle:** Katman (layer), nöron (neuron), aktivasyon (activation) ve temsil öğrenme (representation learning) yapısını incele.
+3. **Özellik adaylarını belirle:** Aktivasyon istatistikleri (activation statistics), sınıf davranışı (class behavior) ve seçicilik (selectivity) kullan.
+4. **Hipotez oluştur:** Aday özellik/devre (candidate feature/circuit) → beklenen çıktı etkisi.
+5. **Müdahale yap:** Ablasyon (ablation), aktivasyon yamalama (activation patching) ve kontrollü aktivasyon ölçekleme (controlled activation scaling).
+6. **Çıktı değişimini ölç:** Olasılık (probability), logit ve sınıf doğruluğu (class accuracy) değişimlerini karşılaştır.
+7. **Doğrulama yap:** Tekrarlı testler (repeated tests), rastgele kontroller (random controls), sınıf bazlı kontroller (class-wise controls), tekli çıkarma analizi (leave-one-out) ve aşamalı ablasyon (progressive ablation).
+8. **Mekanizmayı çıkar:** Aday devre (candidate circuit) ve Glass Box hesaplama haritası (computational map).
 
-## Baseline
+## Temel Model (Baseline)
 
-- MNIST: `60000 / 10000`
-- Architecture: `784 → 128 → 64 → 10`
-- ReLU
-- Adam, learning rate `0.001`
-- Batch size `64`
-- 5 epochs
-- Seed `42`
+- Veri seti (dataset): MNIST `60000 / 10000`
+- Mimari (architecture): `784 → 128 → 64 → 10`
+- Aktivasyon: ReLU
+- Optimizasyon algoritması (optimizer): Adam
+- Öğrenme oranı (learning rate): `0.001`
+- Batch size: `64`
+- Epoch: `5`
+- Seed (rastgelelik tohumu): `42`
 - CPU
-- Test accuracy: **97.56%**
+- Test doğruluğu (test accuracy): **97.56%**
 
-## Completed Experiments
+## Tamamlanan Deneyler
 
 | Çalışma | Durum | Ana sonuç |
 |---|---|---|
-| Environment | DONE | PyTorch environment çalıştı |
-| Baseline model | DONE | 97.56% test accuracy |
-| Activation analysis | DONE | `10000 × 64` activation matrix |
-| Class activation / selectivity | DONE | Candidate neurons belirlendi |
-| Single-neuron ablation | DONE | Class-specific effects ölçüldü |
-| Activation intervention | DONE | Controlled probability changes |
-| Correlation vs causality | DONE | Observation/intervention ayrımı |
-| Activation patching | DONE | Multi-sample patching yapıldı |
-| Distributed feature patching | DONE | Top-5 group etkisi incelendi |
-| Candidate circuit discovery | DONE | `[47,17,57,53,28]` |
-| Circuit ablation | DONE | Class 0 `-12.0408 pp` |
-| Leave-One-Out | DONE | Context-dependent contributions |
-| Progressive ablation | DONE | Distributed/non-additive effect |
-| Random controls | DONE | Random mean `-0.1122 pp` |
-| Class-wise validation | DONE | En büyük etki Class 0'da |
-| Circuit activation intervention | DONE | True C0 probability `0.7644 → 0.9938` |
-| Literature matrix | DONE | 8 kaynak + experiment mapping |
-| Advanced concepts | DONE | `notes/advanced_concepts.md` |
-| Mechanism provenance proposal | DONE | `notes/mechanism_provenance.md` |
-| Figure index + GitHub SVGs | DONE | 11 verified/readable result figures |
-| Glass Box map | DONE | Computational map tamamlandı |
+| Ortam doğrulama (environment) | TAMAMLANDI | PyTorch ortamı çalıştı |
+| Temel model (baseline model) | TAMAMLANDI | %97.56 test doğruluğu |
+| Aktivasyon analizi (activation analysis) | TAMAMLANDI | `10000 × 64` aktivasyon matrisi |
+| Sınıf aktivasyonu / seçicilik (selectivity) | TAMAMLANDI | Aday nöronlar belirlendi |
+| Tek nöron ablasyonu (single-neuron ablation) | TAMAMLANDI | Sınıfa özgü etkiler ölçüldü |
+| Aktivasyon müdahalesi (activation intervention) | TAMAMLANDI | Kontrollü olasılık değişimleri |
+| Korelasyon ve nedensellik | TAMAMLANDI | Gözlem/müdahale ayrımı |
+| Aktivasyon yamalama (activation patching) | TAMAMLANDI | Çoklu örnek yamalama yapıldı |
+| Dağıtık özellik yamalama (distributed feature patching) | TAMAMLANDI | Top-5 grup etkisi incelendi |
+| Aday devre keşfi (candidate circuit discovery) | TAMAMLANDI | `[47,17,57,53,28]` |
+| Devre ablasyonu (circuit ablation) | TAMAMLANDI | Sınıf 0 `-12.0408 pp` |
+| Tekli çıkarma (leave-one-out) | TAMAMLANDI | Bağlama bağlı katkılar |
+| Aşamalı ablasyon (progressive ablation) | TAMAMLANDI | Dağıtık / toplamsal olmayan etki |
+| Rastgele kontroller (random controls) | TAMAMLANDI | Rastgele ortalama `-0.1122 pp` |
+| Sınıf bazlı doğrulama (class-wise validation) | TAMAMLANDI | En büyük etki Sınıf 0'da |
+| Devre aktivasyon müdahalesi | TAMAMLANDI | Gerçek Sınıf 0 olasılığı `0.7644 → 0.9938` |
+| Literatür matrisi | TAMAMLANDI | 8 kaynak + deney eşlemesi |
+| İleri kavramlar (advanced concepts) | TAMAMLANDI | `notes/advanced_concepts.md` |
+| Mekanizma kökeni önerisi (mechanism provenance) | TAMAMLANDI | `notes/mechanism_provenance.md` |
+| Grafik indeksi + GitHub SVG'leri | TAMAMLANDI | 11 doğrulanabilir/okunabilir sonuç grafiği |
+| Glass Box haritası | TAMAMLANDI | Hesaplama haritası tamamlandı |
 
-## Candidate Circuit
+## Aday Devre (Candidate Circuit)
 
 `[47, 17, 57, 53, 28]`
 
-Bu grup Class 0 behavior ile güçlü biçimde ilişkilidir.
+Bu grup Sınıf 0 davranışı ile güçlü biçimde ilişkilidir.
 
-### Mechanistic validation summary
+### Mekanistik Doğrulama Özeti
 
-- Candidate circuit ablation: **-12.0408 pp** Class 0 accuracy
-- Random control mean: **-0.1122 pp**
-- Candidate vs random mean: **-11.9286 pp**
-- Class 1 control: **+0.0881 pp**
-- Class 2 control: **0.0000 pp**
-- Leave-One-Out strongest contextual effect: N57, **-9.0816 pp**
-- Progressive ablation: **-0.9184 → -12.0408 pp**
-- Logit-level patching: Class 1 target **+6.0245**, Class 2 target **+4.3068** Class 0 logit
-- Circuit activation intervention: true Class 0 probability **0.7644 → 0.9938**
+- Aday devre ablasyonu: Sınıf 0 doğruluğunda **-12.0408 pp**
+- Rastgele kontrol ortalaması: **-0.1122 pp**
+- Aday − rastgele ortalama: **-11.9286 pp**
+- Sınıf 1 kontrolü: **+0.0881 pp**
+- Sınıf 2 kontrolü: **0.0000 pp**
+- Tekli çıkarma analizinde en güçlü bağlamsal etki: N57, **-9.0816 pp**
+- Aşamalı ablasyon: **-0.9184 → -12.0408 pp**
+- Logit düzeyinde yamalama: Sınıf 1 hedefi **+6.0245**, Sınıf 2 hedefi **+4.3068** Sınıf 0 logiti
+- Devre aktivasyon müdahalesi: gerçek Sınıf 0 olasılığı **0.7644 → 0.9938**
 
-### Scientific interpretation
+### Bilimsel Yorum
 
-Bu sonuçlar candidate circuit'un Class 0 output behavior'a güçlü ve kontrollü bir katkısı olduğuna dair **causal evidence/support** sağlamaktadır. Ancak candidate group'un modeldeki complete circuit olduğu veya genel anlamda causality'nin tamamen ispatlandığı iddia edilmemektedir.
+Bu sonuçlar aday devrenin Sınıf 0 çıktı davranışına güçlü ve kontrollü bir katkısı olduğuna dair **nedensel kanıtı (causal evidence/support)** desteklemektedir. Ancak aday grubun modeldeki eksiksiz devre (complete circuit) olduğu veya genel anlamda nedenselliğin tamamen kanıtlandığı iddia edilmemektedir.
 
-## Scientific Limits
+## Bilimsel Sınırlar
 
-- Correlation tek başına causality değildir.
-- Weight magnitude tek başına causal evidence değildir.
-- Selectivity candidate seçimi için kullanılır; causal importance değildir.
-- Candidate circuit Class 0-biased'dır fakat Class 0-exclusive değildir.
-- Progressive ablation order-dependent olabilir.
-- Tek training seed kullanıldığı için multi-seed replication gereklidir.
-- Candidate selection bias ve sınırlı patching kapsamı vardır.
-- Sonuçlar küçük MNIST MLP üzerinde elde edilmiştir; daha büyük modellere genellenemez.
+- Korelasyon tek başına nedensellik değildir.
+- Ağırlık büyüklüğü tek başına nedensel kanıt değildir.
+- Seçicilik aday seçimi için kullanılır; nedensel önem değildir.
+- Aday devre Sınıf 0'a eğilimlidir fakat yalnızca Sınıf 0'a özgü değildir.
+- Aşamalı ablasyon sıralamaya bağlı olabilir.
+- Tek eğitim seed'i kullanıldığı için çoklu seed tekrarı (multi-seed replication) gereklidir.
+- Aday seçim yanlılığı (candidate selection bias) ve sınırlı yamalama kapsamı vardır.
+- Sonuçlar küçük MNIST MLP üzerinde elde edilmiştir; daha büyük modellere doğrudan genellenemez.
 
-## Repository Structure
+## Repository Yapısı
 
 ```text
 glass-box-ai-research/
@@ -100,60 +101,60 @@ glass-box-ai-research/
 ├── requirements.txt
 ├── notebooks/          # Deneylerin çalıştırıldığı Colab/Jupyter notebookları
 ├── src/                # Tekrar kullanılabilir Python model ve yardımcı fonksiyonları
-├── experiments/        # Deneylere ait ek/gelecek deney dosyaları
+├── experiments/        # Standart deney kayıtları ve deneylere ait ek dosyalar
 ├── results/            # Deney sonuçlarının özet kayıtları
 ├── figures/            # Deneylerden üretilen doğrulanabilir grafikler (11 SVG)
 ├── data/               # Veri seti ve veri kullanım açıklamaları
-├── papers/             # Araştırmada kullanılacak/ kullanılan makale kaynakları
+├── papers/             # Araştırmada kullanılan/kullanılacak makale kaynakları
 ├── notes/              # Deney günlüğü, literatür, kavramlar ve araştırma notları
-└── report/             # Glass Box computational map ve rapor/sunum materyalleri
+└── report/             # Glass Box hesaplama haritası ve rapor/sunum materyalleri
 ```
 
-### Klasörlerin rolü
+### Klasörlerin Rolü
 
-- **`notebooks/`** — Baseline, activation analysis, ablation ve intervention deneylerinin Colab/Jupyter kayıtları.
-- **`src/`** — Model, hook, evaluation ve intervention gibi tekrar kullanılabilir kodlar.
+- **`notebooks/`** — Temel model, aktivasyon analizi, ablasyon ve müdahale deneylerinin Colab/Jupyter kayıtları.
+- **`src/`** — Model, hook, değerlendirme (evaluation) ve müdahale gibi tekrar kullanılabilir kodlar.
 - **`figures/`** — Deney günlüğünde sayısal olarak doğrulanabilen 11 SVG grafik ve `figure_index.md`.
-- **`notes/`** — Deney logu, literatür matrisi, advanced concepts, mechanism provenance ve deney planı.
+- **`notes/`** — Deney günlüğü, literatür matrisi, ileri kavramlar, mekanizma kökeni ve deney planı.
 - **`results/`** — Sonuçların kısa/özet kayıtları.
-- **`report/`** — Glass Box computational map ve raporlama materyalleri.
+- **`report/`** — Glass Box hesaplama haritası ve raporlama materyalleri.
 - **`data/`** — MNIST gibi veri setlerinin repo içinde tutulmayan kullanım/açıklama bilgileri.
 - **`papers/`** — Literatür dosyaları için ayrılmış alan.
-- **`experiments/`** — Ayrı deney dosyaları için ayrılmış alan; mevcut deney sonuçları esas olarak `notebooks/`, `notes/` ve `figures/` içinde tutulmaktadır.
+- **`experiments/`** — Standart deney kayıtlarının tutulduğu ana klasördür.
 
-## Figure Set
+## Grafik Seti
 
-`figures/` klasöründe 11 okunabilir SVG bulunmaktadır:
+`figures/` klasöründe 11 okunabilir SVG bulunmaktadır. Grafik başlıkları ve eksen açıklamaları da aynı dil standardını kullanır.
 
-1. Ablation accuracy — tüm candidate neuronlar + candidate circuit
-2. Progressive circuit ablation
-3. Candidate circuit activation intervention
-4. N47 activation intervention
-5. N17–N47 correlation summary
-6. Baseline training loss
-7. Candidate circuit activation across Classes 0–2
-8. Class-wise correct predictions (confusion-matrix diagonal)
-9. Top-10 selectivity
-10. Leave-One-Out
-11. Candidate neuron contribution to Class 0 logit
+1. Ablasyon doğruluğu — tüm aday nöronlar + aday devre
+2. Aşamalı devre ablasyonu
+3. Aday devre aktivasyon müdahalesi
+4. N47 aktivasyon müdahalesi
+5. N17–N47 aktivasyon korelasyonu
+6. Temel model eğitim kaybı
+7. Aday devre aktivasyonunun sınıflar arasındaki dağılımı
+8. Sınıf bazlı doğru tahminler
+9. En yüksek 10 nöron seçiciliği
+10. Tekli çıkarma analizi
+11. Aday nöronların Sınıf 0 logitine katkısı
 
 Eksik ham veri noktaları uydurulmamıştır. Bu nedenle bazı grafikler orijinal Colab grafiklerinin doğrulanabilir, daha dar kapsamlı GitHub sürümleridir. Ayrıntılı kapsam `figures/figure_index.md` içinde belirtilmiştir.
 
-## Baseline Learning Curves
+## Temel Model Öğrenme Eğrileri
 
-`notebooks/01_baseline_model.ipynb` epoch bazında baseline eğitim sonuçlarını kaydetmektedir. GitHub'daki `baseline_training_loss.svg` yalnızca deney günlüğünde doğrulanmış training-loss serisini gösterir; doğrulanmamış validation/test noktaları grafiğe eklenmemiştir.
+`notebooks/01_baseline_model.ipynb` epoch bazında temel model eğitim sonuçlarını kaydetmektedir. GitHub'daki `baseline_training_loss.svg` yalnızca deney günlüğünde doğrulanmış eğitim-kaybı serisini gösterir; doğrulanmamış doğrulama/test noktaları grafiğe eklenmemiştir.
 
-## Next Experiments
+## Sonraki Deneyler
 
-1. Multi-seed replication
-2. Synthetic true-vs-spurious dataset
-3. Distributed feature analysis
-4. Expanded activation patching
-5. Fashion-MNIST validation
-6. AI-to-AI mechanism provenance / lineage
+1. Çoklu seed tekrarı (multi-seed replication)
+2. Sentetik gerçek ve sahte ilişki (true-vs-spurious) veri seti
+3. Dağıtık özellik analizi
+4. Genişletilmiş aktivasyon yamalama
+5. Fashion-MNIST doğrulaması
+6. AI'dan AI'a mekanizma kökeni / soy zinciri (mechanism provenance / lineage)
 
-## Status
+## Durum
 
-**Experimental phase: COMPLETED.**
+**Deneysel aşama: TAMAMLANDI.**
 
-Mevcut deney sonuçları, experiment log, literature mapping, advanced concept coverage, mechanism provenance proposal ve GitHub figure/result kayıtları tamamlanmıştır. Gelecek deneyler sonuç gibi sunulmamaktadır.
+Mevcut deney sonuçları, deney günlüğü, literatür eşlemesi, ileri kavram kapsamı, mekanizma kökeni önerisi ve GitHub grafik/sonuç kayıtları tamamlanmıştır. Gelecek deneyler sonuç gibi sunulmamaktadır.
