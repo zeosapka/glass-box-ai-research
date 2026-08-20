@@ -21,6 +21,10 @@ Bu repository (araştırma deposu), ilk hafta araştırma ödevindeki kontrollü
 7. **Doğrulama yap:** Tekrarlı testler (repeated tests), rastgele kontroller (random controls), sınıf bazlı kontroller (class-wise controls), tekli çıkarma analizi (leave-one-out) ve aşamalı ablasyon (progressive ablation).
 8. **Mekanizmayı çıkar:** Aday devre (candidate circuit) ve Glass Box hesaplama haritası (computational map).
 
+## Dil Standardı
+
+Repository'deki başlıklar, deney kayıtları, tablolar, rapor metinleri ve grafik yazıları Türkçe; anlamı korunması gereken teknik terimler ise İngilizce karşılıkları parantez içinde olacak şekilde yazılır. Kod sembolleri, dosya yolları, model/kütüphane adları ve makale başlıkları değiştirilmez. Ayrıntılı kural: `notes/language_standard.md`.
+
 ## Temel Model (Baseline)
 
 - Veri seti (dataset): MNIST `60000 / 10000`
