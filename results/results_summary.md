@@ -47,3 +47,58 @@ Aday grup `[47,17,57,53,28]`, dağıtık ve Sınıf 0'a eğilimli bir iç mekani
 ## Tekrar Üretilebilirlik Notu
 
 Yukarıdaki özgün sayısal sonuçlar tamamlanmış Colab deneylerinden kaydedilmiştir. Güncellenen temel model notebook'u artık eksik öğrenme eğrisi grafiklerini oluşturmak için epoch düzeyinde eğitim/test kaybı ve doğruluk da kaydetmektedir. Bu yeni eğriler deneysel sonuç kabul edilmeden önce Colab'da çalıştırılmalıdır.
+
+---
+
+# Hafta 2 — Transformer Sonuçları
+
+## E06 — Çoklu Seed Devre Tekrarı
+
+- 5 seed'in `5/5`'inde aday devre etkisi Class 0 doğruluğunda `≤ -5 pp` eşiğini geçti.
+- Ortalama aday devre etkisi: **−27.6735 pp**.
+- Ortalama random control etkisi: **−0.3469 pp**.
+- Ortalama aday/random etki oranı: **61.45×**.
+- Sonuç: **Başarı kriteri karşılandı; formal istatistiksel anlamlılık henüz hesaplanmadı.**
+
+## E07 — Eşleştirilmiş Transformer İç Temsil
+
+- Aday boyutlar: `[430, 496, 36, 374, 314]`.
+- Discovery aday ortalama L1: **2.127904**; random control ortalaması **0.123722**; oran **17.20×**.
+- Holdout aday ortalama L1: **1.962849**; random control ortalaması **0.124925**; oran **15.71×**.
+- Discovery ve Holdout'ta `20` kontrol boyutunun hiçbiri aday ortalamasını geçmedi.
+- Sonuç: **Başarı kriteri karşılandı; L1 ayrışması causal intervention değildir.**
+
+## E08 — Kademeli Transformer Müdahalesi
+
+- Causal LM: `distilgpt2`, hedef katman: `layer 5`, hidden size: `768`.
+- Aday boyut: `496`.
+- Kontroller: `[434, 161, 541, 219, 408]`.
+- Müdahale seviyeleri: `−0.25σ`, `−0.50σ`, `−1.00σ`, `+0.50σ`, `+1.00σ`.
+- Aday ortalama L1 çıktı değişimi: **0.023454**.
+- Kontrol ortalama L1: **0.003923**.
+- En güçlü kontrol: `408 → 0.014887`.
+- Aday / kontrol ortalama oranı: **5.978×**.
+- Aday / en güçlü kontrol oranı: **≈1.58×**.
+- Aday Spearman: **ρ = 0.9487**, `p = 0.013847`.
+- Beş kontrolün tamamında da **ρ = 0.9487**, `p = 0.013847` elde edildi.
+- Adayın basit kontrol percentile değeri: **%100 (5/5 kontrolden yüksek)**.
+- Sonuç: **PARTIAL / SUPPORT**.
+
+### E08 Ana Bulgusu
+
+Müdahale büyüklüğü arttıkça model çıktısındaki L1 değişimi genel olarak artmıştır. Bu, aday `496` için güçlü bir **dose-response (doz-cevap)** davranışı göstermektedir. Ancak aynı monoton ilişki bütün kontrol boyutlarında da görüldüğünden, Spearman monotonluğu aday boyuta özgü bir mekanizma kanıtı olarak kullanılamaz.
+
+Adayın ortalama L1 etkisinin tüm beş kontrolden yüksek olması aday lehine ek destek sağlamaktadır; ancak kontrol sayısının yalnızca `5` olması nedeniyle `%100` percentile sonucu sınırlı bir ampirik karşılaştırmadır. E08 tek bir Discovery cümlesi üzerinde yürütüldüğü için farklı cümlelere/Holdout'a genelleme henüz gösterilmemiştir.
+
+### E08 Başarı Kriterleri
+
+| Kriter | Sonuç |
+|---|---:|
+| Aday `|Spearman ρ| ≥ 0.80` | **PASS** |
+| Aday ortalama L1 > tüm kontroller | **PASS** |
+| En az bir kontrol `|ρ| < 0.50` | **FAIL** |
+| Genel değerlendirme | **PARTIAL / SUPPORT** |
+
+### E08 Sonuç Yorumu
+
+E08, **“müdahale büyüklüğü arttıkça çıktı değişimi artıyor”** hipotezini desteklemektedir. Bununla birlikte bu davranış modelin genel müdahale duyarlılığıyla da açıklanabildiğinden, **dose-response tek başına aday özgüllüğü sağlamamaktadır**. Daha geniş random-control dağılımı ve dağılım tabanlı istatistiksel test için sonraki adım **E09**'dur.
