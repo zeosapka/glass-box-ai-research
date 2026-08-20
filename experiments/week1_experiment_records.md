@@ -14,7 +14,8 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 
 ---
 
-## E01 — Temel Model (Baseline Model)
+## 1. Temel Model (Baseline Model)
+### 1.1 — Temel Model (Baseline Model)
 - **Deney ID:** E01
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Sonraki iç analiz (internal analysis) ve müdahale (intervention) deneyleri için temel model oluşturmak.
@@ -30,7 +31,8 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Kaynakta belirtilmemiş.
 - **Sonraki deney:** E02.
 
-## E02 — Aktivasyon Analizi (Activation Analysis)
+## 2. Aktivasyon Analizi (Activation Analysis)
+### 2.1 — Aktivasyon Analizi (Activation Analysis)
 - **Deney ID:** E02
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Gizli katman (hidden layer) aktivasyonlarını gözlemlemek.
@@ -46,7 +48,8 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** N4, N19, N35, N58 düşük/ölü (dead) aktivasyon gösterdi.
 - **Sonraki deney:** E03.
 
-## E03 — Sınıf Aktivasyonu / Seçicilik (Class Activation / Selectivity)
+## 3. Aday Özellik / Devre Keşfi (Candidate Feature / Circuit Discovery)
+### 3.1 — Sınıf Aktivasyonu / Seçicilik (Class Activation / Selectivity)
 - **Deney ID:** E03
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Sınıf seçici (class-selective) aday nöronları belirlemek.
@@ -62,55 +65,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Kaynakta ayrıca belirtilmemiş.
 - **Sonraki deney:** E04.
 
-## E04 — Tek Nöron Ablasyonu (Single-Neuron Ablation)
-- **Deney ID:** E04
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Seçilen nöronların aktivasyonunu sıfırlayıp çıktı etkisini ölçmek.
-- **Hipotez:** Aday nöron ablasyonu ilgili sınıf davranışını azaltacaktır.
-- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST test; seed 42.
-- **Değiştirilen parametre:** Seçilen aktivasyon `0`.
-- **Kontrol grubu:** Temel model.
-- **Müdahale grubu:** N54, N47, N62.
-- **Sonuç:** N47 Sınıf0 `%98.6735 → %97.7551` (`-0.9184 pp`); N54 Sınıf2 `-0.3876 pp`; N62 Sınıf3 `-0.4950 pp`.
-- **Accuracy değişimi:** En belirgin aday etkisi N47/Sınıf0 `-0.9184 pp`.
-- **Grafik:** Ablasyon doğruluğu.
-- **Yorum:** Nedensel kanıtı (causal evidence/support) destekler; eksiksiz mekanizma kanıtı değildir.
-- **Beklenmeyen sonuç:** N62 genel doğruluğu küçük ölçüde artırırken Sınıf3 düştü.
-- **Sonraki deney:** E05.
-
-## E05 — Aktivasyon Müdahalesi (Activation Intervention)
-- **Deney ID:** E05
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Aktivasyon ölçekleme ile çıktı olasılığındaki değişimi test etmek.
-- **Hipotez:** Aktivasyon değişimi hedef sınıf olasılığını sistematik olarak değiştirecektir.
-- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST test; seed 42.
-- **Değiştirilen parametre:** Ölçek `0.0, 0.5, 1.0, 1.5, 2.0`.
-- **Kontrol grubu:** Ölçek 1.0.
-- **Müdahale grubu:** N47→Sınıf0, N54→Sınıf2.
-- **Sonuç:** N47 gerçek Sınıf0 olasılığı `0.9640 → 0.9853`; N54 gerçek Sınıf2 `0.9583 → 0.9676`.
-- **Accuracy değişimi:** N47 `%97.46–97.54`; N54 `%97.53–97.42`.
-- **Grafik:** Ölçek ve olasılık.
-- **Yorum:** Nedensel kanıtı destekler; “nedensellik kanıtlandı” şeklinde ifade edilmez.
-- **Beklenmeyen sonuç:** Olasılık etkisi doğruluk etkisinden daha belirgin.
-- **Sonraki deney:** E06.
-
-## E06 — Korelasyon ve Nedensellik (Correlation vs Causality)
-- **Deney ID:** E06
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Korelasyonu nedensel kanıttan ayırmak.
-- **Hipotez:** Aktivasyon korelasyonu gözlenebilir, fakat tek başına nedensel değildir.
-- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST test; seed 42.
-- **Değiştirilen parametre:** Pearson korelasyon hesabı; model değişmedi.
-- **Kontrol grubu:** Tüm test seti ve Sınıf0 alt kümesi.
-- **Müdahale grubu:** Yok.
-- **Sonuç:** N17–N47 `r=0.4485` genel, `r=0.7846` Sınıf0.
-- **Accuracy değişimi:** Yok.
-- **Grafik:** Korelasyon grafiği.
-- **Yorum:** Korelasyon gözlemsel kanıt sağlar. Nedensel iddia için müdahale ve ablasyon gereklidir.
-- **Beklenmeyen sonuç:** Sınıf0 korelasyonu daha yüksek.
-- **Sonraki deney:** E07.
-
-## E07 — Aday Devre Keşfi (Candidate Circuit Discovery)
+### 3.2 — Aday Devre Keşfi (Candidate Circuit Discovery)
 - **Deney ID:** E07
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Sınıf0'a eğilimli aday grubu belirlemek.
@@ -126,87 +81,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Aday tek nöron yerine beşli grup olarak öne çıktı.
 - **Sonraki deney:** E08.
 
-## E08 — Birleşik Ablasyon (Combined Ablation)
-- **Deney ID:** E08
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** N17+N47 birleşik etkisinin toplamsal beklentiden sapmasını test etmek.
-- **Hipotez:** Birleşik etki tekil etkilerin toplamından farklı olabilir.
-- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST; seed 42.
-- **Değiştirilen parametre:** N17 ve N47 aktivasyonu `0`.
-- **Kontrol grubu:** Tekil ablasyon etkileri.
-- **Müdahale grubu:** N17+N47.
-- **Sonuç:** Genel `-0.3700 pp`; Sınıf0 birleşik `-2.7551 pp`; toplamsal beklenti `-1.7347 pp`; toplamsal olmayan fark `-1.0204 pp`.
-- **Accuracy değişimi:** Genel `-0.3700 pp`; Sınıf0 `-2.7551 pp`.
-- **Grafik:** Grup ablasyonu.
-- **Yorum:** İşlevsel etkileşim (functional interaction) / paylaşılan temsil (shared representation) düşündürür; etkileşim doğrudan kanıtlanmış değildir.
-- **Beklenmeyen sonuç:** Birleşik etki toplamsal beklentiden büyüktü.
-- **Sonraki deney:** E09.
-
-## E09 — Aktivasyon Yamalama (Activation Patching)
-- **Deney ID:** E09
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Kaynak aktivasyonu hedefe taşıyarak bilgi aktarımını test etmek.
-- **Hipotez:** Aday yamalama hedef çıktıyı Sınıf0 yönünde değiştirebilir.
-- **Model / Veri Seti / Seed:** MLP; Sınıf0 kaynak→Sınıf1 hedef; seed 42.
-- **Değiştirilen parametre:** Hedef aktivasyon yamalama.
-- **Kontrol grubu:** Yamalama yapılmamış hedef.
-- **Müdahale grubu:** N17, N47, N17+N47.
-- **Sonuç:** Ortalama olasılık değişimi N17 `+0.00000119`, N47 `+0.00000024`, N17+N47 `+0.00000247`.
-- **Accuracy değişimi:** Tahmin Sınıf1 olarak kaldı.
-- **Grafik:** Yamalama etkisi.
-- **Yorum:** Tek nöronlar davranış aktarımı için yeterli değildi; dağıtık temsil (distributed representation) hipotezini destekleyen bir gözlemdir.
-- **Beklenmeyen sonuç:** Etkiler çok küçüktü.
-- **Sonraki deney:** E10.
-
-## E10 — Dağıtık Özellik Yamalama (Distributed Feature Patching)
-- **Deney ID:** E10
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Aday grup büyüklüğünün yamalama etkisine etkisini test etmek.
-- **Hipotez:** Top-k grup etkisi tek nörondan daha güçlü olabilir.
-- **Model / Veri Seti / Seed:** MLP; Sınıf0→Sınıf1 yamalama çiftleri; seed 42.
-- **Değiştirilen parametre:** Yamalı grup büyüklüğü Top1/Top3/Top5.
-- **Kontrol grubu:** Yamalama yapılmamış hedef.
-- **Müdahale grubu:** Top1/Top3/Top5 aday grupları.
-- **Sonuç:** Ortalama Sınıf0 olasılık değişimi Top1 `+0.00000024`, Top3 `+0.00001863`, Top5 `+0.00546138`.
-- **Accuracy değişimi:** Kaynak kayıtta yamalama aktarımı için ayrı doğruluk değişimi verilmedi.
-- **Grafik:** Grup büyüklüğü ve yamalama etkisi.
-- **Yorum:** Dağıtık temsil adayı; yüksek std nedeniyle tek başına kesin devre değildir.
-- **Beklenmeyen sonuç:** Top5 etkisi belirgin biçimde büyüdü.
-- **Sonraki deney:** E11.
-
-## E11 — Sınıfa Özgü Yamalama Kontrolü (Class-Specific Patching Control)
-- **Deney ID:** E11
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Aday grubun yalnızca Sınıf0'a özgü olup olmadığını kontrol etmek.
-- **Hipotez:** Aday etki diğer hedef sınıflarda da görülebilir.
-- **Model / Veri Seti / Seed:** MLP; seed 42.
-- **Değiştirilen parametre:** Top5 aday yamalama.
-- **Kontrol grubu:** Sınıf1/Sınıf2 hedefleri.
-- **Müdahale grubu:** Top5 aday yamalama.
-- **Sonuç:** Sınıf1 hedefi `+0.00887395 ± 0.03161188`; Sınıf2 hedefi `+0.00536434 ± 0.02391533` Sınıf0 olasılık değişimi.
-- **Accuracy değişimi:** Kaynakta ayrı doğruluk sonucu verilmedi.
-- **Grafik:** Sınıfa özgü yamalama kontrolü.
-- **Yorum:** Aday Sınıf0'a özel değildir; bağlama bağlıdır (context-dependent).
-- **Beklenmeyen sonuç:** Diğer hedef sınıflar da etki aldı.
-- **Sonraki deney:** E12.
-
-## E12 — Logit Düzeyinde Yamalama (Logit-Level Patching)
-- **Deney ID:** E12
-- **Tarih:** 1. hafta; kesin tarih kaynakta yok
-- **Amaç:** Softmax doygunluğunun etkisini azaltmak için logit düzeyindeki yamalama etkisini ölçmek.
-- **Hipotez:** Olasılıktan daha büyük bir iç çıktı etkisi görülebilir.
-- **Model / Veri Seti / Seed:** MLP; seed 42.
-- **Değiştirilen parametre:** Top5 aday yamalama.
-- **Kontrol grubu:** Yamalama yapılmamış hedef.
-- **Müdahale grubu:** Top5 yamalama.
-- **Sonuç:** Sınıf1 hedefi Sınıf0 logiti `+6.024506 ± 1.621096`; Sınıf2 `+4.306821 ± 1.859204`.
-- **Accuracy değişimi:** Kaynakta ayrı doğruluk verilmedi.
-- **Grafik:** Logit yamalama etkisi.
-- **Yorum:** Aday grup Sınıf0 çıktısına güçlü fakat bağlama bağlı katkı gösterdi.
-- **Beklenmeyen sonuç:** Olasılık etkisine göre logit etkisi çok daha görünür.
-- **Sonraki deney:** E13.
-
-## E13 — Aday Grup Katkısı (Candidate Group Contribution)
+### 3.3 — Aday Grup Katkısı (Candidate Group Contribution)
 - **Deney ID:** E13
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Aday grubun çıktı logitlerine hesaplamalı katkısını ölçmek.
@@ -222,7 +97,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Grup Sınıf0'a eğilimli fakat yalnızca Sınıf0'a özgü değil.
 - **Sonraki deney:** E14.
 
-## E14 — Aday Grubun Tüm Logitlere Katkısı
+### 3.4 — Aday Grubun Tüm Logitlere Katkısı
 - **Deney ID:** E14
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Aday katkısının yalnızca Sınıf0 çıktı düğümü ile sınırlı olup olmadığını incelemek.
@@ -238,7 +113,40 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Aday grup bazı rakip logitleri bastırdı.
 - **Sonraki deney:** E15.
 
-## E15 — Aday Devre Ablasyonu (Candidate Circuit Ablation)
+## 4. Ablasyon ve Devre Müdahaleleri (Ablation / Circuit Intervention)
+### 4.1 — Tek Nöron Ablasyonu (Single-Neuron Ablation)
+- **Deney ID:** E04
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Seçilen nöronların aktivasyonunu sıfırlayıp çıktı etkisini ölçmek.
+- **Hipotez:** Aday nöron ablasyonu ilgili sınıf davranışını azaltacaktır.
+- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST test; seed 42.
+- **Değiştirilen parametre:** Seçilen aktivasyon `0`.
+- **Kontrol grubu:** Temel model.
+- **Müdahale grubu:** N54, N47, N62.
+- **Sonuç:** N47 Sınıf0 `%98.6735 → %97.7551` (`-0.9184 pp`); N54 Sınıf2 `-0.3876 pp`; N62 Sınıf3 `-0.4950 pp`.
+- **Accuracy değişimi:** En belirgin aday etkisi N47/Sınıf0 `-0.9184 pp`.
+- **Grafik:** Ablasyon doğruluğu.
+- **Yorum:** Nedensel kanıtı (causal evidence/support) destekler; eksiksiz mekanizma kanıtı değildir.
+- **Beklenmeyen sonuç:** N62 genel doğruluğu küçük ölçüde artırırken Sınıf3 düştü.
+- **Sonraki deney:** E05.
+
+### 4.2 — Birleşik Ablasyon (Combined Ablation)
+- **Deney ID:** E08
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** N17+N47 birleşik etkisinin toplamsal beklentiden sapmasını test etmek.
+- **Hipotez:** Birleşik etki tekil etkilerin toplamından farklı olabilir.
+- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST; seed 42.
+- **Değiştirilen parametre:** N17 ve N47 aktivasyonu `0`.
+- **Kontrol grubu:** Tekil ablasyon etkileri.
+- **Müdahale grubu:** N17+N47.
+- **Sonuç:** Genel `-0.3700 pp`; Sınıf0 birleşik `-2.7551 pp`; toplamsal beklenti `-1.7347 pp`; toplamsal olmayan fark `-1.0204 pp`.
+- **Accuracy değişimi:** Genel `-0.3700 pp`; Sınıf0 `-2.7551 pp`.
+- **Grafik:** Grup ablasyonu.
+- **Yorum:** İşlevsel etkileşim (functional interaction) / paylaşılan temsil (shared representation) düşündürür; etkileşim doğrudan kanıtlanmış değildir.
+- **Beklenmeyen sonuç:** Birleşik etki toplamsal beklentiden büyüktü.
+- **Sonraki deney:** E09.
+
+### 4.3 — Aday Devre Ablasyonu (Candidate Circuit Ablation)
 - **Deney ID:** E15
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Aday grubun birlikte çıkarılmasının Sınıf0 davranışına etkisini ölçmek.
@@ -254,7 +162,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Grup etkisi tekil nöron etkilerinden çok daha büyük.
 - **Sonraki deney:** E16.
 
-## E16 — Sınıfa Özgü Devre Kontrolü
+### 4.4 — Sınıfa Özgü Devre Kontrolü
 - **Deney ID:** E16
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Aday devre etkisinin sınıfa özgü olup olmadığını kontrol etmek.
@@ -270,7 +178,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Sınıf1'de küçük doğruluk artışı.
 - **Sonraki deney:** E17.
 
-## E17 — Tekli Çıkarma Analizi (Leave-One-Out Analysis)
+### 4.5 — Tekli Çıkarma Analizi (Leave-One-Out Analysis)
 - **Deney ID:** E17
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Grup içindeki her nöronun çıkarılmasıyla kalan-grup önemini ölçmek.
@@ -286,7 +194,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** N57 tek nöron ablasyonunda zayıfken tekli çıkarma bağlamında en güçlüydü.
 - **Sonraki deney:** E18.
 
-## E18 — Aşamalı Devre Ablasyonu (Progressive Circuit Ablation)
+### 4.6 — Aşamalı Devre Ablasyonu (Progressive Circuit Ablation)
 - **Deney ID:** E18
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Aday grup büyüklüğü arttıkça Sınıf0 etkisinin nasıl değiştiğini görmek.
@@ -302,7 +210,7 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Grup etkisi hızlı büyüdü.
 - **Sonraki deney:** E19.
 
-## E19 — Rastgele Kontroller / Mekanistik Doğrulama
+### 4.7 — Rastgele Kontroller / Mekanistik Doğrulama
 - **Deney ID:** E19
 - **Tarih:** 1. hafta; kesin tarih kaynakta yok
 - **Amaç:** Aday devre etkisini rastgele kontrol ve sınıf kontrolü ile karşılaştırmak.
@@ -318,30 +226,105 @@ Bu dosya, hocanın istediği standart deney kayıt formatını `experiments/` al
 - **Beklenmeyen sonuç:** Rastgele kontrol etkisi aday etkisinden yaklaşık iki mertebe küçüktür.
 - **Sonraki deney:** 2. hafta — çoklu seed tekrarı (multi-seed replication, E06).
 
+## 5. Aktivasyon Müdahalesi ve Yamalama (Activation Intervention / Patching)
+### 5.1 — Aktivasyon Müdahalesi (Activation Intervention)
+- **Deney ID:** E05
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Aktivasyon ölçekleme ile çıktı olasılığındaki değişimi test etmek.
+- **Hipotez:** Aktivasyon değişimi hedef sınıf olasılığını sistematik olarak değiştirecektir.
+- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST test; seed 42.
+- **Değiştirilen parametre:** Ölçek `0.0, 0.5, 1.0, 1.5, 2.0`.
+- **Kontrol grubu:** Ölçek 1.0.
+- **Müdahale grubu:** N47→Sınıf0, N54→Sınıf2.
+- **Sonuç:** N47 gerçek Sınıf0 olasılığı `0.9640 → 0.9853`; N54 gerçek Sınıf2 `0.9583 → 0.9676`.
+- **Accuracy değişimi:** N47 `%97.46–97.54`; N54 `%97.53–97.42`.
+- **Grafik:** Ölçek ve olasılık.
+- **Yorum:** Nedensel kanıtı destekler; “nedensellik kanıtlandı” şeklinde ifade edilmez.
+- **Beklenmeyen sonuç:** Olasılık etkisi doğruluk etkisinden daha belirgin.
+- **Sonraki deney:** E06.
+
+### 5.2 — Aktivasyon Yamalama (Activation Patching)
+- **Deney ID:** E09
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Kaynak aktivasyonu hedefe taşıyarak bilgi aktarımını test etmek.
+- **Hipotez:** Aday yamalama hedef çıktıyı Sınıf0 yönünde değiştirebilir.
+- **Model / Veri Seti / Seed:** MLP; Sınıf0 kaynak→Sınıf1 hedef; seed 42.
+- **Değiştirilen parametre:** Hedef aktivasyon yamalama.
+- **Kontrol grubu:** Yamalama yapılmamış hedef.
+- **Müdahale grubu:** N17, N47, N17+N47.
+- **Sonuç:** Ortalama olasılık değişimi N17 `+0.00000119`, N47 `+0.00000024`, N17+N47 `+0.00000247`.
+- **Accuracy değişimi:** Tahmin Sınıf1 olarak kaldı.
+- **Grafik:** Yamalama etkisi.
+- **Yorum:** Tek nöronlar davranış aktarımı için yeterli değildi; dağıtık temsil (distributed representation) hipotezini destekleyen bir gözlemdir.
+- **Beklenmeyen sonuç:** Etkiler çok küçüktü.
+- **Sonraki deney:** E10.
+
+### 5.3 — Dağıtık Özellik Yamalama (Distributed Feature Patching)
+- **Deney ID:** E10
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Aday grup büyüklüğünün yamalama etkisine etkisini test etmek.
+- **Hipotez:** Top-k grup etkisi tek nörondan daha güçlü olabilir.
+- **Model / Veri Seti / Seed:** MLP; Sınıf0→Sınıf1 yamalama çiftleri; seed 42.
+- **Değiştirilen parametre:** Yamalı grup büyüklüğü Top1/Top3/Top5.
+- **Kontrol grubu:** Yamalama yapılmamış hedef.
+- **Müdahale grubu:** Top1/Top3/Top5 aday grupları.
+- **Sonuç:** Ortalama Sınıf0 olasılık değişimi Top1 `+0.00000024`, Top3 `+0.00001863`, Top5 `+0.00546138`.
+- **Accuracy değişimi:** Kaynak kayıtta yamalama aktarımı için ayrı doğruluk değişimi verilmedi.
+- **Grafik:** Grup büyüklüğü ve yamalama etkisi.
+- **Yorum:** Dağıtık temsil adayı; yüksek std nedeniyle tek başına kesin devre değildir.
+- **Beklenmeyen sonuç:** Top5 etkisi belirgin biçimde büyüdü.
+- **Sonraki deney:** E11.
+
+### 5.4 — Sınıfa Özgü Yamalama Kontrolü (Class-Specific Patching Control)
+- **Deney ID:** E11
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Aday grubun yalnızca Sınıf0'a özgü olup olmadığını kontrol etmek.
+- **Hipotez:** Aday etki diğer hedef sınıflarda da görülebilir.
+- **Model / Veri Seti / Seed:** MLP; seed 42.
+- **Değiştirilen parametre:** Top5 aday yamalama.
+- **Kontrol grubu:** Sınıf1/Sınıf2 hedefleri.
+- **Müdahale grubu:** Top5 aday yamalama.
+- **Sonuç:** Sınıf1 hedefi `+0.00887395 ± 0.03161188`; Sınıf2 hedefi `+0.00536434 ± 0.02391533` Sınıf0 olasılık değişimi.
+- **Accuracy değişimi:** Kaynakta ayrı doğruluk sonucu verilmedi.
+- **Grafik:** Sınıfa özgü yamalama kontrolü.
+- **Yorum:** Aday Sınıf0'a özel değildir; bağlama bağlıdır (context-dependent).
+- **Beklenmeyen sonuç:** Diğer hedef sınıflar da etki aldı.
+- **Sonraki deney:** E12.
+
+### 5.5 — Logit Düzeyinde Yamalama (Logit-Level Patching)
+- **Deney ID:** E12
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Softmax doygunluğunun etkisini azaltmak için logit düzeyindeki yamalama etkisini ölçmek.
+- **Hipotez:** Olasılıktan daha büyük bir iç çıktı etkisi görülebilir.
+- **Model / Veri Seti / Seed:** MLP; seed 42.
+- **Değiştirilen parametre:** Top5 aday yamalama.
+- **Kontrol grubu:** Yamalama yapılmamış hedef.
+- **Müdahale grubu:** Top5 yamalama.
+- **Sonuç:** Sınıf1 hedefi Sınıf0 logiti `+6.024506 ± 1.621096`; Sınıf2 `+4.306821 ± 1.859204`.
+- **Accuracy değişimi:** Kaynakta ayrı doğruluk verilmedi.
+- **Grafik:** Logit yamalama etkisi.
+- **Yorum:** Aday grup Sınıf0 çıktısına güçlü fakat bağlama bağlı katkı gösterdi.
+- **Beklenmeyen sonuç:** Olasılık etkisine göre logit etkisi çok daha görünür.
+- **Sonraki deney:** E13.
+
+## 6. Korelasyon ve Nedensellik (Correlation vs Causality)
+### 6.1 — Korelasyon ve Nedensellik (Correlation vs Causality)
+- **Deney ID:** E06
+- **Tarih:** 1. hafta; kesin tarih kaynakta yok
+- **Amaç:** Korelasyonu nedensel kanıttan ayırmak.
+- **Hipotez:** Aktivasyon korelasyonu gözlenebilir, fakat tek başına nedensel değildir.
+- **Model / Veri Seti / Seed:** Ortak koşullar; MNIST test; seed 42.
+- **Değiştirilen parametre:** Pearson korelasyon hesabı; model değişmedi.
+- **Kontrol grubu:** Tüm test seti ve Sınıf0 alt kümesi.
+- **Müdahale grubu:** Yok.
+- **Sonuç:** N17–N47 `r=0.4485` genel, `r=0.7846` Sınıf0.
+- **Accuracy değişimi:** Yok.
+- **Grafik:** Korelasyon grafiği.
+- **Yorum:** Korelasyon gözlemsel kanıt sağlar. Nedensel iddia için müdahale ve ablasyon gereklidir.
+- **Beklenmeyen sonuç:** Sınıf0 korelasyonu daha yüksek.
+- **Sonraki deney:** E07.
+
 ---
-
-## Deney 4 Yapısal Düzenleme
-
-Hafta 1 kayıtlarındaki aday devre ablasyonu bölümü, raporlama sırasında aşağıdaki hiyerarşik yapı ile okunacaktır. Mevcut E15–E19 kayıtlarının deneysel içeriği değiştirilmez; yalnızca daha düzenli bir alt-deney yapısına bağlanır.
-
-### 4.1 — Devre Ablasyonu
-**Kaynak kayıt:** E15 — Aday Devre Ablasyonu  
-Aday devrenin `[47,17,57,53,28]` birlikte sıfırlanması ve Class 0 doğruluğundaki değişimin ölçülmesi.
-
-### 4.2 — Random Control
-**Kaynak kayıt:** E19 — Rastgele Kontroller / Mekanistik Doğrulama  
-Aday devre etkisinin rastgele seçilmiş nöron gruplarıyla karşılaştırılması.
-
-### 4.3 — Leave-One-Out
-**Kaynak kayıt:** E17 — Tekli Çıkarma Analizi  
-Aday devre içindeki her nöronun çıkarılmasıyla grup-bağlamındaki katkının incelenmesi.
-
-### 4.4 — Progressive Ablation
-**Kaynak kayıt:** E18 — Aşamalı Devre Ablasyonu  
-Aday grup büyüklüğünün 1'den 5 nörona çıkarılmasıyla toplam etkinin izlenmesi.
-
-### Yapısal Not
-E16'daki **Sınıfa Özgü Devre Kontrolü**, 4.1–4.4 çekirdek ablasyon zincirinin dışında yardımcı bir sınıf kontrolü olarak tutulmuştur. Böylece `4.1 → 4.2 → 4.3 → 4.4` sırası doğrudan devre ablasyonu → random control → leave-one-out → progressive ablation akışını temsil eder.
 
 ## Kaynak ve Tekrar Üretilebilirlik
 - Ayrıntılı ham sayısal kayıt: `notes/experiment_log.md`.
