@@ -4,3 +4,5 @@ numpy>=1.26
 pandas>=2.0
 matplotlib>=3.8
 scikit-learn>=1.4
+transformers>=4.40
+huggingface_hub>=0.23
