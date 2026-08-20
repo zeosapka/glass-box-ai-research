@@ -26,4 +26,10 @@ Bu indeks, Colab'da gerçekleştirilen deneylerin GitHub kayıtlarını tek nokt
 
 ## Source of truth
 
-Sayısal sonuçların ana kaydı `notes/experiment_log.md` dosyasıdır. Bu indeks yalnız navigasyon içindir; yeni sonuç üretmez.
+Birinci haftanın sayısal sonuçlarının ham/detaylı kaydı `notes/experiment_log.md` dosyasında korunmaktadır.
+
+Hocanın istediği standart deney günlüğü formatına göre yeniden düzenlenmiş kayıt ise:
+
+`notes/experiment_log_week1_standardized.md`
+
+İkinci haftadan itibaren her deney için hedef başarım kriteri, doğrulama sonucu, varsa istatistiksel anlamlılık ve commit hash alanları da deney kaydına eklenecektir.
