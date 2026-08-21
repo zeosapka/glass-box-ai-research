@@ -329,3 +329,87 @@ E10, aday grubun random kontrol gruplarına göre daha güçlü bir grup etkisi 
 ### Sonraki Deney
 
 **E11 — Sentetik True-vs-Spurious Feature Testi:** Bilinen gerçek kural ile spurious (sahte/yanıltıcı) korelasyonlu feature'ı ayıran kontrollü sentetik veri üzerinde Glass Box müdahale metodolojisinin doğrulanması.
+
+---
+
+## E11 — Sentetik True-vs-Spurious Feature Testi (Synthetic True-vs-Spurious Feature Test)
+
+- **Deney ID:** E11
+- **Tarih:** 21.08.2026
+- **Amaç:** Bilinen gerçek kural ile spurious (sahte/yanıltıcı) korelasyonlu feature'ın ayrıştırılabildiği kontrollü sentetik veri üzerinde modelin spurious feature'a bağımlılığını test etmek.
+- **Hipotez:** Model normal testte yüksek doğruluk göstermeli; spurious feature rastgeleleştirildiğinde gerçek feature sabit kalmasına rağmen doğrulukta ölçülebilir bir düşüş oluşmalıdır. Bu düşüş modelin spurious feature'dan yararlandığı hipotezini destekleyecektir.
+- **Veri Seti:** Sentetik ikili sınıflandırma verisi; `N_TRAIN=5000`, `N_TEST=2000`, `SEED=42`.
+- **Gerçek feature:** `N(0,1)` dağılımından üretildi ve `y = (true_feature > 0)` kuralı ile etiket oluşturuldu. Gerçek feature'ın etiketle ilişkisi deterministiktir.
+- **Spurious feature:** Eğitim ve normal test verisinde etiketle yaklaşık `%95` korelasyonlu olacak şekilde oluşturuldu; yaklaşık `%5` örnekte sınıf değeri ters çevrildi.
+- **Spurious-broken test:** Gerçek feature ve gerçek etiketler değiştirilmedi; yalnızca spurious feature rastgele `0/1` değerleriyle değiştirildi.
+- **Model:** `Linear(2,16) → ReLU → Linear(16,8) → ReLU → Linear(8,2)`; toplam `202` parametre.
+- **Eğitim:** CrossEntropyLoss; Adam; learning rate `0.001`; `50` epoch.
+- **Başarı kriteri:** Normal test accuracy `≥ 90%` ve spurious feature bozulduğunda oluşan performans değişiminin nicel olarak raporlanması.
+
+### Veri Doğrulama
+
+- Gerçek feature → label doğruluğu: **%100.00**
+- Train spurious correlation: **0.9524**
+- Normal test spurious correlation: **0.9475**
+- Spurious-broken test korelasyonu: **0.4965**
+
+### Sonuçlar
+
+| Ölçüm | Değer |
+|---|---:|
+| Train accuracy | **%96.04** |
+| Normal test accuracy | **%95.95** |
+| Spurious-broken accuracy | **%80.40** |
+| Accuracy drop | **15.55 pp** |
+
+### Başarı Kriterleri
+
+| Kriter | Sonuç | Değerlendirme |
+|---|---:|---|
+| Normal test accuracy `≥ 90%` | `%95.95` | **PASS** |
+| Spurious feature bozulduğunda performans değişiminin ölçülmesi | `−15.55 pp` | **PASS** |
+| Genel E11 değerlendirmesi |  | **PASS / SUPPORT** |
+
+### Verification Result
+
+Model eğitim verisinde `%96.04`, normal testte `%95.95` doğruluk elde etti. Gerçek feature değiştirilmeden yalnızca spurious feature rastgeleleştirildiğinde test accuracy `%80.40`'a düştü. Böylece performans **15.55 yüzde puanı** azaldı. Müdahale, modelin spurious feature'dan yararlandığını destekleyen kontrollü bir davranış değişimi oluşturmuştur.
+
+### Yorum
+
+E11 sonucu, modelin yalnızca gerçek feature'a dayanmadığını; normal koşullarda spurious feature'dan da yararlandığını desteklemektedir. Ancak spurious feature'ın kırılmasından sonra doğruluk `%80.40` seviyesinde kaldığı için modelin tamamen spurious feature'a bağımlı olduğu söylenemez. Gerçek feature modelin tahmininde hâlâ anlamlı bir rol oynamaktadır.
+
+Bu deneyin değeri, bilinen gerçek kural ve bilinen spurious korelasyon sayesinde müdahale sonucunun yorumlanabilir olmasıdır. Sonuç **spurious feature kullanımına dair deneysel destek** olarak kaydedilmiştir; tek başına genel nedensellik veya mekanizma çözümü iddiası değildir.
+
+### Methodological Note
+
+İlk sentetik veri üretim denemesinde gerçek feature'a eklenen gürültü nedeniyle model öğrenme davranışı yaklaşık rastgele seviyede kalmıştır. Bu tasarım sorunu gözlendikten sonra deney, bilinen gerçek kuralın deterministik olduğu ve spurious feature'ın kontrollü biçimde `%95` korelasyon taşıdığı temiz sentetik veri tasarımıyla yeniden çalıştırılmıştır. Sonuçlar temiz tasarım üzerinden raporlanmıştır; başarısız ilk tasarım metodolojik hata olarak korunmalı, nihai E11 sonucu ile karıştırılmamalıdır.
+
+### E11 Grafik
+
+`figures/week2/e11_true_vs_spurious_accuracy.svg` — normal test ile spurious-broken test accuracy değerlerini karşılaştırır.
+
+### Sonraki Adım
+
+E11 ile birlikte Week 2'nin deneysel grafik seti tamamlanmıştır. Son aşamada Week 1 ve Week 2'nin metodolojik ilerlemesi özetlenmiştir.
+
+---
+
+## Week 1 vs Week 2 — Metodolojik Özet
+
+- **Week 1 candidate/random separation:** **107.32×**; tek seed (`seed=42`).
+- **Week 2 multi-seed candidate/random separation:** **79.77×**; `5` seed (`42, 0, 7, 123, 2024`) üzerinden ortalama etki büyüklükleri kullanılmıştır.
+- Week 2'de tek seed yaklaşımından çoklu seed tekrarına, geniş random-control karşılaştırmalarına ve Discovery/Holdout ayrımına geçilmiştir.
+- E07'de aday boyutların güçlü L1 ayrışması Holdout verisinde korunmuştur.
+- E09'da aday `496` için daha geniş 50-control dağılımı kullanılmış ve önceden belirlenen istatistiksel ayrışma kriterleri karşılanmamıştır (`z=0.854322`, `%84` percentile).
+- E10'da grup müdahalesinde non-additive davranış gözlenmiş, ancak aday grubun random gruplardan daha güçlü olduğu gösterilememiştir.
+- E11'de kontrollü sentetik veri üzerinde spurious feature bozulmasının **15.55 pp** accuracy düşüşüne yol açtığı gösterilmiştir.
+
+### Week 1 → Week 2 Genel Yorum
+
+Week 1'de aday özellik/devre etkisi için güçlü bir başlangıç gözlemi elde edilirken, Week 2 aynı araştırma çizgisini daha kontrollü ve doğrulanabilir hale getirmiştir. Özellikle çoklu seed, Discovery/Holdout ayrımı, random-control dağılımları ve sentetik bilinen-kural testi, gözlenen iç temsil etkilerinin yalnızca tek bir örneğe bağlı olmadığını sınamak için eklenmiştir. Bununla birlikte E09 gibi başarısız istatistiksel ayrışma sonuçları özellikle korunmuş ve sonuçlar yalnızca destekledikleri ölçüde yorumlanmıştır.
+
+### Week 1 vs Week 2 Grafik
+
+`figures/week2/week1_vs_week2_summary.svg` — candidate/random control separation oranını Week 1 ve Week 2 arasında karşılaştırır; Week 1 için `1 seed`, Week 2 için `5 seeds` kapsamı ayrıca gösterilir.
+
+---
