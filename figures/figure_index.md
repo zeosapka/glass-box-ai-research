@@ -36,6 +36,7 @@ figures/
 | `week2/e07_discovery_holdout_ranking.svg` | E07 | Aday boyutların Discovery ve Holdout L1 sıralamalarının karşılaştırması |
 | `week2/e08_directional_dose_response.svg` | E08 | Aday 496 ve beş kontrol boyutunda yönlü graded intervention ile müdahale seviyesi–L1 çıktı değişimi ilişkisi |
 | `week2/e09_statistical_control_distribution.svg` | E09 | 50 random control boyutunun mean L1 effect dağılımı; aday 496 ve kontrol ortalaması karşılaştırması |
+| `week2/e10_group_effect_comparison.svg` | E10 | Aday grubun birlikte ablasyon etkisi, tekil etkilerin toplamı ve 5 random 5-boyutlu kontrol grubunun karşılaştırması |
 
 ## Dil Standardı
 
