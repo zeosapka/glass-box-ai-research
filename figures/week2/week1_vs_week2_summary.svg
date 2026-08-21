@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="white"/>
+  <text x="400" y="35" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">Week 1 vs Week 2 — Candidate/Random Control Separation</text>
+  <line x1="80" y1="430" x2="760" y2="430" stroke="black"/><line x1="80" y1="60" x2="80" y2="430" stroke="black"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="black">
+    <text x="65" y="435" text-anchor="end">0</text><text x="65" y="360" text-anchor="end">20</text><text x="65" y="285" text-anchor="end">40</text><text x="65" y="210" text-anchor="end">60</text><text x="65" y="135" text-anchor="end">80</text><text x="65" y="60" text-anchor="end">100</text>
+    <text x="400" y="480" text-anchor="middle">Candidate / Random Control Effect Ratio</text>
+  </g>
+  <g stroke="#dddddd"><line x1="80" y1="355" x2="760" y2="355"/><line x1="80" y1="280" x2="760" y2="280"/><line x1="80" y1="205" x2="760" y2="205"/><line x1="80" y1="130" x2="760" y2="130"/></g>
+  <rect x="140" y="107.0" width="230" height="323" fill="#1f77b4"/>
+  <rect x="470" y="190.7" width="230" height="239.3" fill="#1f77b4"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif" font-size="16" fill="black">
+    <text x="255" y="95" text-anchor="middle">107.32×</text><text x="255" y="113" text-anchor="middle" font-size="13">(1 seed)</text>
+    <text x="585" y="178" text-anchor="middle">79.77×</text><text x="585" y="196" text-anchor="middle" font-size="13">(5 seeds)</text>
+    <text x="255" y="450" text-anchor="middle">Week 1</text><text x="585" y="450" text-anchor="middle">Week 2</text>
+  </g>
+</svg>
