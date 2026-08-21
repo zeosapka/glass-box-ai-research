@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600">
+  <rect width="1000" height="600" fill="white"/>
+  <text x="500" y="42" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold">E10 — Aday Grup ve Random Kontroller</text>
+  <text x="500" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="16">Gruplar</text>
+  <text x="25" y="300" text-anchor="middle" transform="rotate(-90 25 300)" font-family="Arial, sans-serif" font-size="16">L1 çıktı değişimi</text>
+
+  <!-- Plot area -->
+  <line x1="90" y1="520" x2="950" y2="520" stroke="#222" stroke-width="2"/>
+  <line x1="90" y1="80" x2="90" y2="520" stroke="#222" stroke-width="2"/>
+
+  <!-- Y grid / labels: 0 to 0.09 -->
+  <g font-family="Arial, sans-serif" font-size="12" fill="#333">
+    <line x1="90" y1="520" x2="950" y2="520" stroke="#ddd"/>
+    <text x="78" y="524" text-anchor="end">0.00</text>
+    <line x1="90" y1="471.1" x2="950" y2="471.1" stroke="#eee"/>
+    <text x="78" y="475.1" text-anchor="end">0.01</text>
+    <line x1="90" y1="422.2" x2="950" y2="422.2" stroke="#eee"/>
+    <text x="78" y="426.2" text-anchor="end">0.02</text>
+    <line x1="90" y1="373.3" x2="950" y2="373.3" stroke="#eee"/>
+    <text x="78" y="377.3" text-anchor="end">0.03</text>
+    <line x1="90" y1="324.4" x2="950" y2="324.4" stroke="#eee"/>
+    <text x="78" y="328.4" text-anchor="end">0.04</text>
+    <line x1="90" y1="275.6" x2="950" y2="275.6" stroke="#eee"/>
+    <text x="78" y="279.6" text-anchor="end">0.05</text>
+    <line x1="90" y1="226.7" x2="950" y2="226.7" stroke="#eee"/>
+    <text x="78" y="230.7" text-anchor="end">0.06</text>
+    <line x1="90" y1="177.8" x2="950" y2="177.8" stroke="#eee"/>
+    <text x="78" y="181.8" text-anchor="end">0.07</text>
+    <line x1="90" y1="128.9" x2="950" y2="128.9" stroke="#eee"/>
+    <text x="78" y="132.9" text-anchor="end">0.08</text>
+    <line x1="90" y1="80" x2="950" y2="80" stroke="#eee"/>
+    <text x="78" y="84" text-anchor="end">0.09</text>
+  </g>
+
+  <!-- Candidate and individual-sum bars -->
+  <rect x="150" y="356.2" width="90" height="163.8" fill="#777"/>
+  <rect x="285" y="275.5" width="90" height="244.5" fill="#444"/>
+  <text x="195" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="13">Aday grup</text>
+  <text x="330" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="13">Tekil toplam</text>
+
+  <!-- Random group points -->
+  <g fill="#111">
+    <circle cx="500" cy="309.3" r="7"/>
+    <circle cx="620" cy="195.4" r="7"/>
+    <circle cx="740" cy="416.6" r="7"/>
+    <circle cx="860" cy="291.6" r="7"/>
+    <circle cx="930" cy="116.2" r="7"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="13" fill="#222">
+    <text x="500" y="545" text-anchor="middle">Random 1</text>
+    <text x="620" y="545" text-anchor="middle">Random 2</text>
+    <text x="740" y="545" text-anchor="middle">Random 3</text>
+    <text x="860" y="545" text-anchor="middle">Random 4</text>
+    <text x="930" y="545" text-anchor="middle">Random 5</text>
+  </g>
+
+  <!-- Random mean: 0.051979 -->
+  <line x1="90" y1="266.1" x2="950" y2="266.1" stroke="#555" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="945" y="258" text-anchor="end" font-family="Arial, sans-serif" font-size="13" fill="#444">Random ortalama = 0.051979</text>
+
+  <!-- Value labels -->
+  <g font-family="Arial, sans-serif" font-size="13" fill="#222">
+    <text x="195" y="348" text-anchor="middle">0.033458</text>
+    <text x="330" y="267" text-anchor="middle">0.049894</text>
+    <text x="500" y="300" text-anchor="middle">0.043100</text>
+    <text x="620" y="186" text-anchor="middle">0.066373</text>
+    <text x="740" y="408" text-anchor="middle">0.021147</text>
+    <text x="860" y="283" text-anchor="middle">0.046709</text>
+    <text x="930" y="108" text-anchor="middle">0.082566</text>
+  </g>
+
+  <text x="500" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">Candidate z = −0.7898 • percentile = %20</text>
+</svg>
