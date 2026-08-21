@@ -174,3 +174,56 @@ Bu sonuç istatistiksel anlamlılık veya mekanizmanın kanıtlandığı anlamı
 ### E10 Grafik
 
 `figures/week2/e10_group_effect_comparison.svg` — aday grubun birlikte etkisini, tekil etkilerin toplamını ve beş random 5-boyutlu kontrol grubunu karşılaştırır; random kontrol ortalaması, `z = −0.7898` ve `%20` percentile bilgileri görsel olarak işaretlenmiştir.
+
+## E11 — Sentetik True-vs-Spurious Feature Testi
+
+- Sentetik veri: `N_TRAIN=5000`, `N_TEST=2000`, `SEED=42`.
+- Gerçek feature: `N(0,1)` dağılımı ve deterministik `y = (true_feature > 0)` kuralı.
+- Spurious feature: eğitim ve normal testte yaklaşık `%95` etiket korelasyonu; yaklaşık `%5` değer ters çevrilmiştir.
+- Spurious-broken test: gerçek feature ve etiketler sabit tutuldu; yalnızca spurious feature rastgele `0/1` değerleriyle değiştirildi.
+- Model: `Linear(2,16) → ReLU → Linear(16,8) → ReLU → Linear(8,2)`; `202` parametre.
+- Eğitim: CrossEntropyLoss; Adam; learning rate `0.001`; `50` epoch.
+- Train accuracy: **%96.04**.
+- Normal test accuracy: **%95.95**.
+- Spurious-broken accuracy: **%80.40**.
+- Accuracy drop: **15.55 pp**.
+- Sonuç: **PASS / SUPPORT** — normal test accuracy `≥90%` kriteri karşılandı ve spurious feature bozulmasının etkisi nicel olarak gösterildi.
+
+### E11 Ana Bulgusu
+
+Model, normal testte `%95.95` doğruluk elde ederken gerçek feature değiştirilmeden yalnızca spurious feature rastgeleleştirildiğinde `%80.40` doğruluğa düşmüştür. `15.55` yüzde puanlık düşüş, modelin spurious feature'dan yararlandığını desteklemektedir. Bununla birlikte broken testte accuracy `%80.40` seviyesinde kaldığı için modelin tamamen spurious feature'a bağımlı olduğu söylenemez; gerçek feature da tahminde rol oynamaktadır.
+
+### E11 Veri Doğrulama
+
+- Gerçek feature → label doğruluğu: **%100.00**
+- Train spurious correlation: **0.9524**
+- Normal test spurious correlation: **0.9475**
+- Spurious-broken test korelasyonu: **0.4965**
+
+### E11 Methodological Note
+
+İlk sentetik veri tasarımında gerçek feature'a eklenen gürültü nedeniyle model öğrenme davranışı yaklaşık rastgele seviyede kalmıştır. Tasarım sorunu gözlendikten sonra deney, gerçek kuralın deterministik olduğu ve spurious feature'ın kontrollü biçimde `%95` korelasyon taşıdığı temiz sentetik veri tasarımıyla yeniden çalıştırılmıştır. Nihai E11 sonucu temiz tasarım üzerinden raporlanmıştır; başarısız ilk tasarım ayrı bir metodolojik not olarak korunmalıdır.
+
+### E11 Grafik
+
+`figures/week2/e11_true_vs_spurious_accuracy.svg` — normal test ile spurious-broken test accuracy değerlerinin karşılaştırması.
+
+---
+
+# Week 1 vs Week 2 — Metodolojik Özet
+
+- **Week 1 candidate/random separation:** **107.32×**; tek seed (`seed=42`).
+- **Week 2 multi-seed candidate/random separation:** **79.77×**; `5` seed (`42, 0, 7, 123, 2024`) üzerinden ortalama etki büyüklükleri kullanılmıştır.
+- Week 2'de tek seed yaklaşımından çoklu seed tekrarına, geniş random-control karşılaştırmalarına ve Discovery/Holdout ayrımına geçilmiştir.
+- E07'de aday boyutların güçlü L1 ayrışması Holdout verisinde korunmuştur.
+- E09'da aday `496` için 50-control dağılımı kullanılmış ve önceden belirlenen istatistiksel ayrışma kriterleri karşılanmamıştır (`z=0.854322`, `%84` percentile).
+- E10'da grup müdahalesinde non-additive davranış gözlenmiş, ancak aday grubun random gruplardan daha güçlü olduğu gösterilememiştir.
+- E11'de kontrollü sentetik veri üzerinde spurious feature bozulmasının **15.55 pp** accuracy düşüşüne yol açtığı gösterilmiştir.
+
+### Week 1 → Week 2 Genel Yorum
+
+Week 1'de aday özellik/devre etkisi için güçlü bir başlangıç gözlemi elde edilirken, Week 2 aynı araştırma çizgisini daha kontrollü ve doğrulanabilir hale getirmiştir. Özellikle çoklu seed, Discovery/Holdout ayrımı, random-control dağılımları ve sentetik bilinen-kural testi, gözlenen iç temsil etkilerinin yalnızca tek bir örneğe bağlı olmadığını sınamak için eklenmiştir. Bununla birlikte E09 gibi başarısız istatistiksel ayrışma sonuçları özellikle korunmuş ve sonuçlar yalnızca destekledikleri ölçüde yorumlanmıştır.
+
+### Week 1 vs Week 2 Grafik
+
+`figures/week2/week1_vs_week2_summary.svg` — candidate/random control separation oranını Week 1 ve Week 2 arasında karşılaştırır; Week 1 için `1 seed`, Week 2 için `5 seeds` kapsamı ayrıca gösterilir.
