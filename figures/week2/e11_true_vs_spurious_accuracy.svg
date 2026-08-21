@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="white"/>
+  <text x="400" y="35" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">E11 — True-vs-Spurious Feature Test</text>
+  <line x1="80" y1="430" x2="760" y2="430" stroke="black"/>
+  <line x1="80" y1="60" x2="80" y2="430" stroke="black"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="black">
+    <text x="65" y="435" text-anchor="end">0</text><text x="65" y="361" text-anchor="end">20</text><text x="65" y="287" text-anchor="end">40</text><text x="65" y="213" text-anchor="end">60</text><text x="65" y="139" text-anchor="end">80</text><text x="65" y="65" text-anchor="end">100</text>
+    <text x="400" y="480" text-anchor="middle">Test Accuracy (%)</text>
+  </g>
+  <g stroke="#dddddd"><line x1="80" y1="356" x2="760" y2="356"/><line x1="80" y1="282" x2="760" y2="282"/><line x1="80" y1="208" x2="760" y2="208"/><line x1="80" y1="134" x2="760" y2="134"/><line x1="80" y1="60" x2="760" y2="60"/></g>
+  <rect x="140" y="75" width="230" height="355" fill="#1f77b4"/>
+  <rect x="470" y="132.5" width="230" height="297.5" fill="#1f77b4"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif" font-size="16" fill="black">
+    <text x="255" y="65" text-anchor="middle">95.95%</text><text x="585" y="122" text-anchor="middle">80.40%</text>
+    <text x="255" y="450" text-anchor="middle">Normal test</text><text x="585" y="450" text-anchor="middle">Spurious-broken test</text>
+  </g>
+</svg>
