@@ -136,3 +136,41 @@ E09'un başarısız olması deneyin uygulanamadığı anlamına gelmez; deney ba
 ### E09 Grafik
 
 `figures/week2/e09_statistical_control_distribution.svg` — 50 random control boyutunun mean L1 effect dağılımı; aday `496` ve kontrol ortalaması referans çizgileriyle gösterilmiştir.
+
+## E10 — Grup Müdahalesi (Group Intervention)
+
+- Aday grup: `[471, 228, 12, 358, 529]`.
+- Model: `distilgpt2` causal language model; hedef katman `layer 5`; hidden size `768`.
+- Test cümlesi: `The cat is sitting on the mat.`
+- Müdahale yöntemi: Hedef katmandaki seçilen hidden-state boyutları birlikte `0` yapılarak grup ablasyonu uygulandı.
+- Tekil aday boyut etkileri: `471=0.001824`, `228=0.003006`, `12=0.003591`, `358=0.032780`, `529=0.008693`.
+- Tekil etkilerin basit toplamı: **0.049894**.
+- Birlikte aday grup etkisi: **0.033458**.
+- Non-additive difference: **−0.016436**.
+- Joint / individual-sum oranı: **0.670583**.
+- Random kontrol grubu sayısı: `5`; her grup `5` farklı dimension içerir ve aday boyutlarla çakışmaz.
+- Random grup etkileri: `0.043100`, `0.066373`, `0.021147`, `0.046709`, `0.082566`.
+- Random control ortalaması: **0.051979**.
+- Random control standart sapması: **0.023452**.
+- Candidate vs. random z-score: **−0.789750**.
+- Candidate percentile: **%20**.
+
+### E10 Başarı Kriterleri
+
+| Kriter | Sonuç | Değerlendirme |
+|---|---:|---|
+| (a) Candidate group random kontrollerden belirgin büyük (`z ≥ 2`) | `−0.789750` | **FAIL** |
+| (b) Grup etkisi tekil etkilerin basit toplamından farklı | `−0.016436` | **PASS / SUPPORT** |
+| Genel E10 değerlendirmesi |  | **PASS / SUPPORT** |
+
+### E10 Ana Bulgusu
+
+Aday 5'li grubun birlikte ablasyonu `0.033458` L1 çıktı değişimi oluşturmuştur. Bu etki random 5'li kontrol gruplarının ortalamasından (`0.051979`) daha düşük olduğu için candidate group'un random kontrollere göre daha güçlü bir grup etkisi oluşturduğu desteklenmemiştir. Candidate'ın random dağılımdaki konumu `%20` percentile ve `z = −0.789750` olarak ölçülmüştür.
+
+Buna karşılık tekil aday boyutların etkilerinin basit toplamı `0.049894` iken birlikte grup etkisi `0.033458` olmuştur. `Joint / individual-sum = 0.670583` sonucu, birlikte müdahalenin tekil etkilerin basit toplamına eşit olmadığını ve **non-additive** davranış gözlendiğini göstermektedir.
+
+Bu sonuç istatistiksel anlamlılık veya mekanizmanın kanıtlandığı anlamına gelmez. Özellikle random kontrol sayısının `5` olması nedeniyle z-score karşılaştırması sınırlı ve betimseldir. E10'un desteklediği nokta, bu deney tasarımında grup etkisinin additif olmamasıdır.
+
+### E10 Grafik
+
+`figures/week2/e10_group_effect_comparison.svg` — aday grubun birlikte etkisini, tekil etkilerin toplamını ve beş random 5-boyutlu kontrol grubunu karşılaştırır; random kontrol ortalaması, `z = −0.7898` ve `%20` percentile bilgileri görsel olarak işaretlenmiştir.
