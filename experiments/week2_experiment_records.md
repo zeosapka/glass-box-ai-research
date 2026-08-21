@@ -239,7 +239,7 @@ E07 eşleştirilmiş cümleler → `distilgpt2` causal LM → layer 5 hidden sta
 
 ### E09 Ana Bulgusu
 
-Candidate `496`'nın ortalama L1 müdahale etkisi random control ortalamasından daha yüksektir (`0.015057` vs. `0.011293`). Ancak aday etki kontrol dağılımından yalnızca `0.854` standart sapma uzaktadır ve empirical percentile değeri `%84`'tür. Kontrol boyutları arasında adaydan daha yüksek etkiler de bulunmaktadır. Bu nedenle `496`, E09'un önceden tanımlanan istatistiksel ayrışma kriterlerini karşılamamaktadır.
+Candidate `496`'nın ortalama L1 müdahale etkisi random control ortalamasından daha yüksektir (`0.015057` vs. `0.011293`). Ancak aday etki kontrol dağılımından yalnızca `0.854` standart sapma uzaktadır ve empirical percentile değeri `%84`'tür. Kontrol boyutları arasında adaydan daha yüksek etkiler de bulunmaktadır. Bu nedenle `496`, E09'un önceden belirlenen istatistiksel ayrışma kriterlerini karşılamamaktadır.
 
 ### E09 Başarı Kriterleri
 
@@ -257,3 +257,75 @@ E09'un başarısız olması deneyin uygulanamadığı anlamına gelmez; deney ba
 
 `figures/week2/e09_statistical_control_distribution.svg` — 50 random control boyutunun mean L1 effect dağılımı; aday `496` ve kontrol ortalaması referans çizgileriyle gösterilmiştir.
 
+## E10 — Grup Müdahalesi (Group Intervention)
+
+- **Deney ID:** E10
+- **Tarih:** 21.08.2026
+- **Amaç:** E10'da belirlenen 5 boyutluk aday grubun birlikte ablasyonunun oluşturduğu L1 çıktı değişimini, tekil boyut etkilerinin basit toplamı ve random 5-boyutlu kontrol grupları ile karşılaştırmak.
+- **Hipotez:** Aday grubun birlikte müdahalesi random kontrol gruplarından belirgin biçimde büyük olabilir ve/veya birlikte etki tekil etkilerin basit toplamından farklı, non-additive bir davranış gösterebilir.
+- **Model:** `distilgpt2` causal language model; hedef katman `layer 5`; hidden size `768`.
+- **Test cümlesi:** `The cat is sitting on the mat.`
+- **Aday grup:** `[471, 228, 12, 358, 529]`.
+- **Müdahale yöntemi:** Hedef katmandaki seçilen hidden-state boyutları birlikte `0` yapılarak grup ablasyonu uygulandı. Aynı zero-ablation yöntemi tekil aday boyutlara ve random kontrol gruplarına da uygulandı.
+- **Random kontrol tasarımı:** `5` random grup; her grup `5` farklı dimension içerir. Toplam `25` kontrol dimension'ı birbirinden farklıdır ve aday boyutlarla çakışmaz.
+- **Başarı kriteri:** (a) Aday grup etkisinin random 5-boyutlu kontrol gruplarının ortalamasından belirgin biçimde büyük olması (`z ≥ 2`) ve/veya (b) grup etkisinin tekil boyut etkilerinin basit toplamından farklı, non-additive davranış göstermesi.
+
+### Tekil Aday Boyut Sonuçları
+
+| Dimension | Tekil L1 etkisi |
+|---:|---:|
+| 471 | 0.001824 |
+| 228 | 0.003006 |
+| 12 | 0.003591 |
+| 358 | 0.032780 |
+| 529 | 0.008693 |
+| **Toplam** | **0.049894** |
+
+### Grup ve Random Kontrol Sonuçları
+
+| Ölçüm | Değer |
+|---|---:|
+| Aday grup birlikte etkisi | **0.033458** |
+| Tekil etkilerin basit toplamı | **0.049894** |
+| Non-additive difference | **−0.016436** |
+| Joint / individual-sum | **0.670583** |
+| Random control ortalaması | **0.051979** |
+| Random control standart sapması | **0.023452** |
+| Candidate vs. random z-score | **−0.789750** |
+| Candidate percentile | **%20** |
+
+Random 5-boyutlu grup etkileri: `0.043100`, `0.066373`, `0.021147`, `0.046709`, `0.082566`.
+
+### E10 Başarı Kriterleri
+
+| Kriter | Sonuç | Değerlendirme |
+|---|---:|---|
+| (a) Candidate group random kontrollerden belirgin büyük (`z ≥ 2`) | `−0.789750` | **FAIL** |
+| (b) Grup etkisi tekil etkilerin basit toplamından farklı | `−0.016436` | **PASS / SUPPORT** |
+| Genel E10 değerlendirmesi |  | **PASS / SUPPORT** |
+
+### E10 Verification Result
+
+Aday 5'li grubun birlikte ablasyonu `0.033458` L1 çıktı değişimi oluşturmuştur. Random 5'li kontrol gruplarının ortalama etkisi `0.051979` olduğundan aday grup random kontrollerden daha güçlü değildir. Candidate'ın random dağılımdaki konumu `%20` percentile ve `z = −0.789750` olarak ölçülmüştür; dolayısıyla kriter (a) karşılanmamıştır.
+
+Buna karşılık tekil aday boyutların etkilerinin basit toplamı `0.049894` iken birlikte grup etkisi `0.033458` olmuştur. `Joint / individual-sum = 0.670583` ve fark `−0.016436`, birlikte müdahalenin tekil etkilerin basit toplamına eşit olmadığını göstermektedir. Bu sonuç kriter (b) kapsamında **non-additive davranış desteği** olarak kaydedilmiştir.
+
+### Statistical Significance
+
+E10'daki random kontrol sayısı yalnızca `5` olduğu için `z = −0.789750` karşılaştırması sınırlı ve betimseldir; formal istatistiksel anlamlılık kanıtı olarak değerlendirilmemelidir. Kriter (b) ise grup etkisinin tekil etkiler toplamından farklı olduğunu gösterir, ancak bu fark tek başına istatistiksel anlamlılık anlamına gelmez.
+
+### Unexpected Result
+
+Aday grubun random kontrollerden daha güçlü olması beklenirken aday etki random kontrol ortalamasının altında kalmıştır. Buna rağmen birlikte etki tekil etkilerin toplamından daha düşük çıkmış ve belirgin non-additive davranış gözlenmiştir.
+
+### Yorum
+
+E10, aday grubun random kontrol gruplarına göre daha güçlü bir grup etkisi oluşturduğunu **desteklememektedir**. Buna karşılık aday grubun birlikte müdahalesi ile tekil etkilerin basit toplamı arasında belirgin bir fark vardır. Bu nedenle E10, **non-additive grup davranışı açısından PASS / SUPPORT** olarak değerlendirilmiştir; mekanizmanın kanıtlandığı veya istatistiksel anlamlılığın sağlandığı şeklinde yorumlanmamalıdır.
+
+### E10 Grafik
+
+`figures/week2/e10_group_effect_comparison.svg` — aday grubun birlikte etkisini, tekil etkilerin toplamını ve beş random 5-boyutlu kontrol grubunu karşılaştırır; random kontrol ortalaması da gösterilir.
+
+### Sonraki Deney
+
+**E11 — Sentetik True-vs-Spurious Feature Testi:** Bilinen gerçek kural ile spurious (sahte/yanıltıcı) korelasyonlu feature'ı ayıran kontrollü sentetik veri üzerinde Glass Box müdahale metodolojisinin doğrulanması.
