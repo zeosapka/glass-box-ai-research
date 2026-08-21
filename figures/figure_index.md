@@ -37,6 +37,8 @@ figures/
 | `week2/e08_directional_dose_response.svg` | E08 | Aday 496 ve beş kontrol boyutunda yönlü graded intervention ile müdahale seviyesi–L1 çıktı değişimi ilişkisi |
 | `week2/e09_statistical_control_distribution.svg` | E09 | 50 random control boyutunun mean L1 effect dağılımı; aday 496 ve kontrol ortalaması karşılaştırması |
 | `week2/e10_group_effect_comparison.svg` | E10 | Aday grubun birlikte ablasyon etkisi, tekil etkilerin toplamı ve 5 random 5-boyutlu kontrol grubunun karşılaştırması |
+| `week2/e11_true_vs_spurious_accuracy.svg` | E11 | Normal test ile spurious feature'ın kırıldığı testte model doğruluğunun karşılaştırması |
+| `week2/week1_vs_week2_summary.svg` | Week 1 / Week 2 Summary | Candidate/random control separation oranının Week 1 ve Week 2 arasında karşılaştırması; seed kapsamı ile birlikte gösterilir |
 
 ## Dil Standardı
 
