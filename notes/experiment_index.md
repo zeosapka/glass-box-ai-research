@@ -2,6 +2,8 @@
 
 Bu indeks, araştırmadaki deney kayıtlarının tek noktadan gezinmesini sağlar.
 
+> **ID notu:** Week 1 ve Week 2 deneyleri kendi çalışma haftaları içinde numaralandırılmıştır. Bu nedenle `E06` gibi bir ID iki haftada da bulunabilir. Ayırt etmek için her zaman haftayı ve standart kayıt dosyasını birlikte okuyun.
+
 ## 1. Hafta
 
 | ID | Deney | Ana ölçüm | Standart kayıt |
@@ -38,12 +40,19 @@ Bu indeks, araştırmadaki deney kayıtlarının tek noktadan gezinmesini sağla
 | E11 | Sentetik true-vs-spurious feature | Accuracy drop=15.55 pp; PASS / SUPPORT | `experiments/week2_experiment_records.md` |
 | E12 | Local LLM / Ollama | Llama 3.2 1B; 3 prompt; mechanistic evidence=False | `experiments/week2_experiment_records.md` |
 
+## Notlar ve ön çalışmalar
+
+- `notes/transformer_initial_probe.md` — Week 2 öncesindeki ilk Transformer keşif denemesi. Nihai E07–E10 sonuçlarının yerine geçmez.
+- `notes/experiment_log.md` — Week 1 ayrıntılı deney günlüğü.
+- `experiments/week1_experiment_records.md` — Week 1 standart kayıtları.
+- `experiments/week2_experiment_records.md` — Week 2 standart kayıtları.
+
 ## Kaynak Gerçeği
 
-- Ayrıntılı ham sayısal kayıt: `notes/experiment_log.md`
-- Standart deney kayıtları: `experiments/week1_experiment_records.md`
-- Hafta 2 standart deney kayıtları: `experiments/week2_experiment_records.md`
-- E12 ayrıntılı kayıt: `experiments/week2_experiment_records.md`
+- Ayrıntılı Week 1 sayısal kayıt: `notes/experiment_log.md`
+- Week 1 standart deney kayıtları: `experiments/week1_experiment_records.md`
+- Week 2 standart deney kayıtları: `experiments/week2_experiment_records.md`
+- Week 2 E12 ayrıntılı kayıt: `experiments/week2_experiment_records.md`
 - Grafik kayıtları: `figures/figure_index.md`
 
-2. hafta deneylerinde aynı şablona ek olarak **Başarım Kriteri (Success Criterion)**, **Doğrulama Sonucu (Verification Result)**, **İstatistiksel Anlamlılık (Statistical Significance)** ve **Commit Hash** alanları kullanılacaktır.
+Week 2 standart deney kayıtlarında aynı şablona ek olarak **Başarım Kriteri (Success Criterion)**, **Doğrulama Sonucu (Verification Result)**, **İstatistiksel Anlamlılık (Statistical Significance)** ve **Commit Hash** alanları kullanılmaktadır.
