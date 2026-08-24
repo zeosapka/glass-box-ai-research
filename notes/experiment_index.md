@@ -45,6 +45,7 @@ Bu nedenle Week 2'nin E06–E12 numaralandırması Week 1 ile çakışmaz ve `E1
 - `notes/ten_day_plan_week2.md` — PDF'deki Week 2 on günlük plan.
 - `notes/experiment_log.md` — Week 1 ayrıntılı günlük.
 - `notes/experiment_log_week2.md` — Week 2 ayrıntılı günlük.
+- `notes/week2_delivery_addendum.md` — Week 2 teslim öncesi son kalite kontrol eki; E06 başarı kriteri, E07 z-score/percentile doğrulaması, E12 kullanım amacı ve reproducibility notlarını içerir.
 
 ## Kaynak Gerçeği
 
@@ -53,5 +54,6 @@ Bu nedenle Week 2'nin E06–E12 numaralandırması Week 1 ile çakışmaz ve `E1
 - Week 1 ayrıntılı günlük: `notes/experiment_log.md`
 - Week 2 ayrıntılı günlük: `notes/experiment_log_week2.md`
 - Grafik kayıtları: `figures/figure_index.md`
+- Week 2 teslim kalite kontrolü: `notes/week2_delivery_addendum.md`
 
 Week 2 standart deney kayıtlarında aynı şablona ek olarak **Başarım Kriteri (Success Criterion)**, **Doğrulama Sonucu (Verification Result)**, **İstatistiksel Anlamlılık (Statistical Significance)** ve **Commit Hash** alanları kullanılmaktadır.
