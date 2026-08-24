@@ -208,6 +208,39 @@ Model, normal testte `%95.95` doğruluk elde ederken gerçek feature değiştiri
 
 `figures/week2/e11_true_vs_spurious_accuracy.svg` — normal test ile spurious-broken test accuracy değerlerinin karşılaştırması.
 
+## E12 — Local LLM / Ollama
+
+- **Model:** `llama3.2:1b` (Llama 3.2 1B).
+- **Python:** `3.13.15`.
+- **İşletim sistemi:** Linux.
+- **Prompt sayısı:** `3`.
+- **Yerel çalıştırma:** `True`.
+- **Internal intervention:** `False`.
+- **Mechanistic evidence:** `False`.
+- **Kurulum:** Ollama ortamda başlangıçta kurulu değildi; `zstd` bağımlılığı kurulduktan sonra Ollama kurulumu tamamlandı, lokal server `127.0.0.1:11434` üzerinde çalıştırıldı ve `llama3.2:1b` modeli indirildi.
+- **Promptlar:** `factual`, `reasoning`, `glass_box`.
+- **Gözlenen yanıtlar:** Üç promptun tamamında model yanıt üretti; response time sırasıyla yaklaşık `26.55 s`, `80.12 s` ve `105.01 s` oldu.
+- **Değerlendirme:** Local LLM başarıyla çalıştırıldı ve üç farklı prompt tipi test edildi. Ancak modelin kendi iç süreçleri hakkında verdiği self-report açıklamalar, gerçek mekanizmaları gösteren mechanistic evidence olarak kabul edilmedi.
+- **Sonuç:** **Local execution/toolbox kriteri karşılandı; internal intervention yapılmadı ve mekanistik kanıt elde edilmedi.**
+
+### E12 Ana Bulgusu
+
+E12, araştırma ortamında local bir LLM'in dış API'ye ihtiyaç duymadan çalıştırılabildiğini ve factual, reasoning ve glass-box odaklı üç prompt üzerinde gözlemlenebilir davranış ürettiğini göstermektedir. Bununla birlikte modelin “internal information” hakkında ürettiği açıklamalar modelin gerçek iç mekanizmalarına doğrudan erişim sağlamaz. Bu nedenle E12 **davranışsal/toolbox doğrulaması** olarak değerlendirilir; mechanistic evidence iddiası taşımaz.
+
+### E12 Değerlendirme
+
+| Ölçüt | Sonuç |
+|---|---|
+| Local LLM çalıştırma | **PASS** |
+| 3 farklı prompt tipi | **PASS** |
+| Internal intervention | **Yapılmadı** |
+| Mechanistic evidence | **Yok** |
+| Self-report açıklamalarının mekanistik kanıt sayılması | **Hayır** |
+
+### E12 Grafik / Görsel Kayıt
+
+E12'nin PDF teslimindeki beklenen grafik kategorisi, Week 2'nin diğer deneylerinden farklı olarak local LLM'in davranışsal/toolbox niteliği nedeniyle bir accuracy/ablation grafiği değildir. E12'nin temel kayıtları prompt çıktıları, response time ve mechanistic-evidence assessment'i üzerinden tutulmuştur.
+
 ---
 
 # Week 1 vs Week 2 — Metodolojik Özet
@@ -219,10 +252,11 @@ Model, normal testte `%95.95` doğruluk elde ederken gerçek feature değiştiri
 - E09'da aday `496` için 50-control dağılımı kullanılmış ve önceden belirlenen istatistiksel ayrışma kriterleri karşılanmamıştır (`z=0.854322`, `%84` percentile).
 - E10'da grup müdahalesinde non-additive davranış gözlenmiş, ancak aday grubun random gruplardan daha güçlü olduğu gösterilememiştir.
 - E11'de kontrollü sentetik veri üzerinde spurious feature bozulmasının **15.55 pp** accuracy düşüşüne yol açtığı gösterilmiştir.
+- E12'de local LLM çalıştırması başarıyla tamamlanmış, ancak self-report açıklamalarının mekanistik kanıt olmadığı açıkça doğrulanmıştır.
 
 ### Week 1 → Week 2 Genel Yorum
 
-Week 1'de aday özellik/devre etkisi için güçlü bir başlangıç gözlemi elde edilirken, Week 2 aynı araştırma çizgisini daha kontrollü ve doğrulanabilir hale getirmiştir. Özellikle çoklu seed, Discovery/Holdout ayrımı, random-control dağılımları ve sentetik bilinen-kural testi, gözlenen iç temsil etkilerinin yalnızca tek bir örneğe bağlı olmadığını sınamak için eklenmiştir. Bununla birlikte E09 gibi başarısız istatistiksel ayrışma sonuçları özellikle korunmuş ve sonuçlar yalnızca destekledikleri ölçüde yorumlanmıştır.
+Week 1'de aday özellik/devre etkisi için güçlü bir başlangıç gözlemi elde edilirken, Week 2 aynı araştırma çizgisini daha kontrollü ve doğrulanabilir hale getirmiştir. Özellikle çoklu seed, Discovery/Holdout ayrımı, random-control dağılımları ve sentetik bilinen-kural testi, gözlenen iç temsil etkilerinin yalnızca tek bir örneğe bağlı olmadığını sınamak için eklenmiştir. Bununla birlikte E09 gibi başarısız istatistiksel ayrışma sonuçları özellikle korunmuş ve sonuçlar yalnızca destekledikleri ölçüde yorumlanmıştır. E12 ise local LLM araç zincirinin tamamlandığını, fakat davranışsal self-report'un mekanistik içgörü yerine geçmediğini göstermiştir.
 
 ### Week 1 vs Week 2 Grafik
 
