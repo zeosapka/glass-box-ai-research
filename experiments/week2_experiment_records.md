@@ -1,6 +1,8 @@
 # 2. Hafta Deney Kayıtları
 
-Bu dosya, 2. hafta deneylerini hocanın istediği standart deney kayıt formatında tutar. Amaç, 1. haftada gözlenen aday özellik/devre etkilerini çoklu seed, eşleştirilmiş veri ve istatistiksel kontroller ile daha savunulabilir hale getirmektir.
+Bu dosya, 2. hafta deneylerini hocanın istediği standart deney kayıt formatında tutar. Her deney aynı kayıt şablonunu kullanır; deney içi ayrıntılar ve tablolar ana kaydın altında korunur.
+
+> **Standart deney şablonu:** Deney ID → Tarih → Amaç → Hipotez → Model → Dataset → Seed → Değiştirilen parametre → Kontrol grubu → Müdahale grubu → Sonuç → Accuracy / etki değişimi → Hedef başarım kriteri → Doğrulama sonucu → İstatistiksel anlamlılık (z / persentil, varsa) → Grafik → Yorum → Beklenmeyen sonuç → Commit hash → Sonraki deney.
 
 ---
 
@@ -9,14 +11,23 @@ Bu dosya, 2. hafta deneylerini hocanın istediği standart deney kayıt formatı
 - **Deney ID:** E06
 - **Tarih:** 20.08.2026
 - **Amaç:** 1. haftada gözlenen aday devrenin Class 0 üzerindeki etkisinin farklı random seed değerlerinde tekrarlanıp tekrarlanmadığını test etmek.
-- **Hipotez:** Eğer aday devrenin Class 0 davranışında gerçek bir mekanistik rolü varsa, farklı seed'lerde bağımsız olarak keşfedilen aday devrelerin ablasyonu Class 0 doğruluğunda belirgin bir düşüş oluşturmalıdır. Random control gruplarının etkisinin aday devreye kıyasla çok daha küçük olması beklenmektedir.
+- **Hipotez:** Farklı seed'lerde bağımsız olarak keşfedilen aday devrelerin ablasyonu Class 0 doğruluğunda belirgin düşüş oluşturmalı; random control etkileri aday devreye kıyasla çok daha küçük kalmalıdır.
 - **Model:** MNIST MLP `784 → 128 → 64 → 10`; ReLU; Adam; learning rate `0.001`; batch size `64`; epoch `5`.
-- **Veri Seti:** MNIST (`60000` eğitim / `10000` test).
-- **Seed'ler:** `42, 0, 7, 123, 2024`.
-- **Değiştirilen parametre:** Her seed için `fc2` katmanındaki 64 nöronun Class 0 selectivity değerlerine göre en güçlü 5 nöron aday devre olarak seçildi ve aktivasyonları `0` yapılarak ablasyon uygulandı. Aynı boyutta random control grubu ile karşılaştırıldı.
+- **Dataset:** MNIST (`60000` eğitim / `10000` test).
+- **Seed:** `42, 0, 7, 123, 2024`.
+- **Değiştirilen parametre:** Her seed için `fc2` katmanındaki 64 nörondan Class 0 selectivity açısından en güçlü 5 nöron aday devre seçildi ve aktivasyonları `0` yapılarak ablate edildi.
 - **Kontrol grubu:** Her seed için 5 nörondan oluşan random control grubu.
 - **Müdahale grubu:** Her seed için bağımsız keşfedilen 5 nöronluk aday devre.
-- **Başarı kriteri:** En az `3/5` seed'de aday devre etkisinin Class 0 doğruluğunda `≤ -5.0 pp` olması ve random control etkisinin belirgin biçimde daha küçük olması.
+- **Sonuç:** Beş seed'in tamamında aday devre etkisi `≤ -5.0 pp`; ortalama aday etki `-27.6735 pp`, random control ortalaması `-0.3469 pp`, ortalama oran `61.45×`.
+- **Accuracy / etki değişimi:** Test accuracy ortalaması `%97.4380`; aday etkileri `-14.8980, -77.8571, -25.2041, -10.6122, -9.7959 pp`.
+- **Hedef başarım kriteri:** En az `3/5` seed'de aday devre etkisinin Class 0 doğruluğunda `≤ -5.0 pp` olması ve random control etkisinin belirgin biçimde daha küçük olması.
+- **Doğrulama sonucu:** **PASS.** Aday devre kriterini geçen seed `5/5`; aday etkisi tüm seed'lerde eşik altında ve random control etkilerinden belirgin biçimde büyüktür.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** Henüz hesaplanmadı; E06 çoklu-seed tekrarlanabilirlik ve etki büyüklüğü testidir.
+- **Grafik:** Multi-seed candidate-effect ve random-control karşılaştırması; Week 2 grafiklerinde E06 karşılaştırması.
+- **Yorum:** Sonuçlar aday devrenin Class 0 çıktısında nedensel rol oynadığı hipotezini **desteklemektedir**; eksiksiz mekanizma veya formal istatistiksel anlamlılık iddiası değildir.
+- **Beklenmeyen sonuç:** Seed 0'da aday etki `-77.8571 pp` ile çok büyüktür; ayrıca random control ile aday arasında `46` ve `47` nöronlarında örtüşme vardır.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **E07 — Matched Transformer Internal Representation.**
 
 ### Sonuçlar
 
@@ -53,10 +64,6 @@ Seed 0'da aday devre etkisi `-77.8571 pp` ile diğer seed'lerden belirgin biçim
 
 Beş farklı random seed'in tamamında aday devre ablasyonu Class 0 doğruluğunda belirgin düşüş oluştururken random control etkileri çok daha küçük kalmıştır. Sonuçlar, aday devrenin Class 0 çıktısında nedensel bir rol oynadığı hipotezini **desteklemektedir**. Ancak bu deney, istatistiksel anlamlılık veya mekanizmanın eksiksiz olarak çözüldüğü anlamına gelmez.
 
-### Sonraki Deney
-
-**E07 — Matched Transformer Internal Representation:** Eşleştirilmiş concept grupları, discovery/holdout ayrımı ve geniş random-control karşılaştırması ile Transformer iç temsilindeki aday feature'ın test edilmesi.
-
 ### Deney Özeti
 
 `DATA → MODEL → INTERNAL REPRESENTATION → FEATURE → INTERVENTION → OUTPUT → VERIFICATION`
@@ -69,15 +76,24 @@ MNIST → MLP → `fc2` aktivasyonları → Class 0 selectivity ile seçilen 5 n
 
 - **Deney ID:** E07
 - **Tarih:** 20.08.2026
-- **Amaç:** Eşleştirilmiş cümle grupları ve bağımsız Holdout verisi kullanarak Transformer iç temsilindeki aday boyutların (dimension) random control boyutlarından daha güçlü ve tekrarlanabilir biçimde ayrışıp ayrışmadığını test etmek.
-- **Hipotez:** Discovery verisinde seçilen aday boyutların L1 (mutlak fark) ölçümü Holdout verisinde de random control boyutlarından belirgin biçimde yüksek kalmalıdır.
-- **Model:** DistilGPT-2 tabanlı Transformer; `AutoModel` ile son gizli temsil (last hidden state) çıkarıldı. Cümle temsili, token temsillerinin ortalaması (mean pooling) ile `768` boyutlu vektör olarak oluşturuldu.
-- **Veri Seti:** 4 eşleştirilmiş concept grubu, her grupta 10 cümle; toplam `40` cümle. Discovery `20`, Holdout `20`.
-- **Discovery / Holdout tasarımı:** Her concept grubundan `5` cümle Discovery ve `5` cümle Holdout olarak ayrıldı. Cümle yapıları eşleştirildi.
-- **Aday keşfi:** Discovery grubundaki grup ortalamaları arasındaki dimension separation ölçümüne göre en güçlü 5 boyut seçildi: `[430, 496, 36, 374, 314]`.
-- **Random control:** Aday boyutlarla çakışmayan `20` rastgele boyut seçildi: `[122, 329, 519, 529, 667, 106, 229, 620, 641, 574, 434, 591, 565, 753, 507, 605, 455, 246, 2, 633]`.
-- **Değiştirilen parametre:** Bu deneyde temsil boyutları üzerinde henüz causal intervention uygulanmadı. Değerlendirme ölçütü L1 ayrışmasıdır.
-- **Başarı kriteri:** Aday ortalama L1 değerinden daha yüksek en fazla `5/20` random control bulunması ve sonucun Holdout verisinde de korunması.
+- **Amaç:** Eşleştirilmiş cümle grupları ve bağımsız Holdout verisi kullanarak Transformer iç temsilindeki aday boyutların random control boyutlarından daha güçlü ve tekrarlanabilir biçimde ayrışıp ayrışmadığını test etmek.
+- **Hipotez:** Discovery'de seçilen aday boyutların L1 ayrışması Holdout'ta da random control boyutlarından belirgin biçimde yüksek kalmalıdır.
+- **Model:** DistilGPT-2 tabanlı Transformer; `AutoModel`; son gizli temsil; mean pooling; `768` boyut.
+- **Dataset:** 4 eşleştirilmiş concept grubu, toplam `40` cümle; Discovery `20`, Holdout `20`.
+- **Seed:** Kaynak kaydında belirtilmemiş.
+- **Değiştirilen parametre:** Temsil boyutları değiştirilmedi; Discovery separation ölçümüyle aday boyutlar seçildi.
+- **Kontrol grubu:** Adaylarla çakışmayan `20` random control boyutu.
+- **Müdahale grubu:** Discovery'de seçilen `[430, 496, 36, 374, 314]` aday boyutları; causal intervention bu deneyde uygulanmadı.
+- **Sonuç:** Discovery aday ortalama L1 `2.127904`, control ortalaması `0.123722`; Holdout aday `1.962849`, control `0.124925`; her iki sette de `0/20` control aday ortalamasını geçti.
+- **Accuracy / etki değişimi:** Accuracy ölçülmedi; L1 ayrışma ölçüldü. Aday/control oranı Discovery `17.20×`, Holdout `15.71×`.
+- **Hedef başarım kriteri:** Aday ortalama L1 değerinden daha yüksek en fazla `5/20` random control bulunması ve sonucun Holdout'ta korunması.
+- **Doğrulama sonucu:** **PASS.** Discovery ve Holdout'ta `0/20` control adayı geçti; güçlü ayrışma Holdout'ta korundu.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** Henüz hesaplanmadı; 20 random control ve Holdout doğrulaması kullanıldı ancak formal istatistiksel test yapılmadı.
+- **Grafik:** Discovery vs. Holdout aday/control L1 sıralama karşılaştırması.
+- **Yorum:** Aday boyutlar güçlü temsil düzeyi ayrışması gösterdi; bu sonuç korelatif/temsil düzeyindedir, nedensellik kanıtı değildir.
+- **Beklenmeyen sonuç:** Discovery seçim yanlılığı içerebileceğinden Holdout sonucu özellikle önemlidir.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **E08 — Graded Transformer Intervention.**
 
 ### Discovery Sonuçları
 
@@ -139,16 +155,24 @@ E07 sonuçları, Discovery'de seçilen `[430, 496, 36, 374, 314]` boyutlarının
 
 - **Deney ID:** E08
 - **Tarih:** 21.08.2026
-- **Amaç:** E07'de keşfedilen Transformer iç temsil boyutlarından aday `496` üzerinde kontrollü kademeli müdahaleler uygulayarak müdahale büyüklüğü ile model çıktısındaki değişim (L1) arasında dose-response ilişkisi bulunup bulunmadığını test etmek ve sonucu random control boyutlarıyla karşılaştırmak.
-- **Hipotez:** Müdahale büyüklüğü arttıkça aday boyutun model çıktısındaki L1 değişiminin yaklaşık monoton biçimde artması beklenmektedir. Kontrol boyutlarında daha zayıf veya düzensiz bir ilişki beklenmektedir.
-- **Model:** `distilgpt2` tabanlı causal language model (`AutoModelForCausalLM`), `6` Transformer katmanı, `768` hidden size, hedef müdahale katmanı `layer 5`.
-- **Veri Seti:** E07'deki eşleştirilmiş concept cümleleri kullanıldı. E08 doğrulama akışında tek bir Discovery cümlesi (`discovery_sentences[0]`) üzerinde kontrollü müdahale uygulandı. Bu nedenle sonuç, E08'in mevcut tek-cümlelik doğrulama/pilot uygulamasıdır; geniş cümle örneklemiyle genelleme iddiası yapılmamaktadır.
-- **Aday boyut:** `496`.
-- **Kontrol boyutları:** `[434, 161, 541, 219, 408]`.
-- **Müdahale seviyeleri:** `−0.25σ`, `−0.50σ`, `−1.00σ`, `+0.50σ`, `+1.00σ`.
-- **Çıktı ölçütü:** Son token logits'inden elde edilen olasılık dağılımının baseline'a göre L1 değişimi.
-- **Müdahale yöntemi:** Hedef Transformer katmanının hidden-state çıktısında seçilen boyut kontrollü olarak `intervention_level × σ` kadar değiştirildi; ardından modelin ileri yayılımı (forward pass) ile son token olasılıkları yeniden hesaplandı.
-- **Başarı kriteri:** Aday için `|Spearman ρ| ≥ 0.80`; kontrollerin daha zayıf (`|ρ| < 0.50`) veya düzensiz olması beklenmektedir. Ek karşılaştırma olarak adayın ortalama L1 etkisinin kontrol dağılımından yüksek olması incelenmiştir.
+- **Amaç:** E07'de keşfedilen aday `496` boyutunda müdahale büyüklüğü ile model çıktısındaki L1 değişimi arasında dose-response ilişkisi olup olmadığını ve etkinin random controls'dan ayrışıp ayrışmadığını test etmek.
+- **Hipotez:** Müdahale büyüklüğü arttıkça aday L1 etkisi genel olarak artmalı; kontroller daha zayıf veya düzensiz olmalıdır.
+- **Model:** `distilgpt2` causal language model (`AutoModelForCausalLM`), `6` Transformer katmanı, `768` hidden size, hedef `layer 5`.
+- **Dataset:** E07 eşleştirilmiş concept cümleleri; mevcut doğrulama akışı tek Discovery cümlesi (`discovery_sentences[0]`) üzerinde uygulandı.
+- **Seed:** Kaynak kaydında belirtilmemiş.
+- **Değiştirilen parametre:** Hidden-state'te aday/control boyutu `−0.25σ`, `−0.50σ`, `−1.00σ`, `+0.50σ`, `+1.00σ` seviyelerinde kontrollü değiştirildi.
+- **Kontrol grubu:** `[434, 161, 541, 219, 408]` random control boyutları.
+- **Müdahale grubu:** Aday boyut `496`.
+- **Sonuç:** Aday ortalama L1 `0.023454`; Spearman `ρ=0.9487`; control ortalaması `0.003923`; aday 5/5 control'dan daha yüksek.
+- **Accuracy / etki değişimi:** Son token olasılık dağılımında L1 değişimi kullanıldı; aday seviyeleri `0.008902, 0.017499, 0.033701, 0.018689, 0.038482`.
+- **Hedef başarım kriteri:** Aday `|Spearman ρ| ≥ 0.80`; kontrollerin daha zayıf (`|ρ| < 0.50`) veya düzensiz olması ve aday ortalama L1'nin controls'dan yüksek olması beklenmiştir.
+- **Doğrulama sonucu:** **PARTIAL / SUPPORT.** Aday `ρ` ve ortalama L1 kriterlerini geçti; ancak tüm controls'da aynı `ρ=0.9487` görüldüğü için aday özgüllüğü gösterilemedi.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** Spearman `p=0.013847` raporlandı; formal özgüllük kanıtı değildir çünkü aynı `ρ/p` tüm controls'da da oluştu.
+- **Grafik:** Müdahale büyüklüğüne karşı L1/olasılık değişimi; aday ve controls üst üste.
+- **Yorum:** Güçlü dose-response ve daha büyük aday etkisi desteklendi; aday özgüllüğü ve genelleme henüz gösterilmedi.
+- **Beklenmeyen sonuç:** Bütün control boyutlarında Spearman `ρ` adayla aynı çıktı; control `408` diğer controls'dan belirgin güçlüydü.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **E09 — Random Control Distribution / Statistical Test.**
 
 ### Aday 496 Sonuçları
 
@@ -168,7 +192,7 @@ E07 sonuçları, Discovery'de seçilen `[430, 496, 36, 374, 314]` boyutlarının
 ### Kontrol Sonuçları
 
 | Kontrol | Ortalama L1 | Spearman `ρ` | Spearman `p` |
----:|---:|---:|---:|
+|---:|---:|---:|---:|
 | `408` | 0.014887 | 0.9487 | 0.013847 |
 | `434` | 0.001757 | 0.9487 | 0.013847 |
 | `541` | 0.001511 | 0.9487 | 0.013847 |
@@ -223,19 +247,30 @@ Bu sonuç **nedenselliğin kanıtlandığı** anlamına gelmez; kontrollü hidde
 
 E07 eşleştirilmiş cümleler → `distilgpt2` causal LM → layer 5 hidden state → candidate dimension `496` → `±σ` kademeli müdahale → son token olasılıklarında L1 değişimi → 5 random control → **güçlü dose-response ve daha büyük aday etkisi desteklendi; aday özgüllüğü PARTIAL / SUPPORT**.
 
+---
+
 ## E09 — İstatistiksel Kontrol Testi (Statistical Control Test)
 
-- Aday boyut: `496`.
-- Model: `distilgpt2`, hedef katman: `layer 5`, hidden size: `768`.
-- Random control sayısı: **50**; aday boyut kontrol grubundan çıkarıldı.
-- Müdahale seviyeleri: `−0.25σ`, `−0.50σ`, `−1.00σ`, `+0.50σ`, `+1.00σ`.
-- Her boyut için beş müdahale seviyesinin ortalama L1 çıktı değişimi scalar effect olarak kullanıldı.
-- Aday ortalama L1 etkisi: **0.015057**.
-- Kontrol ortalama L1 etkisi: **0.011293**.
-- Kontrol standart sapması: **0.004407**.
-- Z-score: **0.854322**.
-- Empirical percentile: **84.00%**.
-- Sonuç: **FAIL** — önceden belirlenen `|z| ≥ 2` ve `percentile ≥ 90%` kriterlerinin hiçbiri karşılanmadı.
+- **Deney ID:** E09
+- **Tarih:** Kaynak kaydında belirtilmemiş.
+- **Amaç:** Aday `496` boyutunun müdahale etkisinin geniş bir `50` random-control dağılımındaki konumunu test etmek.
+- **Hipotez:** Aday etki control dağılımından güçlü biçimde ayrışıyorsa `|z| ≥ 2` ve `percentile ≥ 90%` kriterleri karşılanmalıdır.
+- **Model:** `distilgpt2`; hedef katman `layer 5`; hidden size `768`.
+- **Dataset:** E08 ile aynı müdahale akışı; kaynakta ayrıca ayrıntılı veri bölümü belirtilmemiştir.
+- **Seed:** Kaynak kaydında belirtilmemiş.
+- **Değiştirilen parametre:** Aday `496` ve `50` random control boyutunda aynı beş müdahale seviyesinin ortalama L1 etkisi hesaplandı.
+- **Kontrol grubu:** Adaydan farklı `50` random control boyutu.
+- **Müdahale grubu:** Aday dimension `496`.
+- **Sonuç:** Aday ortalama L1 `0.015057`; control ortalaması `0.011293`; control std `0.004407`; z `0.854322`; percentile `%84.00`.
+- **Accuracy / etki değişimi:** Aday etkisi control ortalamasından `0.003764` daha yüksek; ancak dağılım ayrışması kriterini karşılamadı.
+- **Hedef başarım kriteri:** `|z| ≥ 2` ve `percentile ≥ 90%`.
+- **Doğrulama sonucu:** **FAIL.** Her iki istatistiksel ayrışma kriteri de karşılanmadı.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** z-score `0.854322`; empirical percentile `%84.00`; formal güçlü ayrışma yok.
+- **Grafik:** `figures/week2/e09_statistical_control_distribution.svg` — 50 random-control dağılımı, aday ve control ortalaması işaretli.
+- **Yorum:** Deney başarıyla uygulandı; aday control ortalamasından yüksek olsa da güçlü outlier/separation düzeyine ulaşmadı.
+- **Beklenmeyen sonuç:** Control dağılımında adaydan daha yüksek etkiler bulundu.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **E10 — Grup Müdahalesi.**
 
 ### E09 Ana Bulgusu
 
@@ -257,18 +292,30 @@ E09'un başarısız olması deneyin uygulanamadığı anlamına gelmez; deney ba
 
 `figures/week2/e09_statistical_control_distribution.svg` — 50 random control boyutunun mean L1 effect dağılımı; aday `496` ve kontrol ortalaması referans çizgileriyle gösterilmiştir.
 
+---
+
 ## E10 — Grup Müdahalesi (Group Intervention)
 
 - **Deney ID:** E10
 - **Tarih:** 21.08.2026
-- **Amaç:** E10'da belirlenen 5 boyutluk aday grubun birlikte ablasyonunun oluşturduğu L1 çıktı değişimini, tekil boyut etkilerinin basit toplamı ve random 5-boyutlu kontrol grupları ile karşılaştırmak.
-- **Hipotez:** Aday grubun birlikte müdahalesi random kontrol gruplarından belirgin biçimde büyük olabilir ve/veya birlikte etki tekil etkilerin basit toplamından farklı, non-additive bir davranış gösterebilir.
-- **Model:** `distilgpt2` causal language model; hedef katman `layer 5`; hidden size `768`.
-- **Test cümlesi:** `The cat is sitting on the mat.`
-- **Aday grup:** `[471, 228, 12, 358, 529]`.
-- **Müdahale yöntemi:** Hedef katmandaki seçilen hidden-state boyutları birlikte `0` yapılarak grup ablasyonu uygulandı. Aynı zero-ablation yöntemi tekil aday boyutlara ve random kontrol gruplarına da uygulandı.
-- **Random kontrol tasarımı:** `5` random grup; her grup `5` farklı dimension içerir. Toplam `25` kontrol dimension'ı birbirinden farklıdır ve aday boyutlarla çakışmaz.
-- **Başarı kriteri:** (a) Aday grup etkisinin random 5-boyutlu kontrol gruplarının ortalamasından belirgin biçimde büyük olması (`z ≥ 2`) ve/veya (b) grup etkisinin tekil boyut etkilerinin basit toplamından farklı, non-additive davranış göstermesi.
+- **Amaç:** 5 boyutluk aday grubun birlikte ablasyon etkisini tekil boyut etkilerinin basit toplamı ve random 5-boyutlu control gruplarıyla karşılaştırmak.
+- **Hipotez:** Aday grup random controls'dan daha güçlü olabilir ve/veya birlikte etki tekil etkilerin basit toplamından farklı non-additive davranış gösterebilir.
+- **Model:** `distilgpt2` causal language model; hedef `layer 5`; hidden size `768`.
+- **Dataset:** Test cümlesi `The cat is sitting on the mat.`
+- **Seed:** Kaynak kaydında belirtilmemiş.
+- **Değiştirilen parametre:** Aday `[471, 228, 12, 358, 529]` ve control gruplarındaki hidden-state boyutları birlikte `0` yapıldı.
+- **Kontrol grubu:** `5` random grup; her biri `5` dimension; toplam `25` farklı control dimension.
+- **Müdahale grubu:** Aday 5'li grup `[471, 228, 12, 358, 529]`.
+- **Sonuç:** Aday grup etkisi `0.033458`; tekil toplam `0.049894`; non-additive fark `−0.016436`; random control ortalaması `0.051979`; z `−0.789750`; percentile `%20`.
+- **Accuracy / etki değişimi:** L1 çıktı değişimi kullanıldı; aday group effect random control ortalamasından daha düşük.
+- **Hedef başarım kriteri:** (a) Aday grup random controls'dan belirgin büyük (`z ≥ 2`) ve/veya (b) grup etkisi tekil etkilerin basit toplamından farklı.
+- **Doğrulama sonucu:** **PASS / SUPPORT.** Kriter (a) FAIL; kriter (b) PASS/SUPPORT. Bu nedenle yalnızca non-additive davranış desteklenmiştir.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** z `−0.789750`, percentile `%20`; yalnızca `5` random grup olduğu için formal anlamlılık kanıtı değildir.
+- **Grafik:** `figures/week2/e10_group_effect_comparison.svg` — aday grup, tekil toplam ve random grup etkileri.
+- **Yorum:** Aday grubun random controls'dan güçlü olduğu desteklenmedi; birlikte etkinin tekil toplamdan farklı olması non-additive davranışı destekledi.
+- **Beklenmeyen sonuç:** Aday grup random control ortalamasının altında kaldı.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **E11 — Sentetik True-vs-Spurious Feature Testi.**
 
 ### Tekil Aday Boyut Sonuçları
 
@@ -336,15 +383,24 @@ E10, aday grubun random kontrol gruplarına göre daha güçlü bir grup etkisi 
 
 - **Deney ID:** E11
 - **Tarih:** 21.08.2026
-- **Amaç:** Bilinen gerçek kural ile spurious (sahte/yanıltıcı) korelasyonlu feature'ın ayrıştırılabildiği kontrollü sentetik veri üzerinde modelin spurious feature'a bağımlılığını test etmek.
-- **Hipotez:** Model normal testte yüksek doğruluk göstermeli; spurious feature rastgeleleştirildiğinde gerçek feature sabit kalmasına rağmen doğrulukta ölçülebilir bir düşüş oluşmalıdır. Bu düşüş modelin spurious feature'dan yararlandığı hipotezini destekleyecektir.
-- **Veri Seti:** Sentetik ikili sınıflandırma verisi; `N_TRAIN=5000`, `N_TEST=2000`, `SEED=42`.
-- **Gerçek feature:** `N(0,1)` dağılımından üretildi ve `y = (true_feature > 0)` kuralı ile etiket oluşturuldu. Gerçek feature'ın etiketle ilişkisi deterministiktir.
-- **Spurious feature:** Eğitim ve normal test verisinde etiketle yaklaşık `%95` korelasyonlu olacak şekilde oluşturuldu; yaklaşık `%5` örnekte sınıf değeri ters çevrildi.
-- **Spurious-broken test:** Gerçek feature ve gerçek etiketler değiştirilmedi; yalnızca spurious feature rastgele `0/1` değerleriyle değiştirildi.
+- **Amaç:** Bilinen gerçek kural ile spurious korelasyonlu feature'ın ayrıştırılabildiği kontrollü sentetik veri üzerinde modelin spurious feature'a bağımlılığını test etmek.
+- **Hipotez:** Normal testte yüksek accuracy elde edilmeli; spurious feature rastgeleleştirildiğinde gerçek feature sabit kalmasına rağmen ölçülebilir accuracy düşüşü oluşmalıdır.
 - **Model:** `Linear(2,16) → ReLU → Linear(16,8) → ReLU → Linear(8,2)`; toplam `202` parametre.
-- **Eğitim:** CrossEntropyLoss; Adam; learning rate `0.001`; `50` epoch.
-- **Başarı kriteri:** Normal test accuracy `≥ 90%` ve spurious feature bozulduğunda oluşan performans değişiminin nicel olarak raporlanması.
+- **Dataset:** Sentetik ikili sınıflandırma; `N_TRAIN=5000`, `N_TEST=2000`, `SEED=42`.
+- **Seed:** `42`.
+- **Değiştirilen parametre:** Normal testte spurious feature korunurken, broken testte yalnızca spurious feature rastgele `0/1` değerleriyle değiştirildi.
+- **Kontrol grubu:** Normal test; gerçek feature ve gerçek etiketler korunmuş durumda.
+- **Müdahale grubu:** Spurious-broken test; yalnızca spurious feature rastgeleleştirildi.
+- **Sonuç:** Train `%96.04`, normal test `%95.95`, spurious-broken `%80.40`; accuracy drop `15.55 pp`.
+- **Accuracy / etki değişimi:** `%95.95 → %80.40`, yani `−15.55 pp`.
+- **Hedef başarım kriteri:** Normal test accuracy `≥90%` ve spurious feature bozulduğunda performans değişiminin nicel olarak raporlanması.
+- **Doğrulama sonucu:** **PASS / SUPPORT.** Normal test `%95.95` ile eşiği geçti ve kontrollü broken test `−15.55 pp` düşüş gösterdi.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** Hesaplanmadı; deney kontrollü sentetik müdahale karşılaştırmasıdır.
+- **Grafik:** `figures/week2/e11_true_vs_spurious_accuracy.svg` — normal vs. spurious-broken accuracy.
+- **Yorum:** Modelin normal koşullarda spurious feature'dan yararlandığını destekler; modelin tamamen spurious feature'a bağımlı olduğu söylenemez.
+- **Beklenmeyen sonuç:** İlk gürültülü sentetik tasarımda model yaklaşık rastgele seviyede kaldı; temiz deterministik gerçek-feature tasarımıyla deney yeniden çalıştırıldı ve nihai sonuç bu tasarımdan raporlandı.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **E12 — Local LLM / Ollama.**
 
 ### Veri Doğrulama
 
@@ -393,12 +449,25 @@ Bu deneyin değeri, bilinen gerçek kural ve bilinen spurious korelasyon sayesin
 ## E12 — Local LLM / Ollama
 
 - **Deney ID:** E12
-- **Model:** `llama3.2:1b`
-- **Çalıştırma ortamı:** Linux / Colab; Ollama local server (`127.0.0.1:11434`).
+- **Tarih:** Kaynak kaydında belirtilmemiş.
 - **Amaç:** Küçük bir local LLM üzerinde farklı prompt türlerinin çalıştırılabildiğini göstermek ve modelin kendi açıklamalarının gerçek iç mekanizma kanıtı olarak değerlendirilmemesi gerektiğini belgelemek.
-- **Prompt sayısı:** `3`.
-- **Internal intervention:** Uygulanmadı.
-- **Mechanistic evidence:** Elde edilmedi.
+- **Hipotez:** Local LLM üç farklı prompt türünü çalıştırabilecek; ancak öz-açıklamalar gerçek mekanistik kanıt olarak kabul edilmemelidir.
+- **Model:** `llama3.2:1b` via Ollama.
+- **Dataset:** Prompt tabanlı test; `3` prompt.
+- **Seed:** Kaynak kaydında belirtilmemiş.
+- **Değiştirilen parametre:** Prompt türü: factual, reasoning, glass_box; internal intervention uygulanmadı.
+- **Kontrol grubu:** Yok; davranışsal prompt karşılaştırması.
+- **Müdahale grubu:** Yok; model iç aktivasyonuna müdahale edilmedi.
+- **Sonuç:** Ollama kuruldu, `llama3.2:1b` indirildi ve 3 prompt başarıyla işlendi. Yanıt süreleri `26.55 s`, `80.12 s`, `105.01 s`.
+- **Accuracy / etki değişimi:** Accuracy veya mekanistik etki ölçülmedi; yalnızca gözlenebilir yanıtlar ve çalışma süreleri kaydedildi.
+- **Hedef başarım kriteri:** Local execution'ın başarıyla tamamlanması ve model öz-açıklamalarının mekanistik kanıt olarak yanlış yorumlanmaması.
+- **Doğrulama sonucu:** **PASS (local execution) / mechanistic evidence: FALSE.** Üç prompt işlendi; gerçek iç mekanizma kanıtı elde edilmedi.
+- **İstatistiksel anlamlılık (z / persentil, varsa):** Uygulanmadı.
+- **Grafik:** Bu deney için kaynak kaydında ayrı grafik belirtilmemiştir.
+- **Yorum:** Local LLM demonstration başarılıdır; modelin kendi iç süreç açıklamaları mekanistik kanıt değildir.
+- **Beklenmeyen sonuç:** P3 glass_box yanıtında model, knowledge graph gibi gerçekte bu modelin mekanizmasını temsil etmeyen ifadeler de üretti; bu, öz-açıklamaların güvenilir mekanistik kanıt olmadığını daha da açık hale getirdi.
+- **Commit hash:** Deney kaydında belirtilmemiştir.
+- **Sonraki deney:** **Yok — Week 2 deneyleri E12 ile tamamlandı.**
 
 ### Ortam ve Çalıştırma
 
@@ -464,3 +533,10 @@ Week 1'de aday özellik/devre etkisi için güçlü bir başlangıç gözlemi el
 `figures/week2/week1_vs_week2_summary.svg` — candidate/random control separation oranını Week 1 ve Week 2 arasında karşılaştırır; Week 1 için `1 seed`, Week 2 için `5 seeds` kapsamı ayrıca gösterilir.
 
 ---
+
+## Kaynak ve Tekrar Üretilebilirlik
+
+- Ayrıntılı ham sayısal kayıt: `notes/experiment_log_week2.md`.
+- Week 2 grafikler: `figures/week2/`.
+- Bu dosya E06–E12 deneylerini hocanın standart deney kayıt şablonuyla tutar.
+- Eksik tarih, seed, commit hash veya ölçüm uydurulmamıştır.
