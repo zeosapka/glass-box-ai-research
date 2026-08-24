@@ -8,7 +8,7 @@ Bu indeks, araştırmadaki **ana deneyleri** tek noktadan gezinmek için kullan�
 - **Week 2:** E06–E12 = 7 ana deney
 - **Toplam:** **12 ana deney**
 
-Bu nedenle Week 2'nin E06–E12 numaralandırması Week 1 ile çakışmaz ve `E13–E19` gibi sahte/yanlış ana deney ID'leri kullanılmaz.
+Bu nedenle Week 2'nin E06–E12 numaralandırması Week 1 ile çakışmaz ve `E13–E19` gibi bağımsız ana deney ID'leri kullanılmaz.
 
 ## 1. Hafta
 
@@ -43,14 +43,14 @@ Bu nedenle Week 2'nin E06–E12 numaralandırması Week 1 ile çakışmaz ve `E1
 - `notes/transformer_initial_probe.md` — Week 2 öncesindeki ilk Transformer keşif denemesi; **ana deney ID'si değildir**.
 - `notes/ten_day_plan_week1.md` — tarihsel Week 1 başlangıç planı.
 - `notes/ten_day_plan_week2.md` — PDF'deki Week 2 on günlük plan.
-- `notes/experiment_log_week1.md` — Week 1 ayrıntılı günlük.
+- `notes/experiment_log.md` — Week 1 ayrıntılı günlük.
 - `notes/experiment_log_week2.md` — Week 2 ayrıntılı günlük.
 
 ## Kaynak Gerçeği
 
 - Week 1 standart deney kayıtları: `experiments/week1_experiment_records.md`
 - Week 2 standart deney kayıtları: `experiments/week2_experiment_records.md`
-- Week 1 ayrıntılı günlük: `notes/experiment_log_week1.md`
+- Week 1 ayrıntılı günlük: `notes/experiment_log.md`
 - Week 2 ayrıntılı günlük: `notes/experiment_log_week2.md`
 - Grafik kayıtları: `figures/figure_index.md`
 
