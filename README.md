@@ -22,6 +22,15 @@ Bu repository, iki haftalık araştırma çalışmasının deneylerini, analizle
 8. **Sınırları belirt:** Korelasyon, temsil ayrışması ve modelin kendi açıklamalarını tek başına mekanistik kanıt olarak kabul etme.
 9. **Mekanizma haritasını çıkar:** Desteklenen bulguları Glass Box computational map içinde ilişkilendir.
 
+## Deney kimliği ve yapı
+
+Araştırmada **12 ana deney** vardır:
+
+- **Week 1:** E01–E05
+- **Week 2:** E06–E12
+
+Ana deneylerin alt analizleri `1.1`, `3.1`, `4.1`, `4.2`, `5.1` gibi bölüm numaralarıyla tutulur; bunlar yeni deney ID'si değildir.
+
 ## Hafta 1 — MNIST MLP
 
 Baseline model:
@@ -36,7 +45,7 @@ Baseline model:
 - Baseline seed: `42`
 - Test accuracy: **97.56%**
 
-Hafta 1'de aktivasyon analizi, selectivity, tek nöron ablasyonu, activation intervention, activation patching, candidate circuit discovery, circuit ablation, leave-one-out, progressive ablation, random controls ve class-wise validation çalışmaları gerçekleştirildi.
+Hafta 1'in ana deneyleri E01 baseline, E02 aktivasyon analizi, E03 aday özellik/devre keşfi, E04 ablasyon/devre müdahaleleri ve E05 aktivasyon müdahalesi/yamalama olarak düzenlenmiştir.
 
 ### Hafta 1 aday devre
 
@@ -90,13 +99,13 @@ glass-box-ai-research/
 ├── requirements.txt
 ├── notebooks/          # Deneylerin çalıştırıldığı Colab/Jupyter notebookları
 ├── src/                # Tekrar kullanılabilir model ve yardımcı fonksiyonlar
-├── experiments/        # Standart deney kayıtları; Week 2 ana kayıt dosyası burada
+├── experiments/        # Week 1 ve Week 2 standart deney kayıtları
 ├── results/            # Sonuç özetleri
 ├── figures/            # Hafta 1 ve Hafta 2 SVG grafikleri
 ├── data/               # Veri kullanım politikası; ham veriler commit edilmez
 ├── papers/             # Literatür dosyaları için ayrılan alan
-├── notes/              # Deney günlüğü, literatür, kavramlar ve metodolojik notlar
-└── report/             # Glass Box haritası ve sunum/raporlama materyalleri
+├── notes/              # Deney günlükleri, literatür ve metodolojik notlar
+└── report/             # Week 1/Week 2 raporları, sunumları ve Glass Box map
 ```
 
 ## Tekrar üretilebilirlik
@@ -109,13 +118,15 @@ glass-box-ai-research/
 
 ## Raporlama materyalleri
 
-- `experiments/week2_experiment_records.md` — Hafta 2 deneylerinin ana kayıt dosyası
-- `results/results_summary.md` — sonuç özeti
-- `figures/figure_index.md` — grafik indeksi
+- `report/week1_report.md` — Week 1 kısa araştırma raporu
+- `report/week2_report.md` — Week 2 kısa araştırma raporu
+- `report/week1_presentation.md` — Week 1 sunum planı
+- `report/week2_presentation.md` — Week 2 sunum planı
 - `report/glass_box_map.md` — güncellenmiş Glass Box computational map
-- `report/final_presentation.md` — Week 1 → Week 2 sunum taslağı
+- `results/results_summary.md` — sayısal sonuç özeti
+- `figures/figure_index.md` — grafik indeksi
 - `notes/literature_table.md` — literatür matrisi
-- `notes/mechanism_provenance.md` — mekanizma kökeni/provenance önerisi
+- `notes/mechanism_provenance.md` — gelecek Mechanism Provenance araştırma notu
 
 ## Sonraki çalışmalar
 
