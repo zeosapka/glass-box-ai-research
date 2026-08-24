@@ -42,19 +42,37 @@ E07'nin mevcut deney kaydında Discovery ve Holdout karşılaştırması zaten b
 | Aday/control oranı | **17.20×** | **15.71×** |
 | Aday ortalamasını geçen control | **0/20** | **0/20** |
 
-Bu addendum ile birlikte E07'nin doğrulama kaydına dağılım-tabanlı kontrolün ayrıca raporlanması hedeflenmiştir.
+### Formal z-score / percentile hesabı
 
-### Önemli metodolojik not
-
-E07'nin mevcut kayıtlarında 20 random control değerinin tamamı tutulmaktadır; ancak standart kayıt alanında formal `z` / percentile sonucu daha önce yazılmamıştır. Bu nedenle burada **yeni bir deney sonucu uydurulmamıştır**. Formal z-score hesabının kullanılacağı formül ve gerekli kontrol dağılımı açıkça tanımlanmıştır:
+Aynı notebook'ta kayıtlı 20 random-control L1 değeri kullanılarak, **population standard deviation (`ddof=0`)** ile hesaplama yapıldı:
 
 `z = (candidate_mean - control_mean) / std(control_values)`
 
-`percentile = percentile_rank(candidate_mean, control_values)`
+| Set | Candidate mean | Control mean | Control std (`ddof=0`) | z-score | Percentile |
+|---|---:|---:|---:|---:|---:|
+| Discovery | 2.127904 | 0.123722 | 0.052121 | **38.45** | **100%** |
+| Holdout | 1.962849 | 0.124925 | 0.050900 | **36.11** | **100%** |
 
-Bu iki değer, notebook'taki aynı 20 control gözlemi üzerinden hesaplandığında kayıt altına alınmalıdır. Hesaplama yeniden çalıştırılmadan sabit bir sayı deney sonucu olarak sunulmaz.
+Holdout sonucu özellikle önemlidir: aday ortalama L1 değeri `1.962849`, 20 random control değerinin tamamından büyüktür; en yüksek control `0.252825` seviyesindedir. Dolayısıyla aday değerinin control dağılımı içindeki empirical percentile'ı **100%**'dır.
 
-**Mevcut güvenilir doğrulama:** Holdout'ta `0/20` control boyutunun aday ortalamasını geçmesi ve aday/control oranının `15.71×` olmasıdır.
+> **Metodolojik sınır:** Bu z-score, 20 random control gözleminden oluşturulan betimleyici bir dağılım karşılaştırmasıdır. Bağımsız örneklem varsayımlarını gerektiren bir hipotez testinin yerine geçmez ve tek başına nedensellik kanıtı değildir. E07'nin ana sonucu yine Discovery/Holdout tekrarlanabilirliği ve `0/20` control exceedance ölçütüdür.
+
+### Holdout control dağılımı
+
+Notebook'taki 20 Holdout control değeri:
+
+`0.128950, 0.062149, 0.093306, 0.085662, 0.207784, 0.086480, 0.137661, 0.042730, 0.104018, 0.155520, 0.148180, 0.140354, 0.070969, 0.098458, 0.157510, 0.130216, 0.191982, 0.127210, 0.252825, 0.076536`
+
+Bu dağılımdan:
+
+- `mean = 0.124925`
+- `std(ddof=0) = 0.050900`
+- `max = 0.252825`
+- candidate mean `1.962849 > max(control)`
+- empirical percentile = **100%**
+- z-score = **36.11**
+
+**Sonuç:** E07'nin istatistiksel ek kontrolü artık dokümante edilmiştir. Bu hesap mevcut notebook verisinden türetilmiştir; yeni bir deney koşulmamıştır.
 
 ---
 
@@ -124,7 +142,7 @@ Bu nedenle:
 | E12 notebook + kayıt | ✅ | `13_local_llm_ollama.ipynb` |
 | E06 multi-seed başarı kriteri | ✅ | 5/5 seed, `≤ -5 pp`; 5/5 seed, `>3×` |
 | E07 Discovery/Holdout | ✅ | 0/20 control exceeded candidate; Holdout `15.71×` |
-| E07 formal z/percentile | ⚠️ | Hesap formülü tanımlı; sayı yeniden hesaplanmadan sabitlenmedi |
+| E07 z-score / percentile | ✅ | Holdout `z=36.11`, percentile `100%`; Discovery `z=38.45`, percentile `100%` |
 | E12 kullanım amacı açıklaması | ✅ | Bu addendum'da açıklandı |
 | E12 kurulum akışı | ✅ | Bu addendum + notebook |
 | Grafikler | ✅ | `figures/figure_index.md` ve `figures/week2/` |
@@ -142,9 +160,9 @@ Bu addendum'un amacı yeni bir deney eklemek değil, mevcut Week 2 sonuçların�
 Özellikle:
 
 - E06'nın `>3×` kontrol eşiği artık açıkça kayıtlıdır.
-- E07'nin Discovery/Holdout sonucu tablo halinde görünürdür; formal z/percentile sayılarını veri yeniden hesaplanmadan uydurmamak için yöntem açıkça belirtilmiştir.
+- E07'nin Discovery/Holdout sonucu ve notebook'taki 20-control dağılımından türetilen z-score/percentile sonuçları tablo halinde görünürdür.
 - E12'nin Glass Box iş akışındaki rolü ve mekanistik kanıt olmadığı açıkça yazılmıştır.
 - Kurulum/reproduction akışı tek yerde özetlenmiştir.
-- Commit konusunda dosya snapshot'ı ile execution commit'i birbirinden ayrılmıştır.
+- Commit konusunda dosya snapshot'ı ile execution commit'i birbirinden ayrılmıştır; doğrulanmamış bir hash execution commit'i olarak sunulmamıştır.
 
 **Bu dosya, Week 2 tesliminin son kalite kontrol eki olarak kullanılabilir.**
