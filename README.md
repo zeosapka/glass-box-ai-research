@@ -1,164 +1,128 @@
 # Glass Box AI Araştırması
 
-**Mekanistik Yorumlanabilirlik (Mechanistic Interpretability) ve Glass Box AI — 1. Hafta Araştırma Çalışması**
+**Mekanistik Yorumlanabilirlik (Mechanistic Interpretability) ve Glass Box AI — 2 Haftalık Araştırma Çalışması**
 
-Bu repository (araştırma deposu), ilk hafta araştırma ödevindeki kontrollü MNIST MLP deneylerini, iç temsili (internal representation) analizlerini, müdahale (intervention) sonuçlarını ve aday devre (candidate circuit) doğrulama çalışmalarını kaydetmektedir.
+Bu repository, iki haftalık araştırma çalışmasının deneylerini, analizlerini, sonuçlarını ve raporlama materyallerini içerir. İlk hafta kontrollü bir MNIST MLP üzerinde aday nöron/devre mekanizmasının keşfi ve müdahale ile doğrulanması; ikinci hafta ise bu yaklaşımın çoklu seed, bağımsız holdout, geniş random-control, graded intervention, grup müdahalesi, sentetik true-vs-spurious test ve küçük bir local LLM üzerinde genişletilmesi ele alınmıştır.
 
-## Araştırma Sorusu
+## Araştırma sorusu
 
 > Model doğru sonucu üretiyor mu? sorusunun ötesinde: **Model bu sonucu hangi iç mekanizma (internal mechanism) üzerinden üretiyor?**
 
-## Ana Metodoloji
+## Ana metodoloji
 
 `VERİ (DATA) → MODEL → İÇ TEMSİL (INTERNAL REPRESENTATION) → ÖZELLİK (FEATURE) → MÜDAHALE (INTERVENTION) → ÇIKTI (OUTPUT) → DOĞRULAMA (VALIDATION)`
 
-1. **Modeli kur:** Kontrollü MNIST MLP temel modeli (baseline).
-2. **İç temsili gözlemle:** Katman (layer), nöron (neuron), aktivasyon (activation) ve temsil öğrenme (representation learning) yapısını incele.
-3. **Özellik adaylarını belirle:** Aktivasyon istatistikleri (activation statistics), sınıf davranışı (class behavior) ve seçicilik (selectivity) kullan.
-4. **Hipotez oluştur:** Aday özellik/devre (candidate feature/circuit) → beklenen çıktı etkisi.
-5. **Müdahale yap:** Ablasyon (ablation), aktivasyon yamalama (activation patching) ve kontrollü aktivasyon ölçekleme (controlled activation scaling).
-6. **Çıktı değişimini ölç:** Olasılık (probability), logit ve sınıf doğruluğu (class accuracy) değişimlerini karşılaştır.
-7. **Doğrulama yap:** Tekrarlı testler (repeated tests), rastgele kontroller (random controls), sınıf bazlı kontroller (class-wise controls), tekli çıkarma analizi (leave-one-out) ve aşamalı ablasyon (progressive ablation).
-8. **Mekanizmayı çıkar:** Aday devre (candidate circuit) ve Glass Box hesaplama haritası (computational map).
+1. **Modeli kur:** Kontrollü bir baseline model oluştur.
+2. **İç temsili gözlemle:** Katman, nöron, aktivasyon ve temsil yapısını incele.
+3. **Aday özellikleri belirle:** Aktivasyon istatistikleri, sınıf davranışı ve seçicilik kullan.
+4. **Hipotez oluştur:** Aday özellik/devre ile beklenen çıktı etkisi arasında mekanistik hipotez kur.
+5. **Müdahale yap:** Ablasyon, activation patching ve kontrollü aktivasyon ölçekleme uygula.
+6. **Çıktı değişimini ölç:** Olasılık, logit, L1 etki ve sınıf doğruluğu değişimlerini ölç.
+7. **Kontrol et:** Random controls, multi-seed tekrar, Discovery/Holdout ayrımı ve dağılım tabanlı istatistiksel ölçümler kullan.
+8. **Sınırları belirt:** Korelasyon, temsil ayrışması ve modelin kendi açıklamalarını tek başına mekanistik kanıt olarak kabul etme.
+9. **Mekanizma haritasını çıkar:** Desteklenen bulguları Glass Box computational map içinde ilişkilendir.
 
-## Dil Standardı
+## Hafta 1 — MNIST MLP
 
-Repository'deki başlıklar, deney kayıtları, tablolar, rapor metinleri ve grafik yazıları Türkçe; anlamı korunması gereken teknik terimler ise İngilizce karşılıkları parantez içinde olacak şekilde yazılır. Kod sembolleri, dosya yolları, model/kütüphane adları ve makale başlıkları değiştirilmez. Ayrıntılı kural: `notes/language_standard.md`.
+Baseline model:
 
-## Temel Model (Baseline)
-
-- Veri seti (dataset): MNIST `60000 / 10000`
-- Mimari (architecture): `784 → 128 → 64 → 10`
+- Veri seti: MNIST (`60000` eğitim / `10000` test)
+- Mimari: `784 → 128 → 64 → 10`
 - Aktivasyon: ReLU
-- Optimizasyon algoritması (optimizer): Adam
-- Öğrenme oranı (learning rate): `0.001`
+- Optimizer: Adam
+- Learning rate: `0.001`
 - Batch size: `64`
 - Epoch: `5`
-- Seed (rastgelelik tohumu): `42`
-- CPU
-- Test doğruluğu (test accuracy): **97.56%**
+- Baseline seed: `42`
+- Test accuracy: **97.56%**
 
-## Tamamlanan Deneyler
+Hafta 1'de aktivasyon analizi, selectivity, tek nöron ablasyonu, activation intervention, activation patching, candidate circuit discovery, circuit ablation, leave-one-out, progressive ablation, random controls ve class-wise validation çalışmaları gerçekleştirildi.
 
-| Çalışma | Durum | Ana sonuç |
-|---|---|---|
-| Ortam doğrulama (environment) | TAMAMLANDI | PyTorch ortamı çalıştı |
-| Temel model (baseline model) | TAMAMLANDI | %97.56 test doğruluğu |
-| Aktivasyon analizi (activation analysis) | TAMAMLANDI | `10000 × 64` aktivasyon matrisi |
-| Sınıf aktivasyonu / seçicilik (selectivity) | TAMAMLANDI | Aday nöronlar belirlendi |
-| Tek nöron ablasyonu (single-neuron ablation) | TAMAMLANDI | Sınıfa özgü etkiler ölçüldü |
-| Aktivasyon müdahalesi (activation intervention) | TAMAMLANDI | Kontrollü olasılık değişimleri |
-| Korelasyon ve nedensellik | TAMAMLANDI | Gözlem/müdahale ayrımı |
-| Aktivasyon yamalama (activation patching) | TAMAMLANDI | Çoklu örnek yamalama yapıldı |
-| Dağıtık özellik yamalama (distributed feature patching) | TAMAMLANDI | Top-5 grup etkisi incelendi |
-| Aday devre keşfi (candidate circuit discovery) | TAMAMLANDI | `[47,17,57,53,28]` |
-| Devre ablasyonu (circuit ablation) | TAMAMLANDI | Sınıf 0 `-12.0408 pp` |
-| Tekli çıkarma (leave-one-out) | TAMAMLANDI | Bağlama bağlı katkılar |
-| Aşamalı ablasyon (progressive ablation) | TAMAMLANDI | Dağıtık / toplamsal olmayan etki |
-| Rastgele kontroller (random controls) | TAMAMLANDI | Rastgele ortalama `-0.1122 pp` |
-| Sınıf bazlı doğrulama (class-wise validation) | TAMAMLANDI | En büyük etki Sınıf 0'da |
-| Devre aktivasyon müdahalesi | TAMAMLANDI | Gerçek Sınıf 0 olasılığı `0.7644 → 0.9938` |
-| Literatür matrisi | TAMAMLANDI | 8 kaynak + deney eşlemesi |
-| İleri kavramlar (advanced concepts) | TAMAMLANDI | `notes/advanced_concepts.md` |
-| Mekanizma kökeni önerisi (mechanism provenance) | TAMAMLANDI | `notes/mechanism_provenance.md` |
-| Grafik indeksi + GitHub SVG'leri | TAMAMLANDI | 11 doğrulanabilir/okunabilir sonuç grafiği |
-| Glass Box haritası | TAMAMLANDI | Hesaplama haritası tamamlandı |
-
-## Aday Devre (Candidate Circuit)
+### Hafta 1 aday devre
 
 `[47, 17, 57, 53, 28]`
 
-Bu grup Sınıf 0 davranışı ile güçlü biçimde ilişkilidir.
+Bu aday grup Class 0 davranışıyla güçlü biçimde ilişkilendirildi ve kontrollü müdahalelerde belirgin çıktı etkileri gözlendi. Bulgular nedensel kanıtı desteklemektedir; ancak aday grubun eksiksiz devre olduğu veya genel nedenselliğin tamamen kanıtlandığı iddia edilmemektedir.
 
-### Mekanistik Doğrulama Özeti
+## Hafta 2 — Genelleme ve istatistiksel doğrulama
 
-- Aday devre ablasyonu: Sınıf 0 doğruluğunda **-12.0408 pp**
-- Rastgele kontrol ortalaması: **-0.1122 pp**
-- Aday − rastgele ortalama: **-11.9286 pp**
-- Sınıf 1 kontrolü: **+0.0881 pp**
-- Sınıf 2 kontrolü: **0.0000 pp**
-- Tekli çıkarma analizinde en güçlü bağlamsal etki: N57, **-9.0816 pp**
-- Aşamalı ablasyon: **-0.9184 → -12.0408 pp**
-- Logit düzeyinde yamalama: Sınıf 1 hedefi **+6.0245**, Sınıf 2 hedefi **+4.3068** Sınıf 0 logiti
-- Devre aktivasyon müdahalesi: gerçek Sınıf 0 olasılığı **0.7644 → 0.9938**
+Hafta 2 deneyleri E06–E12 arasında kaydedilmiştir.
 
-### Bilimsel Yorum
+| Deney | Amaç | Sonuç |
+|---|---|---|
+| **E06** | Multi-seed devre tekrarı | 5/5 seed'de kriter karşılandı; aday etki random control'den çok daha büyük |
+| **E07** | Matched Transformer Discovery/Holdout | Discovery ve Holdout'ta adaylar random controls'dan güçlü biçimde ayrıştı |
+| **E08** | Graded intervention | Aday 496 için müdahale büyüklüğü–L1 ilişkisi test edildi; sonuç destekleyici ancak sınırlı |
+| **E09** | 50 random-control istatistiği | `z=0.854`, `%84` percentile; önceden tanımlı kriter karşılanmadı (**FAIL**) |
+| **E10** | Grup müdahalesi ve non-additivity | `joint/individual sum=0.6706`; non-additive kriter karşılandı (**PASS / SUPPORT**) |
+| **E11** | True-vs-spurious sentetik test | Normal accuracy `%95.95`, broken accuracy `%80.40`, düşüş `15.55 pp` (**PASS**) |
+| **E12** | Local LLM / Llama 3.2 1B | Ollama üzerinde 3 prompt başarıyla çalıştırıldı; davranışsal çıktı mekanistik kanıt olarak kabul edilmedi |
 
-Bu sonuçlar aday devrenin Sınıf 0 çıktı davranışına güçlü ve kontrollü bir katkısı olduğuna dair **nedensel kanıtı (causal evidence/support)** desteklemektedir. Ancak aday grubun modeldeki eksiksiz devre (complete circuit) olduğu veya genel anlamda nedenselliğin tamamen kanıtlandığı iddia edilmemektedir.
+### Bilimsel yorum
 
-## Bilimsel Sınırlar
+Hafta 2'nin amacı her deneyi zorla pozitif sonuca dönüştürmek değildir. Önceden belirlenen kriterlerin uygulanması esas alınmıştır. Bu nedenle E09'un başarısız olması sonuçların gizlenmesi yerine açıkça raporlanmıştır. E10'da non-additive davranış desteklenmiş, E11'de spurious feature kırıldığında performans düşüşü gözlenmiş ve E12'de local LLM çalıştırmasının modelin gerçek iç mekanizmasını tek başına açıklamadığı özellikle belirtilmiştir.
+
+## İstatistiksel ve metodolojik sınırlar
 
 - Korelasyon tek başına nedensellik değildir.
-- Ağırlık büyüklüğü tek başına nedensel kanıt değildir.
-- Seçicilik aday seçimi için kullanılır; nedensel önem değildir.
-- Aday devre Sınıf 0'a eğilimlidir fakat yalnızca Sınıf 0'a özgü değildir.
-- Aşamalı ablasyon sıralamaya bağlı olabilir.
-- Tek eğitim seed'i kullanıldığı için çoklu seed tekrarı (multi-seed replication) gereklidir.
-- Aday seçim yanlılığı (candidate selection bias) ve sınırlı yamalama kapsamı vardır.
-- Sonuçlar küçük MNIST MLP üzerinde elde edilmiştir; daha büyük modellere doğrudan genellenemez.
+- L1 temsil ayrışması tek başına nedensel kanıt değildir.
+- Aday seçiminde Discovery verisi kullanıldığı için Holdout doğrulaması önemlidir.
+- Random-control sonuçları kullanılan kontrol sayısı ve örnekleme tasarımına bağlıdır.
+- E09'da aday değer önceden tanımlı `|z| >= 2` ve `percentile >= 90` kriterlerini karşılamamıştır.
+- E10'daki non-additive etki grup etkileşimini destekler; tek başına belirli bir mekanizmanın eksiksiz olduğunu göstermez.
+- E11 sentetik deney davranışsal bir testtir; doğrudan gerçek bir model içi devre keşfi değildir.
+- E12'de local LLM'in kendi ürettiği iç-mekanizma açıklamaları mechanistic evidence olarak kabul edilmemiştir.
+- Sonuçlar kullanılan küçük/kontrollü modeller ve deney tasarımlarıyla sınırlıdır; daha büyük modellere doğrudan genellenemez.
 
-## Repository Yapısı
+## Grafikler
+
+`figures/` altında Hafta 1 ve Hafta 2 sonuçlarına ait doğrulanabilir SVG grafikler bulunur. Hafta 2 grafiklerinde E06–E11 ve Week 1 vs Week 2 özeti yer alır. Ayrıntılı deney bağlantıları ve grafik kapsamı `figures/figure_index.md` içinde tutulur.
+
+## Literatür
+
+Literatür matrisi ve deney eşlemesi `notes/literature_table.md` dosyasındadır. Hafta 2 kapsamında yeni kaynaklar eklenmiş ve toplam literatür kapsamı genişletilmiştir.
+
+## Repository yapısı
 
 ```text
 glass-box-ai-research/
 ├── README.md
 ├── requirements.txt
 ├── notebooks/          # Deneylerin çalıştırıldığı Colab/Jupyter notebookları
-├── src/                # Tekrar kullanılabilir Python model ve yardımcı fonksiyonları
-├── experiments/        # Standart deney kayıtları ve deneylere ait ek dosyalar
-├── results/            # Deney sonuçlarının özet kayıtları
-├── figures/            # Deneylerden üretilen doğrulanabilir grafikler (11 SVG)
-├── data/               # Veri seti ve veri kullanım açıklamaları
-├── papers/             # Araştırmada kullanılan/kullanılacak makale kaynakları
-├── notes/              # Deney günlüğü, literatür, kavramlar ve araştırma notları
-└── report/             # Glass Box hesaplama haritası ve rapor/sunum materyalleri
+├── src/                # Tekrar kullanılabilir model ve yardımcı fonksiyonlar
+├── experiments/        # Standart deney kayıtları; Week 2 ana kayıt dosyası burada
+├── results/            # Sonuç özetleri
+├── figures/            # Hafta 1 ve Hafta 2 SVG grafikleri
+├── data/               # Veri kullanım politikası; ham veriler commit edilmez
+├── papers/             # Literatür dosyaları için ayrılan alan
+├── notes/              # Deney günlüğü, literatür, kavramlar ve metodolojik notlar
+└── report/             # Glass Box haritası ve sunum/raporlama materyalleri
 ```
 
-### Klasörlerin Rolü
+## Tekrar üretilebilirlik
 
-- **`notebooks/`** — Temel model, aktivasyon analizi, ablasyon ve müdahale deneylerinin Colab/Jupyter kayıtları.
-- **`src/`** — Model, hook, değerlendirme (evaluation) ve müdahale gibi tekrar kullanılabilir kodlar.
-- **`figures/`** — Deney günlüğünde sayısal olarak doğrulanabilen 11 SVG grafik ve `figure_index.md`.
-- **`notes/`** — Deney günlüğü, literatür matrisi, ileri kavramlar, mekanizma kökeni ve deney planı.
-- **`results/`** — Sonuçların kısa/özet kayıtları.
-- **`report/`** — Glass Box hesaplama haritası ve raporlama materyalleri.
-- **`data/`** — MNIST gibi veri setlerinin repo içinde tutulmayan kullanım/açıklama bilgileri.
-- **`papers/`** — Literatür dosyaları için ayrılmış alan.
-- **`experiments/`** — Standart deney kayıtlarının tutulduğu ana klasördür.
+- Deney ID'leri, model ayarları, seed değerleri ve deneysel ölçümler ilgili deney kayıtlarında tutulur.
+- Python bağımlılıkları `requirements.txt` içinde tanımlıdır.
+- Hugging Face tabanlı deneyler gerekli model/tokenizer dosyalarını çalışma sırasında indirir.
+- E12 local LLM deneyi Colab Linux ortamında Ollama ile gerçekleştirilmiştir; Ollama kurulumu için sistem bağımlılıkları notebook içinde belgelenmiştir.
+- Ham veri dosyaları repository'ye eklenmez.
 
-## Grafik Seti
+## Raporlama materyalleri
 
-`figures/` klasöründe 11 okunabilir SVG bulunmaktadır. Grafik başlıkları ve eksen açıklamaları da aynı dil standardını kullanır.
+- `experiments/week2_experiment_records.md` — Hafta 2 deneylerinin ana kayıt dosyası
+- `results/results_summary.md` — sonuç özeti
+- `figures/figure_index.md` — grafik indeksi
+- `report/glass_box_map.md` — güncellenmiş Glass Box computational map
+- `report/final_presentation.md` — Week 1 → Week 2 sunum taslağı
+- `notes/literature_table.md` — literatür matrisi
+- `notes/mechanism_provenance.md` — mekanizma kökeni/provenance önerisi
 
-1. Ablasyon doğruluğu — tüm aday nöronlar + aday devre
-2. Aşamalı devre ablasyonu
-3. Aday devre aktivasyon müdahalesi
-4. N47 aktivasyon müdahalesi
-5. N17–N47 aktivasyon korelasyonu
-6. Temel model eğitim kaybı
-7. Aday devre aktivasyonunun sınıflar arasındaki dağılımı
-8. Sınıf bazlı doğru tahminler
-9. En yüksek 10 nöron seçiciliği
-10. Tekli çıkarma analizi
-11. Aday nöronların Sınıf 0 logitine katkısı
+## Sonraki çalışmalar
 
-Eksik ham veri noktaları uydurulmamıştır. Bu nedenle bazı grafikler orijinal Colab grafiklerinin doğrulanabilir, daha dar kapsamlı GitHub sürümleridir. Ayrıntılı kapsam `figures/figure_index.md` içinde belirtilmiştir.
-
-## Temel Model Öğrenme Eğrileri
-
-`notebooks/01_baseline_model.ipynb` epoch bazında temel model eğitim sonuçlarını kaydetmektedir. GitHub'daki `baseline_training_loss.svg` yalnızca deney günlüğünde doğrulanmış eğitim-kaybı serisini gösterir; doğrulanmamış doğrulama/test noktaları grafiğe eklenmemiştir.
-
-## Sonraki Deneyler
-
-1. Çoklu seed tekrarı (multi-seed replication)
-2. Sentetik gerçek ve sahte ilişki (true-vs-spurious) veri seti
-3. Dağıtık özellik analizi
-4. Genişletilmiş aktivasyon yamalama
-5. Fashion-MNIST doğrulaması
-6. AI'dan AI'a mekanizma kökeni / soy zinciri (mechanism provenance / lineage)
+Bu repository'deki deneysel aşama tamamlanmıştır. Gelecekteki çalışmalar; daha geniş model ve veri setlerinde doğrulama, daha güçlü random-control tasarımları, distributed feature analysis, genişletilmiş activation patching ve mechanism provenance/lineage çalışmalarını içerebilir. Bu maddeler mevcut sonuç olarak sunulmamaktadır.
 
 ## Durum
 
 **Deneysel aşama: TAMAMLANDI.**
 
-Mevcut deney sonuçları, deney günlüğü, literatür eşlemesi, ileri kavram kapsamı, mekanizma kökeni önerisi ve GitHub grafik/sonuç kayıtları tamamlanmıştır. Gelecek deneyler sonuç gibi sunulmamaktadır.
+Hafta 1 ve Hafta 2 deneyleri, sonuç kayıtları, grafikler, literatür eşlemesi, Glass Box map ve raporlama materyalleri repository içinde belgelenmiştir. Negatif veya kriteri karşılamayan sonuçlar da açıkça raporlanmıştır.
