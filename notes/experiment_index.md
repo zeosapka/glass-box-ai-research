@@ -1,6 +1,6 @@
 # Deney İndeksi (Experiment Index)
 
-Bu indeks, araştırmadaki deney kayıtlarının tek noktadan gezinilmesini sağlar.
+Bu indeks, araştırmadaki deney kayıtlarının tek noktadan gezinmesini sağlar.
 
 ## 1. Hafta
 
@@ -26,10 +26,24 @@ Bu indeks, araştırmadaki deney kayıtlarının tek noktadan gezinilmesini sağ
 | E18 | Aşamalı ablasyon | 1→5 nöron −0.9184→−12.0408 pp | `experiments/week1_experiment_records.md` |
 | E19 | Rastgele kontroller / mekanistik doğrulama | Rastgele ortalama −0.1122 pp; aday −12.0408 pp | `experiments/week1_experiment_records.md` |
 
+## 2. Hafta
+
+| ID | Deney | Ana ölçüm | Standart kayıt |
+|---:|---|---|---|
+| E06 | Çoklu seed devre tekrarı | Ortalama aday −27.6735 pp; random −0.3469 pp | `experiments/week2_experiment_records.md` |
+| E07 | Eşleştirilmiş Transformer iç temsil | Holdout aday/random oranı 15.71× | `experiments/week2_experiment_records.md` |
+| E08 | Kademeli Transformer müdahalesi | Aday L1 0.023454; PARTIAL / SUPPORT | `experiments/week2_experiment_records.md` |
+| E09 | İstatistiksel kontrol testi | z=0.854322; percentile=84%; FAIL | `experiments/week2_experiment_records.md` |
+| E10 | Grup müdahalesi | Non-additive ratio=0.670583; PASS / SUPPORT | `experiments/week2_experiment_records.md` |
+| E11 | Sentetik true-vs-spurious feature | Accuracy drop=15.55 pp; PASS / SUPPORT | `experiments/week2_experiment_records.md` |
+| E12 | Local LLM / Ollama | Llama 3.2 1B; 3 prompt; mechanistic evidence=False | `experiments/e12_local_llm_record.md` |
+
 ## Kaynak Gerçeği
 
 - Ayrıntılı ham sayısal kayıt: `notes/experiment_log.md`
 - Standart deney kayıtları: `experiments/week1_experiment_records.md`
+- Hafta 2 standart deney kayıtları: `experiments/week2_experiment_records.md`
+- E12 ayrıntılı kayıt: `experiments/e12_local_llm_record.md`
 - Grafik kayıtları: `figures/figure_index.md`
 
 2. hafta deneylerinde aynı şablona ek olarak **Başarım Kriteri (Success Criterion)**, **Doğrulama Sonucu (Verification Result)**, **İstatistiksel Anlamlılık (Statistical Significance)** ve **Commit Hash** alanları kullanılacaktır.
