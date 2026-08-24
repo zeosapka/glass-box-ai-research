@@ -388,9 +388,59 @@ Bu deneyin değeri, bilinen gerçek kural ve bilinen spurious korelasyon sayesin
 
 `figures/week2/e11_true_vs_spurious_accuracy.svg` — normal test ile spurious-broken test accuracy değerlerini karşılaştırır.
 
-### Sonraki Adım
+---
 
-E11 ile birlikte Week 2'nin deneysel grafik seti tamamlanmıştır. Son aşamada Week 1 ve Week 2'nin metodolojik ilerlemesi özetlenmiştir.
+## E12 — Local LLM / Ollama
+
+- **Deney ID:** E12
+- **Model:** `llama3.2:1b`
+- **Çalıştırma ortamı:** Linux / Colab; Ollama local server (`127.0.0.1:11434`).
+- **Amaç:** Küçük bir local LLM üzerinde farklı prompt türlerinin çalıştırılabildiğini göstermek ve modelin kendi açıklamalarının gerçek iç mekanizma kanıtı olarak değerlendirilmemesi gerektiğini belgelemek.
+- **Prompt sayısı:** `3`.
+- **Internal intervention:** Uygulanmadı.
+- **Mechanistic evidence:** Elde edilmedi.
+
+### Ortam ve Çalıştırma
+
+- Ollama başlangıçta kurulu değildi.
+- `zstd` bağımlılığı kurulduktan sonra Ollama başarıyla kuruldu.
+- Ollama server başarıyla başlatıldı.
+- `llama3.2:1b` modeli başarıyla indirildi ve çalıştırıldı.
+
+### Promptlar
+
+#### P1 — factual
+
+`What is a transformer model in artificial intelligence? Explain briefly.`
+
+Model, Transformer mimarisini NLP görevlerinde kullanılan bir sinir ağı mimarisi olarak açıkladı. Yanıt süresi: **26.55 s**.
+
+#### P2 — reasoning
+
+`Why might a language model give different answers to two very similar questions?`
+
+Model; eğitim verisi sınırlılıkları, bağlam, belirsizlik, dilsel varyasyonlar ve sorgu niyeti gibi çeşitli nedenler sundu. Yanıt süresi: **80.12 s**.
+
+#### P3 — glass_box
+
+`What kinds of internal information might a language model use when generating an answer?`
+
+Model contextualized embeddings, tokenization, training data ve model parameters gibi çeşitli unsurlardan bahsetti. Yanıt süresi: **105.01 s**.
+
+**Önemli metodolojik not:** P3'teki model öz-açıklaması gerçek iç mekanizmanın doğrudan kanıtı olarak kabul edilmemiştir. Modelin kendi üretmiş olduğu açıklamalar ile gerçek hesaplama mekanizması arasında ayrım yapılmalıdır.
+
+### Glass Box Değerlendirmesi
+
+- Local execution: **True**
+- Prompt count: **3**
+- Internal intervention: **False**
+- Mechanistic evidence: **False**
+
+### Sonuç
+
+Local LLM başarıyla çalıştırılmış ve üç farklı prompt türüne cevap vermiştir. Çıktılar gözlenebilir davranış farklılıklarını göstermektedir; ancak cevapların kendisi modelin gerçek iç mekanizmalarına dair mekanistik kanıt oluşturmaz. Özellikle modelin kendi iç süreçleri hakkında verdiği açıklamalar mekanistik kanıt olarak kullanılmamalıdır.
+
+**Genel E12 değerlendirmesi:** Local LLM demonstration **başarılı**; mekanistik/causal Glass Box kanıtı **elde edilmedi**.
 
 ---
 
@@ -403,6 +453,7 @@ E11 ile birlikte Week 2'nin deneysel grafik seti tamamlanmıştır. Son aşamada
 - E09'da aday `496` için daha geniş 50-control dağılımı kullanılmış ve önceden belirlenen istatistiksel ayrışma kriterleri karşılanmamıştır (`z=0.854322`, `%84` percentile).
 - E10'da grup müdahalesinde non-additive davranış gözlenmiş, ancak aday grubun random gruplardan daha güçlü olduğu gösterilememiştir.
 - E11'de kontrollü sentetik veri üzerinde spurious feature bozulmasının **15.55 pp** accuracy düşüşüne yol açtığı gösterilmiştir.
+- E12'de küçük bir local LLM başarıyla çalıştırılmış, ancak modelin öz-açıklamaları mekanistik kanıt olarak kabul edilmemiştir.
 
 ### Week 1 → Week 2 Genel Yorum
 
