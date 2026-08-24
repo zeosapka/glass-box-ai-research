@@ -40,7 +40,7 @@ Week 1'de aday devre `[47,17,57,53,28]` için Class 0 ablasyon etkisi `−12.040
 - Aday etki: **0.015057**.
 - Kontrol ortalaması: **0.011293**, std `0.004407`.
 - `z=0.854322`, percentile `%84`.
-- Önceden tanımlı `|z|≥2` ve `%90` eşikleri karşılanmadı.
+- Önceden tanımlı `\|z\|≥2` ve `%90` eşikleri karşılanmadı.
 - Sonuç: **FAIL**; bu, deneyin çalışmadığı değil, adayın güçlü istatistiksel ayrışma göstermediği anlamına gelir.
 
 ### E10 — Group Intervention
