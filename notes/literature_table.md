@@ -10,6 +10,9 @@
 | 6 | *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability* | Nedensel doğrulama | Soyut hesaplama modelleri | Mekanistik değişkenler | Nedensel soyutlama | Müdahale | Mekanistik açıklamalar için nedensel çerçeve | Gözlem ve müdahale ayrımı + mekanistik doğrulama | Teorik çerçeve; deneysel uygulama ayrıca gerekir |
 | 7 | *Tracr: Compiled Transformers as a Laboratory for Interpretability* | Kontrollü yorumlanabilirlik deneyleri | Derlenmiş Transformerlar | Bilinen hesaplama bileşenleri | Programdan Transformer derleme | Kontrollü müdahaleler | Bilinen hesaplamayı yorumlanabilirlik laboratuvarı olarak kullanma | Küçük ve kontrollü model kullanma yaklaşımı | Transformer odaklı |
 | 8 | *Gemma Scope* | Büyük ölçekli özellik analizi | Gemma dil modelleri | Aktivasyon özellikleri | Seyrek otokodlayıcılar / özellik analizi | Özellik düzeyi müdahaleler ve analiz | Büyük ölçekli iç özellik incelemesi | Gelecekte SAE / özellik düzeyi genişleme | Bu haftanın MNIST modelinden çok daha büyük ölçek |
+| 9 | *Efficient Automated Circuit Discovery in Transformers using Contextual Decomposition* | Verimli devre keşfi | Transformerlar | Attention / MLP düğümleri ve konumlar | Contextual Decomposition (CD-T) + pruning | Devre altgrafı çıkarımı ve faithfulness testi | Büyük Transformerlar için daha verimli devre keşfi ve faithfulness değerlendirmesi | E07 iç temsil ayrışması ve E10 grup müdahalesi için metodolojik karşılaştırma | Bizim deneyimiz CD-T uygulamıyor; yöntem karşılaştırmasıdır |
+| 10 | *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet* | Büyük modelde özellik ayrıştırma | Claude 3 Sonnet | Residual stream / SAE özellikleri | Sparse autoencoder / dictionary learning | Feature steering | Ölçeklenmiş özelliklerin yorumlanabilirliği ve davranışa nedensel etkisinin incelenmesi | E07–E08 aktivasyon müdahalesi ve gelecekte SAE genişlemesi | Büyük üretim modeli; bizim küçük distilgpt2 deneyimizle ölçek farkı vardır |
+| 11 | *Formal Mechanistic Interpretability: Automated Circuit Discovery with Provable Guarantees* | Formal devre doğrulaması | Sinir ağları / vision modelleri | Devre altgrafları | Otomatik devre keşfi + neural verification | Robust patching / minimality / domain guarantees | Devre keşfine formel doğrulama ve robustness garantileri ekleme | E06–E10 kontrol ve doğrulama anlayışına ileri yöntem referansı | 2026 çalışması; bu araştırmada formel doğrulama uygulanmamıştır |
 
 ## Literatür ↔ Deney Eşlemesi
 
@@ -25,6 +28,12 @@
 | Mekanistik Doğrulama | Deneyler 22–23 | Rastgele kontroller + sınıf bazlı kontroller |
 | Özellik Düzeyi Analiz | Deneyler 2–3, 24 | Sınıf 0'a eğilimli aday özellik karakterizasyonu |
 | Devre Düzeyi Müdahale | Deney 24 | Gerçek Sınıf 0 olasılığı `0.7644 → 0.9938` |
+| Transformer iç temsil ayrışması | E07 | Discovery/Holdout L1 ayrışması ve random kontroller |
+| Kademeli müdahale / dose-response | E08 | Aday ve kontrol boyutlarında müdahale büyüklüğü–çıktı değişimi |
+| İstatistiksel random-control değerlendirmesi | E09 | 50 kontrol boyutuyla z-score ve empirical percentile |
+| Grup müdahalesi / non-additivity | E10 | Birlikte müdahale ile tekil etkilerin toplamının karşılaştırılması |
+| Sentetik gerçek-sahte özellik ayrımı | E11 | True-vs-spurious mekanizma ayrımının kontrollü testi |
+| Local LLM davranış incelemesi | E12 | Llama 3.2 1B çıktıları; mekanistik kanıt iddiası yok |
 
 ## Kaynak Kullanım İlkesi
 
